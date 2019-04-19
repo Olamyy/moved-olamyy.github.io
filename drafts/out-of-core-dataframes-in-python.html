@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>In recent months, a host of new tools and packages have been announced for working with data at scale in Python.
 For an excellent and entertaining summary of these, I'd suggest watching Rob Story's <a href="https://www.youtube.com/watch?v=RTiAMB2tQjo">Python Data Bikeshed</a> talk from the <a href="http://seattle.pydata.org">2015 PyData Seattle</a> conference.
 Many of these new scalable data tools are relatively heavy-weight, involving brand new data structures or interfaces to other computing environments, but <a href="http://dask.pydata.org/">Dask</a> stands out for its simplicity.
@@ -1414,89 +1413,66 @@ We will use Dask to manipulate and explore the data, and also see the use of mat
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Data:-OpenStreetMap">The Data: OpenStreetMap<a class="anchor-link" href="#The-Data:-OpenStreetMap">&#182;</a></h2><p>The data we will be looking at here is the extracted database of marked locations in <a href="http://openstreetmap.org">Open Street Map</a>.
+<h2 id="The-Data:-OpenStreetMap">The Data: OpenStreetMap<a class="anchor-link" href="#The-Data:-OpenStreetMap">¶</a></h2><p>The data we will be looking at here is the extracted database of marked locations in <a href="http://openstreetmap.org">Open Street Map</a>.
 OpenStreetMap is a free and open, crowd-sourced online mapping tool, meaning that everything on it has been added by an individual user.
 This has resulted in a compiled collection of nearly ten million distinct points of interest, comprising everything from post boxes to restaurants to historical sites to park benches.</p>
 <p>An extracted table of data on these points of interest can be found on the <a href="http://osm-x-tractor.org/Data.aspx">OSM-x-tractor</a> site, a free project which compiles these points of interest and makes them available in a variety of common formats.
 For this post, I downloaded the CSV file for World Points of Interest, and extracted the compressed file into <code>"POIWorld.csv"</code>, a standard comma-separated value file.</p>
 <p>This file has just over nine million lines, each of which corresponds to a specific point of interest:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nrows</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;POIWorld.csv&#39;</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">nrows</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'POIWorld.csv'</span><span class="p">))</span>
 <span class="n">nrows</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[1]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>9140114</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using command-line tools, we can also see that the size of the file is about 760MB.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls -lh POIWorld.csv
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls -lh POIWorld.csv
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>-rw-r--r--  1 jakevdp  staff   761M Jul 14 14:10 POIWorld.csv
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1505,7 +1481,6 @@ For this post, I downloaded the CSV file for World Points of Interest, and extra
 <p>While this could fit into memory on most modern machines, here we'll take a more scalable approach, utilizing Dask to do our data ingestion and manipulation out-of-core.
 The benefit is that the approach used here will straightforwardly scale to even larger datasets analyzed across multiple machines.</p>
 <p>Before we begin to look at this data, let's take a look at Dask and how it can help us with this problem.</p>
-
 </div>
 </div>
 </div>
@@ -1513,7 +1488,7 @@ The benefit is that the approach used here will straightforwardly scale to even 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Dask-Basics">Dask Basics<a class="anchor-link" href="#Dask-Basics">&#182;</a></h2><p><a href="http://dask.pydata.org/">Dask</a>, fundamentally, is a lightweight generator of task graphs for Python.
+<h2 id="Dask-Basics">Dask Basics<a class="anchor-link" href="#Dask-Basics">¶</a></h2><p><a href="http://dask.pydata.org/">Dask</a>, fundamentally, is a lightweight generator of task graphs for Python.
 A task graph is a way of describing a sequence of operations so that they can be executed at a later point.
 By building these task graphs, Dask describes the exact sequence of inputs, operations, and outputs that your algorithm requires, and can send this description to a variety of backends for efficient parallel and/or out-of-core computation.</p>
 <p>Though the low-level details are interesting, it is the higher-level interfaces that most people will use.
@@ -1525,7 +1500,6 @@ These interfaces are:</p>
 </ul>
 <p>Each of these provides a familiar Python interface for operating on data, with the difference that individual operations build graphs rather than computing results; the results must be explicitly extracted with a call to the <code>compute()</code> method.
 As an example of Dask in action, let's take a look at an example of using <code>dask.array</code>.</p>
-
 </div>
 </div>
 </div>
@@ -1533,17 +1507,16 @@ As an example of Dask in action, let's take a look at an example of using <code>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Dask-Arrays">Dask Arrays<a class="anchor-link" href="#Dask-Arrays">&#182;</a></h3><p>First, let's do a sequence of simple array operations using standard NumPy tools:</p>
-
+<h3 id="Dask-Arrays">Dask Arrays<a class="anchor-link" href="#Dask-Arrays">¶</a></h3><p>First, let's do a sequence of simple array operations using standard NumPy tools:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># create an array of normally-distributed random numbers</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
@@ -1555,45 +1528,35 @@ As an example of Dask in action, let's take a look at an example of using <code>
 <span class="n">b_min</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">b_min</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>-11.4051061336
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dask allows us to use very similar code to build a task graph describing these operations:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
 
 <span class="c1"># create a dask array from the above array</span>
 <span class="n">a2</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
@@ -1605,29 +1568,20 @@ As an example of Dask in action, let's take a look at an example of using <code>
 <span class="n">b2_min</span> <span class="o">=</span> <span class="n">b2</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">b2_min</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>dask.array&lt;x_3, shape=(), chunks=(), dtype=float64&gt;
+<pre>dask.array<x_3, shape=(), chunks=(), dtype=float64>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1635,34 +1589,24 @@ As an example of Dask in action, let's take a look at an example of using <code>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this case, the result of the computation is not a <em>value</em>, but is instead a Dask array object which contains the sequence of steps needed to compute that value.</p>
 <p>If you have the graphviz package installed (<code>pip install graphviz</code>), you can visualize this sequence of steps on this chunked data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">dask.dot</span> <span class="k">import</span> <span class="n">dot_graph</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">dask.dot</span> <span class="k">import</span> <span class="n">dot_graph</span>
 <span class="n">dot_graph</span><span class="p">(</span><span class="n">b2_min</span><span class="o">.</span><span class="n">dask</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
 <div class="output_png output_subarea output_execute_result">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3cAAAPeCAYAAACvIOMwAAAABmJLR0QA/wD/AP+gvaeTAAAgAElE
 QVR4nOzdeVxN+eM/8NdtU/bKMmSQSJZQlhEZRMYeUUZDxlKYj+niw2CMmaaxlA9DZMs6yVIYksa0
@@ -3140,15 +3084,11 @@ REQ6gM0dERERERGRDmBzR0REREREpAPY3BEREREREekANndEREREREQ6gM0dERERERGRDmBzR0RE
 REREpAPY3BEREREREekANndEREREREQ6gM0dERERERGRDjCSOgARETU9IyMjREdHQyaTSR2FGkGz
 Zs2kjkBERBKQCSGE1CGIiKhpXbt2Dfv375c6BjUCExMTuLm5wdjYWOooRETUtJRs7oiIiIiIiLSf
 kmvuiIiIiIiIdACbOyIiIiIiIh3A5o6IiIiIiEgH/D+gq974bf10WgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3158,42 +3098,29 @@ kmvuiIiIiIiIdACbOyIiIiIiIh3A5o6IiIiIiEgH/D+gq974bf10WgAAAABJRU5ErkJggg==
 Each of these chunks is multiplied by 4, and the minimum value is found.
 Finally, the global minimum is found among these chunk-wise minima, and the result is returned.</p>
 <p>We can tell Dask to compute the result encoded in this graph using the <code>compute()</code> method of the dask object:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">b2_min</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b2_min</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>-11.405106133564583</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3202,7 +3129,6 @@ Finally, the global minimum is found among these chunk-wise minima, and the resu
 <p>As expected, we get the same result as the normal, non-lazy method.</p>
 <p>I'm not going to go into any more technical details of Dask here, but you should be aware that it contains many more options for flexible creation and evaluation of such task graphs.
 For more information, I'd suggest reading through the <a href="http://dask.pydata.org/">dask documentation</a> or watching the excellent <a href="https://www.youtube.com/watch?v=ieW3G7ZzRZ0">Dask tutorial</a> given by Matthew Rocklin at the recent <a href="http://seattle.pydata.org/">PyData Seattle</a> conference.</p>
-
 </div>
 </div>
 </div>
@@ -3210,49 +3136,36 @@ For more information, I'd suggest reading through the <a href="http://dask.pydat
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Dask-DataFrames-and-OpenStreetMap">Dask DataFrames and OpenStreetMap<a class="anchor-link" href="#Dask-DataFrames-and-OpenStreetMap">&#182;</a></h2><p>With this framework of <em>task graphs</em> plus <em>lazy evaluation</em>, let's take a look at using Dask in a more interesting context: exploring the OpenStreetMap data.</p>
+<h2 id="Dask-DataFrames-and-OpenStreetMap">Dask DataFrames and OpenStreetMap<a class="anchor-link" href="#Dask-DataFrames-and-OpenStreetMap">¶</a></h2><p>With this framework of <em>task graphs</em> plus <em>lazy evaluation</em>, let's take a look at using Dask in a more interesting context: exploring the OpenStreetMap data.</p>
 <p>We can start by taking a look at the first few rows of the data using Pandas, just to see what we're working with:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;POIWorld.csv&#39;</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'POIWorld.csv'</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>Index([&#39;﻿&#34;osmid&#34;&#39;, &#39;name&#39;, &#39;amenity&#39;, &#39;emergency&#39;, &#39;historic&#39;, &#39;leisure&#39;,
-       &#39;man_made&#39;, &#39;office&#39;, &#39;shop&#39;, &#39;sport&#39;, &#39;tourism&#39;, &#39;craft&#39;, &#39;Longitude&#39;,
-       &#39;Latitude&#39;],
-      dtype=&#39;object&#39;)</pre>
-</div>
-
-</div>
-
+<pre>Index(['﻿"osmid"', 'name', 'amenity', 'emergency', 'historic', 'leisure',
+       'man_made', 'office', 'shop', 'sport', 'tourism', 'craft', 'Longitude',
+       'Latitude'],
+      dtype='object')</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3261,45 +3174,32 @@ For more information, I'd suggest reading through the <a href="http://dask.pydat
 <p>Each point of interest has latitude and longitude, along with a variety of other data labels.
 We'll extract these locations, and focus on the "name" and "amenity" columns associated with them.
 This can be done with Dask's version of Pandas' <code>read_csv</code> command:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">dask</span> <span class="k">import</span> <span class="n">dataframe</span> <span class="k">as</span> <span class="n">dd</span>
-<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;amenity&quot;</span><span class="p">,</span> <span class="s2">&quot;Longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;Latitude&quot;</span><span class="p">]</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;POIWorld.csv&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">dask</span> <span class="k">import</span> <span class="n">dataframe</span> <span class="k">as</span> <span class="n">dd</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"amenity"</span><span class="p">,</span> <span class="s2">"Longitude"</span><span class="p">,</span> <span class="s2">"Latitude"</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'POIWorld.csv'</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 <span class="n">data</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>dd.DataFrame&lt;read-csv-POIWorld.csv-ea29fef3df6f73002fe27223a3749930, divisions=(None, None, None, ..., None, None)&gt;</pre>
-</div>
-
-</div>
-
+<pre>dd.DataFrame<read-csv-POIWorld.csv-ea29fef3df6f73002fe27223a3749930, divisions=(None, None, None, ..., None, None)></pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3307,30 +3207,26 @@ This can be done with Dask's version of Pandas' <code>read_csv</code> command:</
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Notice here that the <code>read_csv</code> command did not actually open the file and access the data, but simply created a task graph describing the operations needed to access the data.</p>
 <p>Next let's use a Pandas-style filtering to select two subsets of this data: those rows with "amenity" specified, and those rows with "name" specified:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">with_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">with_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
 <span class="n">with_amenity</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Once again, we have not yet done any actual computation, but simply specified how to find the part of the data we're interested in.</p>
-
 </div>
 </div>
 </div>
@@ -3338,30 +3234,27 @@ This can be done with Dask's version of Pandas' <code>read_csv</code> command:</
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Diving-Into-the-Data:-Geography-of-Coffee">Diving Into the Data: Geography of Coffee<a class="anchor-link" href="#Diving-Into-the-Data:-Geography-of-Coffee">&#182;</a></h2><p>One thing we can do with this data is pull-out certain points of interest and compare their distribution on a map.
+<h2 id="Diving-Into-the-Data:-Geography-of-Coffee">Diving Into the Data: Geography of Coffee<a class="anchor-link" href="#Diving-Into-the-Data:-Geography-of-Coffee">¶</a></h2><p>One thing we can do with this data is pull-out certain points of interest and compare their distribution on a map.
 Here we'll try to reproduce a recent <a href="https://www.reddit.com/r/MapPorn/comments/2s2a3f/coffee_shop_geography_starbucks_vs_dunkin_donuts/">Reddit Post</a> which maps the distribution of Dunkin Donuts and Starbucks locations in the US.</p>
 <p>First, we must further filter the data by the name column.
 Dask lets us use Pandas-style masking and vectorized string operations, so we can do this as follows:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">is_starbucks</span> <span class="o">=</span> <span class="n">with_name</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;[Ss]tarbucks&#39;</span><span class="p">)</span>
-<span class="n">is_dunkin</span> <span class="o">=</span> <span class="n">with_name</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;[Dd]unkin&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">is_starbucks</span> <span class="o">=</span> <span class="n">with_name</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'[Ss]tarbucks'</span><span class="p">)</span>
+<span class="n">is_dunkin</span> <span class="o">=</span> <span class="n">with_name</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'[Dd]unkin'</span><span class="p">)</span>
 
 <span class="n">starbucks</span> <span class="o">=</span> <span class="n">with_name</span><span class="p">[</span><span class="n">is_starbucks</span><span class="p">]</span>
 <span class="n">dunkin</span> <span class="o">=</span> <span class="n">with_name</span><span class="p">[</span><span class="n">is_dunkin</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3369,42 +3262,29 @@ Dask lets us use Pandas-style masking and vectorized string operations, so we ca
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To see how many results we have, we can use a <code>count()</code> call and pass it to <code>dd.compute()</code> to see the results.
 This is the point when we are finally actually loading the data and computing quantities from the values:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">starbucks</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">dunkin</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">starbucks</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">dunkin</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(5301, 1276)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3416,16 +3296,15 @@ From my own anecdotal experience with the dataset, I've found that the data tend
 <p>Despite this incompleteness, let's push-on with the data we have and see what we can discover.
 We can start by computing and extracting the latitude and longitude from the graphs we have generated.
 We will do this in a single <code>dd.compute()</code> call, so that the data will be ingested only once:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">locs</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">starbucks</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">locs</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">starbucks</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span>
                   <span class="n">starbucks</span><span class="o">.</span><span class="n">Latitude</span><span class="p">,</span>
                   <span class="n">dunkin</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span>
                   <span class="n">dunkin</span><span class="o">.</span><span class="n">Latitude</span><span class="p">)</span>
@@ -3433,84 +3312,70 @@ We will do this in a single <code>dd.compute()</code> call, so that the data wil
 <span class="c1"># extract arrays of values fro the series:</span>
 <span class="n">lon_s</span><span class="p">,</span> <span class="n">lat_s</span><span class="p">,</span> <span class="n">lon_d</span><span class="p">,</span> <span class="n">lat_d</span> <span class="o">=</span> <span class="p">[</span><span class="n">loc</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">locs</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have this data, we can use matplotlib's <a href="http://matplotlib.org/basemap/">basemap</a> toolkit to visualize the results on a map:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="k">import</span> <span class="n">Basemap</span>
 
 <span class="k">def</span> <span class="nf">draw_USA</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;initialize a basemap centered on the continental USA&quot;&quot;&quot;</span>
+    <span class="sd">"""initialize a basemap centered on the continental USA"""</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;lcc&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;l&#39;</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">'lcc'</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">'l'</span><span class="p">,</span>
                    <span class="n">llcrnrlon</span><span class="o">=-</span><span class="mi">119</span><span class="p">,</span> <span class="n">urcrnrlon</span><span class="o">=-</span><span class="mi">64</span><span class="p">,</span>
                    <span class="n">llcrnrlat</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span>
                    <span class="n">lat_1</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">lat_2</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=-</span><span class="mi">95</span><span class="p">,</span>
                    <span class="n">area_thresh</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">draw_USA</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">draw_USA</span><span class="p">()</span>
     
 <span class="c1"># Draw map background</span>
-<span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="s1">&#39;#eeeeee&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawstates</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawcountries</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;#eeeeee&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawstates</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawcountries</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">)</span>
 
 <span class="c1"># Plot the values in Starbucks Green and Dunkin Donuts Orange</span>
-<span class="n">style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon_s</span><span class="p">,</span> <span class="n">lat_s</span><span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-          <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Starbucks&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#00592D&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+          <span class="n">label</span><span class="o">=</span><span class="s2">"Starbucks"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#00592D'</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon_d</span><span class="p">,</span> <span class="n">lat_d</span><span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-          <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dunkin&#39; Donuts&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#FC772A&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+          <span class="n">label</span><span class="o">=</span><span class="s2">"Dunkin' Donuts"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#FC772A'</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'lower left'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxsAAAIECAYAAABxKTMzAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmUZGd55vncNW7EvbFnRu5LZVaVUGlDiyUEQnSxWYDA
 tG3adgtjH/swbXvcw9gDuN3t8fGZXqbHdA8HxmP3zLEZsWhsN8YjsxgBEqIlIaFCQkhIJUql3LeI
@@ -5556,15 +5421,11 @@ qVSKbDaL1Woll8vh8XiQZVkvjdtsFblmWmVT81SrdGWzWXK5nN6fQ1EUDAYDhUJhwmZ2mUwGg8HQ
 sKA2kUjgdrtn7LVNp9Mkk0nS6fSEZagFQRAEoR6m1UF8xq5KEARBEARBEIQLwpSCDUEQBEEQBEEQ
 hKlq3pwUQRAEQRAEQRDOayLYEARBEARBEARhRohgQxAEQRAEQRCEGSGCDUEQBEEQBEEQZoQINgRB
 EARBEARBmBH/H+ecCYTWjTBMAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5572,7 +5433,6 @@ EARBEARBmBH/H+ecCYTWjTBMAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, these data are far from complete, but we can nevertheless see the general trend that many have noted before: Starbucks favors the west coast, while Dunkin Donuts favors the east coast.
 For anybody who has spent much time in, say, Seattle and Boston, this overall trend should not be all that surprising!</p>
-
 </div>
 </div>
 </div>
@@ -5580,44 +5440,31 @@ For anybody who has spent much time in, say, Seattle and Boston, this overall tr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Fast-Food-Nation">Fast Food Nation<a class="anchor-link" href="#Fast-Food-Nation">&#182;</a></h2><p>Let's look at a different set of this data, via the "amenity" column.
+<h2 id="Fast-Food-Nation">Fast Food Nation<a class="anchor-link" href="#Fast-Food-Nation">¶</a></h2><p>Let's look at a different set of this data, via the "amenity" column.
 We can call the <code>count()</code> method to check how many rows of the data have <code>amenity</code> specified:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(5075909,)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5626,33 +5473,23 @@ We can call the <code>count()</code> method to check how many rows of the data h
 <p>We see just over five million rows with an amenity label.
 With Pandas' <code>value_counts()</code> function, we can examine the most common of these labels in the dataset.
 Here the <code>head()</code> call triggers a computation:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>bench               492190
 restaurant          400620
@@ -5676,12 +5513,9 @@ toilets              93708
 telephone            90894
 dtype: int64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5690,56 +5524,43 @@ dtype: int64</pre>
 <p>Somewhat surprisingly, there are far more benches labeled than any other single labeled object.</p>
 <p>Down the list a bit, we see the <code>fast_food</code> category, which has around 150,000 global entries.
 Using a filter plus another value count, we can check which fast food restaurants are most common:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">is_fastfood</span> <span class="o">=</span> <span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;fast_food&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">is_fastfood</span> <span class="o">=</span> <span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'fast_food'</span><span class="p">)</span>
 <span class="n">fastfood</span> <span class="o">=</span> <span class="n">with_amenity</span><span class="p">[</span><span class="n">is_fastfood</span><span class="p">]</span>
 <span class="n">fastfood</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>McDonald&#39;s        8608
+<pre>McDonald's        8608
 Subway            6784
 Burger King       3180
 KFC               2812
-Wendy&#39;s           1301
+Wendy's           1301
 Taco Bell         1272
 Pizza Hut          965
 マクドナルド             918
 Dairy Queen        744
-Domino&#39;s Pizza     680
+Domino's Pizza     680
 McDonalds          634
-Arby&#39;s             606
+Arby's             606
 dtype: int64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5748,54 +5569,42 @@ dtype: int64</pre>
 <p>As an aside, one interesting thing we see is that there are three versions of McDonald's in this list: there are "McDonald's", and "McDonalds", of course, but also マクドナルド (roughly pronounced "Makudonarudo"), which is the Japanese adaptation of the well-known restaurant name.
 If you were attempting to use this dataset to count locations by chain, it would be important to take these multiple similar labels into account!</p>
 <p>Let's next take a look at the full collection of fast food restaurant locations, extract their latitude and longitude coordinates, and plot their locations on a map of the USA:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">fastfood</span><span class="o">.</span><span class="n">Latitude</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">fastfood</span><span class="o">.</span><span class="n">Latitude</span><span class="p">,</span>
                       <span class="n">fastfood</span><span class="o">.</span><span class="n">Longitude</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">draw_USA</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">draw_USA</span><span class="p">()</span>
     
-<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fcfcfc&quot;</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">'#ffffff'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"#fcfcfc"</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="s1">'#ffffff'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">m</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-          <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+          <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxsAAAIECAYAAABxKTMzAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvX14E+ed7/0dGRJDsI2QbFl2vLjFqRLMGoMJdSAlJSVx
 yfZAeLYUQts0x5uzh2QTd/vsppCyfXJ4WjY4vbrZEJp6d7M+udLdLC7ZQ2HbZE1NIDQkLsFFEEyi
@@ -6917,15 +6726,11 @@ DxloEBGRlhhskGqUGFAtDiI3Ig6yJaOTHp8MiImISA8MNkhVSs3gZNRKPQMOMhMeq0REpDUGG6Q6
 JSrkRm6VFQMqVuQokpHmROfxSUREemCwQZpItzJu5GADCJ9ilGtxkFFwPBEREekt0WxURERERERE
 KWETLBERERERqYLBBhERERERqYLBBhERERERqYLBBhERERERqYLBBhERERERqYLBBhERERERqeL/
 B+ngfqNdqsqeAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6934,7 +6739,6 @@ B+ngfqNdqsqeAAAAAElFTkSuQmCC
 <p>Here I've purposely left-out the geographical borders; we see that with fast food locations alone, we can see the major cities, and even trace-out some of the major interstate routes!
 I suspect that, like above, this data is far from complete, especially in more rural areas.
 I would love to see how a <em>full</em> fast-food-nation map would look, but after poking around it seems that most available data on that is proprietary (though FlowingData has an <a href="http://flowingdata.com/2014/06/24/burger-place-geography/">interesting visualization</a> in the same spirit).</p>
-
 </div>
 </div>
 </div>
@@ -6942,47 +6746,34 @@ I would love to see how a <em>full</em> fast-food-nation map would look, but aft
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Pubs-of-the-British-Isles">Pubs of the British Isles<a class="anchor-link" href="#Pubs-of-the-British-Isles">&#182;</a></h2><p>Let's take a look at one last example, reproducing a <a href="http://ramiro.org/notebook/mapping-pubs/?imm_mid=0d697c&amp;cmp=em-data-na-na-newsltr_20150812">post</a> by Ramiro Gomez, a developer in Berlin whose website is definitely worth clicking around for a bit.
+<h2 id="Pubs-of-the-British-Isles">Pubs of the British Isles<a class="anchor-link" href="#Pubs-of-the-British-Isles">¶</a></h2><p>Let's take a look at one last example, reproducing a <a href="http://ramiro.org/notebook/mapping-pubs/?imm_mid=0d697c&cmp=em-data-na-na-newsltr_20150812">post</a> by Ramiro Gomez, a developer in Berlin whose website is definitely worth clicking around for a bit.
 Here we will extract all the pub locations from the dataset, and use them to visualize a small island nation with an astounding density of these establishments.</p>
 <p>We'll start by filtering the amenities for the word "pub" (being careful to use regular expressions which mark word boundaries, so that we don't match things like "public toilet"):</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">is_pub</span> <span class="o">=</span> <span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\bpub\b&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">is_pub</span> <span class="o">=</span> <span class="n">with_amenity</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\bpub\b'</span><span class="p">)</span>
 <span class="n">pubs</span> <span class="o">=</span> <span class="n">with_amenity</span><span class="p">[</span><span class="n">is_pub</span><span class="p">]</span>
 <span class="n">pubs</span><span class="o">.</span><span class="n">amenity</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[20]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>94478</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6990,63 +6781,50 @@ Here we will extract all the pub locations from the dataset, and use them to vis
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We have about 95,000 world-wide points of interest with "pub" in the label.</p>
 <p>Next, as above, we can extract the longitude and latitude arrays from our data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">pubs</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span> <span class="n">pubs</span><span class="o">.</span><span class="n">Latitude</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">pubs</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span> <span class="n">pubs</span><span class="o">.</span><span class="n">Latitude</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, with a few lines of Basemap code, we can visualize the results:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;mill&#39;</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">'mill'</span><span class="p">,</span>
             <span class="n">lon_0</span><span class="o">=-</span><span class="mf">5.23636</span><span class="p">,</span> <span class="n">lat_0</span><span class="o">=</span><span class="mf">53.866772</span><span class="p">,</span>
             <span class="n">llcrnrlon</span><span class="o">=-</span><span class="mf">10.65073</span><span class="p">,</span> <span class="n">llcrnrlat</span><span class="o">=</span><span class="mf">49.16209</span><span class="p">,</span>
             <span class="n">urcrnrlon</span><span class="o">=</span><span class="mf">1.76334</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="mf">60.860699</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=.</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">'#ffffff'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=.</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;steelblue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">);</span>
+<span class="n">m</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">','</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"steelblue"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjwAAALrCAYAAAD6NF0NAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvbtuVM3Whlv9m0OCREIAERHcwc7IsYTEVZA6J/iIICAn
 9VUgWTK5430BJnJkAieWnGDs7R14ve3Ro6tq1jwf+nmkpcXn7p6z5qnqneO4uru7CwAAAABL5v/G
@@ -7757,22 +7535,17 @@ DETO338PDR/PL68nFh/+29SxS3C4WPAYY8yWw+6s+/uIs4uruLm9i5vbu/j952rNs9s8zi6u4v3X
 4TXP3HYseIwxxhThqIdlWS7GbAVhS9hYz3FTseAxxpgt58fHd/Hz0368fb0Xb1/vxa8vzU7Xb16+
 cPNOs/G0BS0bY4wxxmw8tvAYY4wxZvRY8BhjjDFm9FjwGGOMMWb0WPAYY4wxZvRY8BhjjDFm9Fjw
 GGOMMWb0/B9R7esteHYA+wAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The pub locations alone are enough to make out most of the borders and contours of the islands!</p>
-
 </div>
 </div>
 </div>
@@ -7781,7 +7554,6 @@ GGOMMWb0/B9R7esteHYA+wAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-
 </div>
 </div>
 </div>
@@ -7791,7 +7563,6 @@ GGOMMWb0/B9R7esteHYA+wAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The above visualizations are fun, but have merely scraped the surface of what can be done with this data – what interesting geographical visualizations can you come up with using these data and tools?</p>
 <p>Thanks for reading!</p>
-
 </div>
 </div>
 </div>
@@ -7800,12 +7571,9 @@ GGOMMWb0/B9R7esteHYA+wAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was written entirely in the IPython notebook.  You can <a href="http://jakevdp.github.io/downloads/notebooks/OutOfCoreMapping.ipynb">download</a> this notebook, or see a static view on <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/OutOfCoreMapping.ipynb">nbviewer</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -7835,6 +7603,18 @@ GGOMMWb0/B9R7esteHYA+wAAAABJRU5ErkJggg==
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Out-of-Core Dataframes in Python: Dask and OpenStreetMap"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/out-of-core-dataframes-in-python.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

@@ -1397,9 +1397,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><em>This post is part of a 5-part series: <a href="http://jakevdp.github.io/blog/2014/03/11/frequentism-and-bayesianism-a-practical-intro/">Part I</a>  <a href="http://jakevdp.github.io/blog/2014/06/06/frequentism-and-bayesianism-2-when-results-differ/">Part II</a>  <a href="http://jakevdp.github.io/blog/2014/06/12/frequentism-and-bayesianism-3-confidence-credibility/">Part III</a>  <a href="http://jakevdp.github.io/blog/2014/06/14/frequentism-and-bayesianism-4-bayesian-in-python/">Part IV</a> <a href="http://jakevdp.github.io/blog/2015/08/07/frequentism-and-bayesianism-5-model-selection/">Part V</a></em></p>
+<p><em>This post is part of a 5-part series: <a href="http://jakevdp.github.io/blog/2014/03/11/frequentism-and-bayesianism-a-practical-intro/">Part I</a> <a href="http://jakevdp.github.io/blog/2014/06/06/frequentism-and-bayesianism-2-when-results-differ/">Part II</a> <a href="http://jakevdp.github.io/blog/2014/06/12/frequentism-and-bayesianism-3-confidence-credibility/">Part III</a> <a href="http://jakevdp.github.io/blog/2014/06/14/frequentism-and-bayesianism-4-bayesian-in-python/">Part IV</a> <a href="http://jakevdp.github.io/blog/2015/08/07/frequentism-and-bayesianism-5-model-selection/">Part V</a></em></p>
 <p><em>See also <a href="http://arxiv.org/abs/1411.5018">Frequentism and Bayesianism: A Python-driven Primer</a>, a peer-reviewed article partially based on this content.</em></p>
-
 </div>
 </div>
 </div>
@@ -1408,7 +1407,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>In Douglas Adams' classic <em>Hitchhiker's Guide to the Galaxy</em>, hyper-intelligent pan-dimensional beings build a computer named <em>Deep Thought</em> in order to calculate "the Answer to the Ultimate Question of Life, the Universe, and Everything". After seven and a half million years spinning its hyper-dimensional gears, before an excited crowd, Deep Thought finally outputs the answer:</p>
 <p><strong>42</strong></p>
 <p>The disappointed technicians, who trained a lifetime for this moment, are stupefied. They probe Deep Though for more information, and after some back-and-forth, the computer responds: "once you do know what the question actually is, you'll know what the answer means."</p>
@@ -1423,7 +1421,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Confidence-vs.-Credibility">Confidence vs. Credibility<a class="anchor-link" href="#Confidence-vs.-Credibility">&#182;</a></h2>
+<h2 id="Confidence-vs.-Credibility">Confidence vs. Credibility<a class="anchor-link" href="#Confidence-vs.-Credibility">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1433,7 +1431,6 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In <a href="http://jakevdp.github.io/blog/2014/03/11/frequentism-and-bayesianism-a-practical-intro/">part I</a> of this series, we discussed the basic philosophical difference between frequentism and Bayesianism: frequentists consider probability a measure of <strong>the frequency of (perhaps hypothetical) repeated events</strong>; Bayesians consider probability as a measure of <strong>the degree of certainty about values</strong>. As a result of this, speaking broadly, frequentists consider <strong>model parameters to be fixed and data to be random</strong>, while Bayesians consider <strong>model parameters to be random and data to be fixed</strong>.</p>
 <p>These philosophies fundamenally affect the way that each approach seeks bounds on the value of a model parameter. Because the differences here are subtle, I'll go right into a simple example to illustrate the difference between a frequentist confidence interval and a Bayesian credible region.</p>
-
 </div>
 </div>
 </div>
@@ -1441,7 +1438,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-1:-The-Mean-of-a-Gaussian">Example 1: The Mean of a Gaussian<a class="anchor-link" href="#Example-1:-The-Mean-of-a-Gaussian">&#182;</a></h2>
+<h2 id="Example-1:-The-Mean-of-a-Gaussian">Example 1: The Mean of a Gaussian<a class="anchor-link" href="#Example-1:-The-Mean-of-a-Gaussian">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1452,7 +1449,6 @@ h6:hover .anchor-link {
 <p>Let's start by again examining an extremely simple problem; this is the same problem we saw in <a href="http://jakevdp.github.io/blog/2014/03/11/frequentism-and-bayesianism-a-practical-intro/">part I</a> of this series: finding the mean of a Gaussian distribution. Previously we simply looked at the (frequentist) maximum likelihood and (Bayesian) maximum a posteriori estimates; here we'll extend this and look at confidence intervals and credibile regions.</p>
 <p>Here is the problem: imagine you're observing a star that you assume has a constant brightness. Simplistically, we can think of this brightness as the number of photons reaching our telescope in one second.  Any given measurement of this number will be subject to measurement errors: the source of those errors is not important right now, but let's assume the observations $x_i$ are drawn from a normal distribution about the true brightness value with a known standard deviation $\sigma_x$.</p>
 <p>Given a series of measurements, what are the 95% (i.e. $2\sigma$) limits that we would place on the brightness of the star?</p>
-
 </div>
 </div>
 </div>
@@ -1460,7 +1456,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1.-The-Frequentist-Approach">1. The Frequentist Approach<a class="anchor-link" href="#1.-The-Frequentist-Approach">&#182;</a></h3>
+<h3 id="1.-The-Frequentist-Approach">1. The Frequentist Approach<a class="anchor-link" href="#1.-The-Frequentist-Approach">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1483,16 +1479,15 @@ $$</p>
 $$</p>
 <p>The central limit theorem tells us that this is a reasonable approximation for any generating distribution if $N$ is large; if our generating distribution happens to be Gaussian, it also holds for $N$ as small as 2.</p>
 <p>Let's quickly check this empirically, by looking at $10^6$ samples of the mean of 5 numbers:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">Nsamp</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">6</span>
@@ -1503,31 +1498,22 @@ $$</p>
 <span class="n">mu_samp</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sig_samp</span> <span class="o">=</span> <span class="n">sigma_x</span> <span class="o">*</span> <span class="n">N</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0:.3f}</span><span class="s2"> should equal </span><span class="si">{1:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">mu_samp</span><span class="p">),</span> <span class="n">sig_samp</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">{0:.3f}</span><span class="s2"> should equal </span><span class="si">{1:.3f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">mu_samp</span><span class="p">),</span> <span class="n">sig_samp</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>0.894 should equal 0.894
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1538,7 +1524,6 @@ $$</p>
 <p>$$
 CI_{\mu} =  \left(\bar{x} - 2\sigma_\mu,~\bar{x} + 2\sigma_\mu\right)
 $$</p>
-
 </div>
 </div>
 </div>
@@ -1548,102 +1533,81 @@ $$</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's try this with a quick example: say we have three observations with an error (i.e. $\sigma_x$) of 10. What is our 95% confidence interval on the mean?</p>
 <p>We'll generate our observations assuming a true value of 100:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">true_B</span> <span class="o">=</span> <span class="mi">100</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">true_B</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">sigma_x</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">true_B</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[ 116.24345364   93.88243586   94.71828248]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next let's create a function which will compute the confidence interval:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">erfinv</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">erfinv</span>
 
 <span class="k">def</span> <span class="nf">freq_CI_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the confidence interval on the mean&quot;&quot;&quot;</span>
-    <span class="c1"># we&#39;ll compute Nsigma from the desired percentage</span>
+    <span class="sd">"""Compute the confidence interval on the mean"""</span>
+    <span class="c1"># we'll compute Nsigma from the desired percentage</span>
     <span class="n">Nsigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">erfinv</span><span class="p">(</span><span class="n">frac</span><span class="p">)</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">sigma_mu</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">D</span><span class="o">.</span><span class="n">size</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span>
     <span class="k">return</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">Nsigma</span> <span class="o">*</span> <span class="n">sigma_mu</span><span class="p">,</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">Nsigma</span> <span class="o">*</span> <span class="n">sigma_mu</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;95% Confidence Interval: [</span><span class="si">{0:.0f}</span><span class="s2">, </span><span class="si">{1:.0f}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">freq_CI_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"95% Confidence Interval: [</span><span class="si">{0:.0f}</span><span class="s2">, </span><span class="si">{1:.0f}</span><span class="s2">]"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">freq_CI_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>95% Confidence Interval: [90, 113]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note here that we've assumed $\sigma_x$ is a known quantity; this could also be estimated from the data along with $\mu$, but here we kept things simple for sake of example.</p>
-
 </div>
 </div>
 </div>
@@ -1651,7 +1615,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-The-Bayesian-Approach">2. The Bayesian Approach<a class="anchor-link" href="#2.-The-Bayesian-Approach">&#182;</a></h3>
+<h3 id="2.-The-Bayesian-Approach">2. The Bayesian Approach<a class="anchor-link" href="#2.-The-Bayesian-Approach">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1673,7 +1637,6 @@ P(\mu~|~D) \propto \exp\left[\frac{-(\mu - \bar{x})^2}{2\sigma_\mu^2}\right]
 $$</p>
 <p>which is recognizable as a normal distribution with mean $\bar{x}$ and standard deviation $\sigma_\mu$.
 That is, <strong>the Bayesian posterior on $\mu$ in this case is exactly equal to the frequentist sampling distribution for $\mu$</strong>.</p>
-
 </div>
 </div>
 </div>
@@ -1686,53 +1649,43 @@ That is, <strong>the Bayesian posterior on $\mu$ in this case is exactly equal t
 CR_{\mu} =  \left(\bar{x} - 2\sigma_\mu,~\bar{x} + 2\sigma_\mu\right)
 $$</p>
 <p>For completeness, we'll also create a function to compute the Bayesian credible region:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">bayes_CR_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the credible region on the mean&quot;&quot;&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">bayes_CR_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+    <span class="sd">"""Compute the credible region on the mean"""</span>
     <span class="n">Nsigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">erfinv</span><span class="p">(</span><span class="n">frac</span><span class="p">)</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">sigma_mu</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">D</span><span class="o">.</span><span class="n">size</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span>
     <span class="k">return</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">Nsigma</span> <span class="o">*</span> <span class="n">sigma_mu</span><span class="p">,</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">Nsigma</span> <span class="o">*</span> <span class="n">sigma_mu</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;95% Credible Region: [</span><span class="si">{0:.0f}</span><span class="s2">, </span><span class="si">{1:.0f}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">bayes_CR_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"95% Credible Region: [</span><span class="si">{0:.0f}</span><span class="s2">, </span><span class="si">{1:.0f}</span><span class="s2">]"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">bayes_CR_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>95% Credible Region: [90, 113]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="So-What's-the-Difference?">So What's the Difference?<a class="anchor-link" href="#So-What's-the-Difference?">&#182;</a></h3>
+<h3 id="So-What's-the-Difference?">So What's the Difference?<a class="anchor-link" href="#So-What's-the-Difference?">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1749,7 +1702,6 @@ $$</p>
 </blockquote>
 <p>Note the difference: the Bayesian solution is a statement of probability about the parameter value given fixed bounds. The frequentist solution is a probability about the bounds given a fixed parameter value. This follows directly from the philosophical definitions of probability that the two approaches are based on.</p>
 <p>The difference is subtle, but, as I'll discuss below, it has drastic consequences. First, let's further clarify these notions by running some simulations to confirm the interpretation.</p>
-
 </div>
 </div>
 </div>
@@ -1757,7 +1709,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Confirming-the-Bayesian-Credible-Region">Confirming the Bayesian Credible Region<a class="anchor-link" href="#Confirming-the-Bayesian-Credible-Region">&#182;</a></h4>
+<h4 id="Confirming-the-Bayesian-Credible-Region">Confirming the Bayesian Credible Region<a class="anchor-link" href="#Confirming-the-Bayesian-Credible-Region">¶</a></h4>
 </div>
 </div>
 </div>
@@ -1773,23 +1725,22 @@ $$</p>
 <li>ask what fraction of these $\mu$ values are within the credible region we've constructed.</li>
 </ol>
 <p>In code, that looks like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first define some quantities that we need </span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># first define some quantities that we need </span>
 <span class="n">Nsamples</span> <span class="o">=</span> <span class="mf">2E7</span>
 <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 <span class="n">sigma_x</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="c1"># if someone changes N, this could easily cause a memory error</span>
-<span class="k">if</span> <span class="n">N</span> <span class="o">*</span> <span class="n">Nsamples</span> <span class="o">&gt;</span> <span class="mf">1E8</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Are you sure you want this many samples?&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">N</span> <span class="o">*</span> <span class="n">Nsamples</span> <span class="o">></span> <span class="mf">1E8</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Are you sure you want this many samples?"</span><span class="p">)</span>
     
 <span class="c1"># eps tells us how close to D we need to be to consider</span>
 <span class="c1"># it a matching sample. The value encodes the tradeoff</span>
@@ -1803,70 +1754,52 @@ $$</p>
 <span class="c1"># Generate data for each of these mean values</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">Nsamples</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 
-<span class="c1"># find data which matches matches our &quot;observed&quot; data</span>
+<span class="c1"># find data which matches matches our "observed" data</span>
 <span class="n">x</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">D</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">D</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of suitable samples: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">D</span><span class="p">)</span> <span class="o"><</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"number of suitable samples: </span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>number of suitable samples: 528
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now we ask how many of these mu values fall in our credible region</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Now we ask how many of these mu values fall in our credible region</span>
 <span class="n">mu_good</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 <span class="n">CR</span> <span class="o">=</span> <span class="n">bayes_CR_mu</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">within_CR</span> <span class="o">=</span> <span class="p">(</span><span class="n">CR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mu_good</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">mu_good</span> <span class="o">&lt;</span> <span class="n">CR</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="nb">print</span> <span class="s2">&quot;Fraction of means in Credible Region: </span><span class="si">{0:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">within_CR</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">within_CR</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">within_CR</span> <span class="o">=</span> <span class="p">(</span><span class="n">CR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o"><</span> <span class="n">mu_good</span><span class="p">)</span> <span class="o">&</span> <span class="p">(</span><span class="n">mu_good</span> <span class="o"><</span> <span class="n">CR</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span> <span class="s2">"Fraction of means in Credible Region: </span><span class="si">{0:.3f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">within_CR</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">within_CR</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Fraction of means in Credible Region: 0.949
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1874,7 +1807,6 @@ $$</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that, as predicted, roughly 95% of $\mu$ values with data matching ours lie in the Credible Region.</p>
 <p>The important thing to note here is which of the variables is random, and which are fixed. In the Bayesian approach, we compute <strong>a single credible region from our observed data</strong>, and we consider it in terms of <strong>multiple random draws of $\mu$</strong>.</p>
-
 </div>
 </div>
 </div>
@@ -1882,7 +1814,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Confirming-the-frequentist-Confidence-Interval">Confirming the frequentist Confidence Interval<a class="anchor-link" href="#Confirming-the-frequentist-Confidence-Interval">&#182;</a></h4>
+<h4 id="Confirming-the-frequentist-Confidence-Interval">Confirming the frequentist Confidence Interval<a class="anchor-link" href="#Confirming-the-frequentist-Confidence-Interval">¶</a></h4>
 </div>
 </div>
 </div>
@@ -1897,16 +1829,15 @@ $$</p>
 <li>determine what fraction of these confidence intervals contain $\mu$.</li>
 </ol>
 <p>In code, it looks like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># define some quantities we need</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># define some quantities we need</span>
 <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 <span class="n">Nsamples</span> <span class="o">=</span> <span class="mf">1E4</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mi">100</span>
@@ -1920,32 +1851,23 @@ $$</p>
 <span class="n">CIs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">freq_CI_mu</span><span class="p">(</span><span class="n">Di</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">)</span> <span class="k">for</span> <span class="n">Di</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span>
 
 <span class="c1"># find which confidence intervals contain the mean</span>
-<span class="n">contains_mu</span> <span class="o">=</span> <span class="p">(</span><span class="n">CIs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mu</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">mu</span> <span class="o">&lt;</span> <span class="n">CIs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="nb">print</span> <span class="s2">&quot;Fraction of Confidence Intervals containing the mean: </span><span class="si">{0:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contains_mu</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">contains_mu</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">contains_mu</span> <span class="o">=</span> <span class="p">(</span><span class="n">CIs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o"><</span> <span class="n">mu</span><span class="p">)</span> <span class="o">&</span> <span class="p">(</span><span class="n">mu</span> <span class="o"><</span> <span class="n">CIs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span> <span class="s2">"Fraction of Confidence Intervals containing the mean: </span><span class="si">{0:.3f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contains_mu</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">contains_mu</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Fraction of Confidence Intervals containing the mean: 0.951
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1953,7 +1875,6 @@ $$</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that, as predicted, 95% of the confidence intervals contain the true value of $\mu$.</p>
 <p>Again, the important thing to note here is which of the variables is random. We use <strong>a single value of $\mu$</strong>, and consider it in relation to <strong>multiple confidence intervals constructed from multiple random data samples</strong>.</p>
-
 </div>
 </div>
 </div>
@@ -1961,7 +1882,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">&#182;</a></h3>
+<h3 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1981,7 +1902,6 @@ $$</p>
 <li>Bayesianism treats its parameter constraints (e.g. $CR_\mu$) as fixed, while frequentism treats its constraints (e.g. $CI_\mu$) as random variables.</li>
 </ul>
 <p>In the above example, as in many simple problems, the confidence interval and the credibility region overlap exactly, so the distinction is not especially important. But scientific analysis is rarely this simple; next we'll consider an example in which the choice of approach makes a big difference.</p>
-
 </div>
 </div>
 </div>
@@ -1989,7 +1909,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-2:-Jaynes'-Truncated-Exponential">Example 2: Jaynes' Truncated Exponential<a class="anchor-link" href="#Example-2:-Jaynes'-Truncated-Exponential">&#182;</a></h2>
+<h2 id="Example-2:-Jaynes'-Truncated-Exponential">Example 2: Jaynes' Truncated Exponential<a class="anchor-link" href="#Example-2:-Jaynes'-Truncated-Exponential">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2004,53 +1924,43 @@ $$</p>
 <p>$$
 p(x~|~\theta) = \left\{
 \begin{array}{lll}
-\exp(\theta - x) &amp;,&amp; x &gt; \theta\\
-0                &amp;,&amp; x &lt; \theta
+\exp(\theta - x) &,& x > \theta\\
+0                &,& x < \theta
 \end{array}
 \right\}
 $$</p>
 <p>where $p(x~|~\theta)$ gives the probability of failure at time $x$, given an inhibitor which lasts for a time $\theta$.
 Given some observed data $D = \{x_i\}$, we want to estimate $\theta$.</p>
 <p>Let's start by plotting this model for a particular value of $\theta$, so we can see what we're working with:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">></span> <span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p(x)&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'p(x)'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAEPCAYAAABCyrPIAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X1QFPfhP/D3HffIHcKBinB3ERUMGBA1GDXG5prGmPE3
 0sTaFJ2O+aoxDq2Tpk0yTtPJVDLTRJPJ9EFmOnaiMWks2kmTYhJyaXw4TTAIShUrVEFBDhQIzwLy
@@ -2207,22 +2117,17 @@ n76iFpE3WAhEo9TT04OUlBTo9Xp8++23fntqbaLbuMmIaJTq6+vR3t6OtrY23Lx5U+o4RGPGEQLR
 KKWmpmLdunW4cuUKrl+/jl27dkkdiWhMVFIHIPJHH3zwAbRaLdLS0tDX14eHH34YDocDNptN6mhE
 o8YRAhERAeA+BCIi6sdCICIiACwEIiLqx0IgIiIALAQiIurHQiAiIgAsBCIi6sdCICIiAMD/BzCv
 cUpzJdl2AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Imagine now that we've observed some data, $D = \{10, 12, 15\}$, and we want to infer the value of $\theta$ from this data. We'll explore four approaches to this below.</p>
-
 </div>
 </div>
 </div>
@@ -2230,7 +2135,7 @@ cUpzJdl2AAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1.-Common-Sense-Approach">1. Common Sense Approach<a class="anchor-link" href="#1.-Common-Sense-Approach">&#182;</a></h3>
+<h3 id="1.-Common-Sense-Approach">1. Common Sense Approach<a class="anchor-link" href="#1.-Common-Sense-Approach">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2241,14 +2146,13 @@ cUpzJdl2AAAAAElFTkSuQmCC
 <p>One general tip that I'd always recommend: in any problem, before computing anything, think about what you're computing and guess what a reasonable solution might be. We'll start with that here. Thinking about the problem, the hard cutoff in the probability distribution leads to one simple observation: <strong>$\theta$ must be smaller than the smallest observed value</strong>.</p>
 <p>This is immediately obvious on examination: the probability of seeing a value less than $\theta$ is zero.  Thus, a model with $\theta$ greater than any observed value is impossible, assuming our model specification is correct. Our fundamental assumption in both Bayesianism and frequentism is that the model is correct, so in this case, we can immediately write our common sense condition:</p>
 <p>$$
-\theta &lt; \min(D)
+\theta < \min(D)
 $$</p>
 <p>or, in the particular case of $D = \{10, 12, 15\}$,</p>
 <p>$$
-\theta &lt; 10
+\theta < 10
 $$</p>
 <p>Any reasonable constraint on $\theta$ given this data should meet this criterion. With this in mind, let's go on to some quantitative approaches based on Frequentism and Bayesianism.</p>
-
 </div>
 </div>
 </div>
@@ -2256,7 +2160,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-Frequentist-approach-#1:-Sampling-Distribution-via-the-Normal-Approximation">2. Frequentist approach #1: Sampling Distribution via the Normal Approximation<a class="anchor-link" href="#2.-Frequentist-approach-#1:-Sampling-Distribution-via-the-Normal-Approximation">&#182;</a></h3>
+<h3 id="2.-Frequentist-approach-#1:-Sampling-Distribution-via-the-Normal-Approximation">2. Frequentist approach #1: Sampling Distribution via the Normal Approximation<a class="anchor-link" href="#2.-Frequentist-approach-#1:-Sampling-Distribution-via-the-Normal-Approximation">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2267,8 +2171,8 @@ $$</p>
 <p>In the frequentist paradigm, we'd like to compute a confidence interval on the value of $\theta$. We can start by observing that the population mean is given by</p>
 <p>$$
 \begin{array}{ll}
-E(x) &amp;= \int_0^\infty xp(x)dx\\
-     &amp;= \theta + 1
+E(x) &= \int_0^\infty xp(x)dx\\
+     &= \theta + 1
      \end{array}
 $$</p>
 <p>So, using the sample mean as the point estimate of $E(x)$, we have an unbiased estimator for $\theta$ given by</p>
@@ -2280,19 +2184,18 @@ $$</p>
 CI_{\rm large~N} = \left(\hat{\theta} - 2 N^{-1/2},~\hat{\theta} + 2 N^{-1/2}\right)
 $$</p>
 <p>Let's write a function which will compute this, and evaluate it for our data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">erfinv</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">erfinv</span>
 
 <span class="k">def</span> <span class="nf">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">sig</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Approximate truncated exponential confidence interval&quot;&quot;&quot;</span>
+    <span class="sd">"""Approximate truncated exponential confidence interval"""</span>
     <span class="c1"># use erfinv to convert percentage to number of sigma</span>
     <span class="n">Nsigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">erfinv</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
@@ -2301,50 +2204,38 @@ $$</p>
     <span class="k">return</span> <span class="p">[</span><span class="n">theta_hat</span> <span class="o">-</span> <span class="n">Nsigma</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">),</span>
             <span class="n">theta_hat</span> <span class="o">+</span> <span class="n">Nsigma</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;approximate CI: (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"approximate CI: (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>approximate CI: (10.2, 12.5)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We immediately see an issue. By our simple common sense argument, we've determined that it is impossible for $\theta$ to be greater than 10, yet the entirety of the 95% confidence interval is above this range!  Perhaps this issue is due to the small sample size: the above computation is based on a large-$N$ approximation, and we have a relatively paltry $N = 3$. Maybe this will be improved if we do the more computationally intensive exact approach. Let's try it:</p>
-
 </div>
 </div>
 </div>
@@ -2352,7 +2243,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.-Frequentist-approach-#2:-Exact-Sampling-Distribution">3. Frequentist approach #2: Exact Sampling Distribution<a class="anchor-link" href="#3.-Frequentist-approach-#2:-Exact-Sampling-Distribution">&#182;</a></h3>
+<h3 id="3.-Frequentist-approach-#2:-Exact-Sampling-Distribution">3. Frequentist approach #2: Exact Sampling Distribution<a class="anchor-link" href="#3.-Frequentist-approach-#2:-Exact-Sampling-Distribution">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2366,13 +2257,12 @@ $$</p>
 f(\theta~|~D) \propto
 \left\{
 \begin{array}{lll}
-z^{N - 1}\exp(-z) &amp;,&amp; z &gt; 0\\
-0 &amp;,&amp; z &lt; 0
+z^{N - 1}\exp(-z) &,& z > 0\\
+0 &,& z < 0
 \end{array}
 \right\}
 ;~ z = N(\hat{\theta} + 1 - \theta)
 $$</p>
-
 </div>
 </div>
 </div>
@@ -2390,7 +2280,6 @@ $$</p>
 <p>$$
 F(\theta~|~D) = \frac{1}{\Gamma(N)}\left[ \Gamma\left(N, \max[0, N(\hat{\theta} + 1 - \theta)]\right) - \Gamma\left(N,~N(\hat{\theta} + 1)\right)\right]
 $$</p>
-
 </div>
 </div>
 </div>
@@ -2408,34 +2297,33 @@ f(\theta_2~|~D) = f(\theta_1~|~D)
 $$</p>
 <p>(Jaynes claims that this criterion ensures the shortest possible interval, but I'm not sure how to prove that).
 Solving this system of two nonlinear equations will give us the desired confidence interval. Let's compute this numerically:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gammaincc</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gammaincc</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
 
 
 <span class="k">def</span> <span class="nf">exact_CI</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exact truncated exponential confidence interval&quot;&quot;&quot;</span>
+    <span class="sd">"""Exact truncated exponential confidence interval"""</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">size</span>
     <span class="n">theta_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">theta_hat</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">theta</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">N</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">z</span> <span class="o">></span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">N</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">gammaincc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">theta_hat</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">theta</span><span class="p">)))</span> <span class="o">-</span> <span class="n">gammaincc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">theta_hat</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     
     <span class="k">def</span> <span class="nf">eqns</span><span class="p">(</span><span class="n">CI</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Equations which should be equal to zero&quot;&quot;&quot;</span>
+        <span class="sd">"""Equations which should be equal to zero"""</span>
         <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span> <span class="o">=</span> <span class="n">CI</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="n">theta2</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">-</span> <span class="n">frac</span><span class="p">,</span>
                 <span class="n">f</span><span class="p">(</span><span class="n">theta2</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
@@ -2443,58 +2331,46 @@ Solving this system of two nonlinear equations will give us the desired confiden
     <span class="n">guess</span> <span class="o">=</span> <span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mf">0.68</span><span class="p">)</span> <span class="c1"># use 1-sigma interval as a guess</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">eqns</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">D</span><span class="p">,))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s2">&quot;warning: CI result did not converge!&quot;</span>
+        <span class="nb">print</span> <span class="s2">"warning: CI result did not converge!"</span>
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As a sanity check, let's make sure that the exact and approximate confidence intervals match for a large number of points:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">Dlarge</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
-<span class="nb">print</span> <span class="s2">&quot;approx: (</span><span class="si">{0:.3f}</span><span class="s2">, </span><span class="si">{1:.3f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">Dlarge</span><span class="p">))</span>
-<span class="nb">print</span> <span class="s2">&quot;exact: (</span><span class="si">{0:.3f}</span><span class="s2">, </span><span class="si">{1:.3f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">Dlarge</span><span class="p">))</span>
+<span class="nb">print</span> <span class="s2">"approx: (</span><span class="si">{0:.3f}</span><span class="s2">, </span><span class="si">{1:.3f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">Dlarge</span><span class="p">))</span>
+<span class="nb">print</span> <span class="s2">"exact: (</span><span class="si">{0:.3f}</span><span class="s2">, </span><span class="si">{1:.3f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">Dlarge</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>approx: (9.409, 9.584)
 exact: (9.408, 9.584)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2502,42 +2378,32 @@ exact: (9.408, 9.584)
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As expected, the approximate solution is very close to the exact solution for large $N$, which gives us confidence that we're computing the right thing.</p>
 <p>Let's return to our 3-point dataset and see the results:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;approximate CI: (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exact CI:       (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"approximate CI: (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"exact CI:       (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>approximate CI: (10.2, 12.5)
 exact CI:       (10.2, 12.2)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2545,7 +2411,6 @@ exact CI:       (10.2, 12.2)
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The exact confidence interval is slightly different than the approximate one, but still reflects the same problem: <strong>we know from common-sense reasoning that $\theta$ can't be greater than 10, yet the 95% confidence interval is entirely in this forbidden region</strong>! The confidence interval seems to be giving us unreliable results.</p>
 <p>We'll discuss this in more depth further below, but first let's see if Bayes can do better.</p>
-
 </div>
 </div>
 </div>
@@ -2553,7 +2418,7 @@ exact CI:       (10.2, 12.2)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="4.-Bayesian-Credibility-Interval">4. Bayesian Credibility Interval<a class="anchor-link" href="#4.-Bayesian-Credibility-Interval">&#182;</a></h3>
+<h3 id="4.-Bayesian-Credibility-Interval">4. Bayesian Credibility Interval<a class="anchor-link" href="#4.-Bayesian-Credibility-Interval">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2573,8 +2438,8 @@ $$</p>
 <p>$$
 p(\theta~|~D) \propto \left\{
 \begin{array}{lll}
-N\exp\left[N(\theta - \min(D))\right] &amp;,&amp; \theta &lt; \min(D)\\
-0                &amp;,&amp; \theta &gt; \min(D)
+N\exp\left[N(\theta - \min(D))\right] &,& \theta < \min(D)\\
+0                &,& \theta > \min(D)
 \end{array}
 \right\}
 $$</p>
@@ -2592,81 +2457,67 @@ $$</p>
 \theta_1 = \theta_2 + \frac{\log(1 - f)}{N}
 $$</p>
 <p>Let's write a function which computes this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">bayes_CR</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Bayesian Credibility Region&quot;&quot;&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">bayes_CR</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+    <span class="sd">"""Bayesian Credibility Region"""</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
     <span class="n">theta2</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
     <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">frac</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
     <span class="k">return</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have this Bayesian method, we can compare the results of the four methods:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;common sense:         theta &lt; </span><span class="si">{0:.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;frequentism (approx): 95% CI = (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;frequentism (exact):  95% CI = (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bayesian:             95% CR = (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">bayes_CR</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"common sense:         theta < </span><span class="si">{0:.1f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"frequentism (approx): 95% CI = (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">approx_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"frequentism (exact):  95% CI = (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Bayesian:             95% CR = (</span><span class="si">{0:.1f}</span><span class="s2">, </span><span class="si">{1:.1f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">bayes_CR</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>common sense:         theta &lt; 10.0
+<pre>common sense:         theta < 10.0
 frequentism (approx): 95% CI = (10.2, 12.5)
 frequentism (exact):  95% CI = (10.2, 12.2)
 Bayesian:             95% CR = (9.0, 10.0)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we find is that the Bayesian result agrees with our common sense, while the frequentist approach does not. The problem is that <strong>frequentism is answering the wrong question</strong>.  I'll discuss this more below, but first let's do some simulations to make sure the CI and CR in this case are correct.</p>
-
 </div>
 </div>
 </div>
@@ -2674,7 +2525,7 @@ Bayesian:             95% CR = (9.0, 10.0)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Numerical-Confirmation">Numerical Confirmation<a class="anchor-link" href="#Numerical-Confirmation">&#182;</a></h3>
+<h3 id="Numerical-Confirmation">Numerical Confirmation<a class="anchor-link" href="#Numerical-Confirmation">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2683,16 +2534,15 @@ Bayesian:             95% CR = (9.0, 10.0)
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To try to quell any doubts about the math here, I want to repeat the exercise we did above and show that <em>the confidence interval derived above is, in fact, correct</em>.  We'll use the same approach as before, assuming a "true" value for $\theta$ and sampling data from the associated distribution:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">expon</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">expon</span>
 
 <span class="n">Nsamples</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">3</span>
@@ -2703,32 +2553,23 @@ Bayesian:             95% CR = (9.0, 10.0)
 <span class="n">CIs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">exact_CI</span><span class="p">(</span><span class="n">Di</span><span class="p">)</span> <span class="k">for</span> <span class="n">Di</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
 
 <span class="c1"># find which confidence intervals contain the mean</span>
-<span class="n">contains_theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">CIs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">theta</span> <span class="o">&lt;</span> <span class="n">CIs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="nb">print</span> <span class="s2">&quot;Fraction of Confidence Intervals containing theta: </span><span class="si">{0:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contains_theta</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">contains_theta</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">contains_theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">CIs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o"><</span> <span class="n">theta</span><span class="p">)</span> <span class="o">&</span> <span class="p">(</span><span class="n">theta</span> <span class="o"><</span> <span class="n">CIs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span> <span class="s2">"Fraction of Confidence Intervals containing theta: </span><span class="si">{0:.3f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contains_theta</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">contains_theta</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Fraction of Confidence Intervals containing theta: 0.953
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2736,16 +2577,15 @@ Bayesian:             95% CR = (9.0, 10.0)
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As is promised by frequentism, 95% of the computed confidence intervals contain the true value. The procedure we used to compute the confidence intervals is, in fact, correct: our data just happened to be among the 5% where the method breaks down. But here's the thing: <strong>we know from the data themselves that we are in the 5% where the CI fails</strong>. The fact that the standard frequentist confidence interval ignores this common-sense information should give you pause about blind reliance on the confidence interval for any nontrivial problem.</p>
 <p>For good measure, let's check that the Bayesian credible region also passes its test:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mf">1E7</span>
 <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.1</span>
 
@@ -2753,75 +2593,56 @@ Bayesian:             95% CR = (9.0, 10.0)
 <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span> <span class="o">+</span> <span class="n">expon</span><span class="p">()</span><span class="o">.</span><span class="n">rvs</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">N</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
 <span class="n">data</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">D</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="n">i_good</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">D</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">i_good</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">D</span><span class="p">)</span> <span class="o"><</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of good samples: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_good</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number of good samples: </span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_good</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Number of good samples: 65
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">theta_good</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="n">i_good</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">theta_good</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="n">i_good</span><span class="p">]</span>
 <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span> <span class="o">=</span> <span class="n">bayes_CR</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 
-<span class="n">within_CR</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta1</span> <span class="o">&lt;</span> <span class="n">theta_good</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">theta_good</span> <span class="o">&lt;</span> <span class="n">theta2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of thetas in Credible Region: </span><span class="si">{0:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">within_CR</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">within_CR</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+<span class="n">within_CR</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta1</span> <span class="o"><</span> <span class="n">theta_good</span><span class="p">)</span> <span class="o">&</span> <span class="p">(</span><span class="n">theta_good</span> <span class="o"><</span> <span class="n">theta2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Fraction of thetas in Credible Region: </span><span class="si">{0:.3f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">within_CR</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">within_CR</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Fraction of thetas in Credible Region: 0.954
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we have confirmed that, as promised, ~95% of the suitable values of $\theta$ fall in the credible region we computed from our single observed sample.</p>
-
 </div>
 </div>
 </div>
@@ -2829,7 +2650,7 @@ Bayesian:             95% CR = (9.0, 10.0)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Frequentism-Answers-the-Wrong-Question">Frequentism Answers the Wrong Question<a class="anchor-link" href="#Frequentism-Answers-the-Wrong-Question">&#182;</a></h2>
+<h2 id="Frequentism-Answers-the-Wrong-Question">Frequentism Answers the Wrong Question<a class="anchor-link" href="#Frequentism-Answers-the-Wrong-Question">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2853,7 +2674,6 @@ Bayesian:             95% CR = (9.0, 10.0)
 <blockquote><p>"<em>Given this observed data</em>, I can put no constraint on the value of $\theta$" - Frequentists</p>
 </blockquote>
 <p>If you're interested in what your particular, observed data are telling you, frequentism is useless.</p>
-
 </div>
 </div>
 </div>
@@ -2861,7 +2681,7 @@ Bayesian:             95% CR = (9.0, 10.0)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Hold-on...-isn't-that-a-bit-harsh?">Hold on... isn't that a bit harsh?<a class="anchor-link" href="#Hold-on...-isn't-that-a-bit-harsh?">&#182;</a></h4>
+<h4 id="Hold-on...-isn't-that-a-bit-harsh?">Hold on... isn't that a bit harsh?<a class="anchor-link" href="#Hold-on...-isn't-that-a-bit-harsh?">¶</a></h4>
 </div>
 </div>
 </div>
@@ -2875,7 +2695,6 @@ Bayesian:             95% CR = (9.0, 10.0)
 <p>Now, I should point out that I am certainly not the first person to state things this way, or even this strongly. The Physicist <a href="http://en.wikipedia.org/wiki/Edwin_Thompson_Jaynes">E.T. Jaynes</a> was known as an ardent defender of Bayesianism in science; one of my primary inspirations for this post was his 1976 paper, <em>Confidence Intervals vs. Bayesian Intervals</em> (<a href="http://bayes.wustl.edu/etj/articles/confidence.pdf">pdf</a>). More recently, statistician and blogger <a href="http://wmbriggs.com/">W.M. Briggs</a> posted a diatribe on arXiv called <a href="http://arxiv.org/abs/1201.2590"><em>It's Time To Stop Teaching Frequentism to Non-Statisticians</em></a> which brings up this same point. It's in the same vein of argument that <a href="http://en.wikipedia.org/wiki/Leonard_Jimmie_Savage">Savage</a>, <a href="http://en.wikipedia.org/wiki/Jerome_Cornfield">Cornfield</a>, and other outspoken 20th-century Bayesian practitioners made throughout their writings, talks, and correspondance.</p>
 <p>So should you ever use confidence intervals at all? Perhaps in situations (such as analyzing gambling odds) where multiple data realizations are the reality, frequentism makes sense. But in most scientific applications where you're concerned with what one particular observed set of data is telling you, <strong>frequentism simply answers the wrong question</strong>.</p>
 <p><em>Edit, November 2014: to appease several commentors, I'll add a caveat here. The unbiased estimator $\bar{x}$ that we used above is just one of many possible estimators, and it can be argued that such estimators <a href="http://arxiv.org/abs/math/0206006">are not always the best choice</a>. Had we used, say, the Maximum Likelihood estimator or a sufficient estimator like $\min(x)$, our initial misinterpretation of the confidence interval would not have been as obviously wrong, and may even have fooled us into thinking we were right. But this does not change our central argument, which involves the question frequentism asks. Regardless of the estimator, <strong>if we try to use frequentism to ask about parameter values given observed data, we are making a mistake</strong>. For some choices of estimator this mistaken interpretation may not be as manifestly apparent, but it is mistaken nonetheless.</em></p>
-
 </div>
 </div>
 </div>
@@ -2883,7 +2702,7 @@ Bayesian:             95% CR = (9.0, 10.0)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Moral-of-the-Story:-Frequentism-and-Science-Do-Not-Mix">The Moral of the Story: Frequentism and Science Do Not Mix<a class="anchor-link" href="#The-Moral-of-the-Story:-Frequentism-and-Science-Do-Not-Mix">&#182;</a></h2>
+<h2 id="The-Moral-of-the-Story:-Frequentism-and-Science-Do-Not-Mix">The Moral of the Story: Frequentism and Science Do Not Mix<a class="anchor-link" href="#The-Moral-of-the-Story:-Frequentism-and-Science-Do-Not-Mix">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2895,12 +2714,9 @@ Bayesian:             95% CR = (9.0, 10.0)
 <p>If you have made it this far, I thank you for reading! I hope that this exploration succeeded in clarifying that the philosophical assumptions of frequentism and Bayesianism lead to real, practical consequences in the analysis and interpretation of data. If this post leads just one researcher to stop using frequentist confidence intervals in their scientific research, I will consider it a success.</p>
 <p><em>This post was written entirely in the IPython notebook.  You can <a href="http://jakevdp.github.io/downloads/notebooks/FreqBayes3.ipynb">download</a> this notebook, or see a static view on <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/FreqBayes3.ipynb">nbviewer</a>.
 Many thanks to David W. Hogg for some helpful critiques on an early version of this post.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2930,6 +2746,18 @@ Many thanks to David W. Hogg for some helpful critiques on an early version of t
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Frequentism and Bayesianism III: Confidence, Credibility, and why Frequentism and Science do not Mix"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/frequentism-and-bayesianism-3-confidence-credibility.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

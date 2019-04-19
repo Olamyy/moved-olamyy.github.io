@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>Donald Knuth famously quipped that "premature optimization is the root of all evil."
 The reasons are straightforward: optimized code tends to be much more difficult to read and debug than simpler implementations of the same algorithm, and optimizing too early leads to greater costs down the road.
 In the Python world, there is another cost to optimization: optimized code often is written in a compiled language like Fortran or C, and this leads to barriers to its development, use, and deployment.</p>
@@ -1414,7 +1413,7 @@ Along the way, we'll dig into the process of optimizing Python code, and see how
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Why-a-Python-Implementation?">Why a Python Implementation?<a class="anchor-link" href="#Why-a-Python-Implementation?">&#182;</a></h2><p>First, I want to answer the inevitable question: why spend the time to make a Python implementation of an algorithm that's already out there in Fortran?
+<h2 id="Why-a-Python-Implementation?">Why a Python Implementation?<a class="anchor-link" href="#Why-a-Python-Implementation?">¶</a></h2><p>First, I want to answer the inevitable question: why spend the time to make a Python implementation of an algorithm that's already out there in Fortran?
 The reason is that I've found in my research and teaching that pure-Python implementations of algorithms are far more valuable than C or Fortran implementations, even if they might be a bit slower.
 This is for a number of reasons:</p>
 <ul>
@@ -1428,7 +1427,6 @@ This is for a number of reasons:</p>
 </li>
 </ul>
 <p>Certainly code speed will overcome these considerations if the performance gap is great enough, but I've found that for many applications a pure Python package, cleverly designed and optimized, can be made fast enough that these larger considerations win-out. The challenge is making the Python fast. We'll explore this below.</p>
-
 </div>
 </div>
 </div>
@@ -1436,7 +1434,7 @@ This is for a number of reasons:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Background:-The-Non-Uniform-Fast-Fourier-Transform">Background: The Non-Uniform Fast Fourier Transform<a class="anchor-link" href="#Background:-The-Non-Uniform-Fast-Fourier-Transform">&#182;</a></h2><p>The Fast Fourier Transform (FFT) is perhaps the most important and fundamental of modern numerical algorithms.
+<h2 id="Background:-The-Non-Uniform-Fast-Fourier-Transform">Background: The Non-Uniform Fast Fourier Transform<a class="anchor-link" href="#Background:-The-Non-Uniform-Fast-Fourier-Transform">¶</a></h2><p>The Fast Fourier Transform (FFT) is perhaps the most important and fundamental of modern numerical algorithms.
 It provides a fast, $O[N\log N]$ method of computing the discrete Fourier transform:
 $$
 Y_k^\pm = \sum_{n=0}^{N-1} y_n e^{\pm i k n / N}
@@ -1454,7 +1452,6 @@ In this case, the FFT is no longer directly applicable, and you're stuck using a
 <p>The NUFFT is an algorithm which converts the non-uniform transform into an approximate uniform transform, not with error-prone interpolation, but instead using a clever "gridding" operation motivated by the convolution theorem.
 If you'd like to read about the algorithm in detail, the Courant Institute's <a href="http://www.cims.nyu.edu/cmcl/nufft/nufft.html">NUFFT page</a> has a nice set of resources.</p>
 <p>Below we'll take a look at implementing this algorithm in Python.</p>
-
 </div>
 </div>
 </div>
@@ -1462,45 +1459,41 @@ If you'd like to read about the algorithm in detail, the Courant Institute's <a 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Direct-Non-Uniform-Fourier-Transform">Direct Non-Uniform Fourier Transform<a class="anchor-link" href="#Direct-Non-Uniform-Fourier-Transform">&#182;</a></h2><p>When developing optimized code, it is important to start with something easy to make sure you're on the right track.
+<h2 id="Direct-Non-Uniform-Fourier-Transform">Direct Non-Uniform Fourier Transform<a class="anchor-link" href="#Direct-Non-Uniform-Fourier-Transform">¶</a></h2><p>When developing optimized code, it is important to start with something easy to make sure you're on the right track.
 Here we'll start with a straightforward direct version of the non-uniform Fourier transform.
-We'll allow non-uniform inputs $x_j$, but compute the output on a grid of $M$ evenly-spaced frequencies in the range $-M/2 \le f/\delta f &lt; M/2$.
+We'll allow non-uniform inputs $x_j$, but compute the output on a grid of $M$ evenly-spaced frequencies in the range $-M/2 \le f/\delta f < M/2$.
 This is what the NUFFT group calls the <em>Type-1 NUFFT</em>.</p>
 <p>First we'll implement <code>nufftfreqs()</code>, which returns the frequency grid for a given $M$, and <code>nudft()</code> which computes the non-uniform discrete Fourier transform using a slow direct method. The arguments for the latter include <code>iflag</code>, which is a positive or negative number indicating the desired sign of the exponent:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">def</span> <span class="nf">nufftfreqs</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the frequency range used in nufft for M frequency bins&quot;&quot;&quot;</span>
+    <span class="sd">"""Compute the frequency range used in nufft for M frequency bins"""</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">M</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span> <span class="n">M</span> <span class="o">-</span> <span class="p">(</span><span class="n">M</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">nudft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Non-Uniform Direct Fourier Transform&quot;&quot;&quot;</span>
-    <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">iflag</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="sd">"""Non-Uniform Direct Fourier Transform"""</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">iflag</span> <span class="o"><</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sign</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">nufftfreqs</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, I can't emphasize this enough: when writing fast code, start with a slow-and-simple version of the code which you <em>know</em> gives the correct result, and then optimize from there.</p>
-
 </div>
 </div>
 </div>
@@ -1508,7 +1501,7 @@ This is what the NUFFT group calls the <em>Type-1 NUFFT</em>.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Comparing-to-the-Fortran-NUFFT">Comparing to the Fortran NUFFT<a class="anchor-link" href="#Comparing-to-the-Fortran-NUFFT">&#182;</a></h2>
+<h2 id="Comparing-to-the-Fortran-NUFFT">Comparing to the Fortran NUFFT<a class="anchor-link" href="#Comparing-to-the-Fortran-NUFFT">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1517,16 +1510,15 @@ This is what the NUFFT group calls the <em>Type-1 NUFFT</em>.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can double-check that this is producing the desired result by comparing to the Fortran NUFFT implementation, using Python wrappers written by Dan Foreman-Mackey, available at <a href="http://github.com/dfm/python-nufft/">http://github.com/dfm/python-nufft/</a>:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Install nufft from http://github.com/dfm/python-nufft/</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Install nufft from http://github.com/dfm/python-nufft/</span>
 <span class="kn">from</span> <span class="nn">nufft</span> <span class="k">import</span> <span class="n">nufft1</span> <span class="k">as</span> <span class="n">nufft_fortran</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
@@ -1537,80 +1529,57 @@ This is what the NUFFT group calls the <em>Type-1 NUFFT</em>.</p>
 
 <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">Y1</span><span class="p">,</span> <span class="n">Y2</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>True</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The results match! A quick check shows that, as we might expect, the Fortran algorithm is orders of magnitude faster:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> nudft(x, y, 1000)
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> nudft(x, y, 1000)
 <span class="o">%</span><span class="k">timeit</span> nufft_fortran(x, y, 1000)
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>10 loops, best of 3: 47.9 ms per loop
 1000 loops, best of 3: 265 µs per loop
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On top of this, for $N$ points and $N$ frequencies, the Fortran NUFFT will scale as $O[N\log N]$, while our simple implementation will scale as $O[N^2]$, making the difference even greater as $N$ increases! Let's see if we can do better.</p>
-
 </div>
 </div>
 </div>
@@ -1618,24 +1587,23 @@ This is what the NUFFT group calls the <em>Type-1 NUFFT</em>.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="NUFFT-with-Python">NUFFT with Python<a class="anchor-link" href="#NUFFT-with-Python">&#182;</a></h2><p>Here we'll attempt a pure-Python version of the fast, FFT-based NUFFT.
+<h2 id="NUFFT-with-Python">NUFFT with Python<a class="anchor-link" href="#NUFFT-with-Python">¶</a></h2><p>Here we'll attempt a pure-Python version of the fast, FFT-based NUFFT.
 We'll follow the basics of the algorithm presented on the NUFFT page, using NumPy broadcasting tricks to push loops into the compiled layer of NumPy.
 For later convenience, we'll start by defining a utility to compute the grid parameters as detailed in the NUFFT paper.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">_compute_grid_params</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
-    <span class="c1"># Choose Msp &amp; tau from eps following Dutt &amp; Rokhlin (1993)</span>
-    <span class="k">if</span> <span class="n">eps</span> <span class="o">&lt;=</span> <span class="mf">1E-33</span> <span class="ow">or</span> <span class="n">eps</span> <span class="o">&gt;=</span> <span class="mf">1E-1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;eps = </span><span class="si">{0:.0e}</span><span class="s2">; must satisfy &quot;</span>
-                         <span class="s2">&quot;1e-33 &lt; eps &lt; 1e-1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>
-    <span class="n">ratio</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">eps</span> <span class="o">&gt;</span> <span class="mf">1E-11</span> <span class="k">else</span> <span class="mi">3</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">_compute_grid_params</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="c1"># Choose Msp & tau from eps following Dutt & Rokhlin (1993)</span>
+    <span class="k">if</span> <span class="n">eps</span> <span class="o"><=</span> <span class="mf">1E-33</span> <span class="ow">or</span> <span class="n">eps</span> <span class="o">>=</span> <span class="mf">1E-1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"eps = </span><span class="si">{0:.0e}</span><span class="s2">; must satisfy "</span>
+                         <span class="s2">"1e-33 < eps < 1e-1."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">eps</span> <span class="o">></span> <span class="mf">1E-11</span> <span class="k">else</span> <span class="mi">3</span>
     <span class="n">Msp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
     <span class="n">Mr</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ratio</span> <span class="o">*</span> <span class="n">M</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Msp</span><span class="p">)</span>
     <span class="n">lambda_</span> <span class="o">=</span> <span class="n">Msp</span> <span class="o">/</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">*</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">))</span>
@@ -1644,7 +1612,7 @@ For later convenience, we'll start by defining a utility to compute the grid par
 
 
 <span class="k">def</span> <span class="nf">nufft_python</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1E-15</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Fast Non-Uniform Fourier Transform with Python&quot;&quot;&quot;</span>
+    <span class="sd">"""Fast Non-Uniform Fourier Transform with Python"""</span>
     <span class="n">Msp</span><span class="p">,</span> <span class="n">Mr</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="n">_compute_grid_params</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
@@ -1660,7 +1628,7 @@ For later convenience, we'll start by defining a utility to compute the grid par
         <span class="n">ftau</span><span class="p">[(</span><span class="n">m</span> <span class="o">+</span> <span class="n">mm</span><span class="p">)</span> <span class="o">%</span> <span class="n">Mr</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">spread</span>
 
     <span class="c1"># Compute the FFT on the convolved grid</span>
-    <span class="k">if</span> <span class="n">iflag</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">iflag</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">Mr</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
@@ -1670,11 +1638,9 @@ For later convenience, we'll start by defining a utility to compute the grid par
     <span class="n">k</span> <span class="o">=</span> <span class="n">nufftfreqs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tau</span> <span class="o">*</span> <span class="n">k</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ftau</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1682,23 +1648,22 @@ For later convenience, we'll start by defining a utility to compute the grid par
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's compare this to the previous results.
 For convenience, we'll define a single routine which validates the results and times the execution:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 
 <span class="k">def</span> <span class="nf">test_nufft</span><span class="p">(</span><span class="n">nufft_func</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">Mtime</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
     <span class="c1"># Test vs the direct method</span>
-    <span class="nb">print</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nufft1&#39;</span><span class="p">:</span><span class="s1">&#39;nufft_fortran&#39;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nufft_func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+    <span class="nb">print</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="s1">'-'</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'nufft1'</span><span class="p">:</span><span class="s1">'nufft_fortran'</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nufft_func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                                           <span class="n">nufft_func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;testing </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"testing </span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">M</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1707,7 +1672,7 @@ For convenience, we'll define a single routine which validates the results and t
             <span class="n">F1</span> <span class="o">=</span> <span class="n">nudft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="n">iflag</span><span class="p">)</span>
             <span class="n">F2</span> <span class="o">=</span> <span class="n">nufft_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="n">iflag</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Results match the DFT&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"- Results match the DFT"</span><span class="p">)</span>
     
     <span class="c1"># Time the nufft function</span>
     <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">Mtime</span><span class="p">)</span>
@@ -1718,36 +1683,27 @@ For convenience, we'll define a single routine which validates the results and t
         <span class="n">F</span> <span class="o">=</span> <span class="n">nufft_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Mtime</span><span class="p">)</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Execution time (M=</span><span class="si">{0}</span><span class="s2">): </span><span class="si">{1:.2g}</span><span class="s2"> sec&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Mtime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">times</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"- Execution time (M=</span><span class="si">{0}</span><span class="s2">): </span><span class="si">{1:.2g}</span><span class="s2"> sec"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Mtime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">times</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_python</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_python</span><span class="p">)</span>
 <span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_fortran</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>------------------------------
 testing nufft_python
@@ -1760,10 +1716,8 @@ testing nufft_fortran
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1771,7 +1725,6 @@ testing nufft_fortran
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The good news is that our Python implementation works; the bad news is that it remains several orders of magnitude slower than the Fortran result!</p>
 <p>Let's make it faster.</p>
-
 </div>
 </div>
 </div>
@@ -1779,27 +1732,23 @@ testing nufft_fortran
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Making-Code-Faster:-Line-Profiling">Making Code Faster: Line Profiling<a class="anchor-link" href="#Making-Code-Faster:-Line-Profiling">&#182;</a></h3><p>We know that our Python function is slow, but we'd like to determine <em>where</em> this speed bottleneck lies.
+<h3 id="Making-Code-Faster:-Line-Profiling">Making Code Faster: Line Profiling<a class="anchor-link" href="#Making-Code-Faster:-Line-Profiling">¶</a></h3><p>We know that our Python function is slow, but we'd like to determine <em>where</em> this speed bottleneck lies.
 One convenient way to do this is with the <code>line_profiler</code> utility, a Python/IPython addon which can be installed using</p>
-
 <pre><code>$ pip install line_profiler</code></pre>
 <p>Once it's installed, we can load the line profiler extension into the IPython notebook using the <code>%load_ext</code> magic function:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> line_profiler
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> line_profiler
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1808,45 +1757,37 @@ One convenient way to do this is with the <code>line_profiler</code> utility, a 
 <p>With the line profiler loaded, the <code>%lprun</code> magic function is now available, which we can use to profile our function line-by-line.
 In order to display these results here, we'll save them to file and then use <code>%cat</code> to view the file.
 The lines wrap in the notebook, making it difficult to read, so you may wish to <a href="http://jakevdp.github.io/downloads/notebooks/NUFFT_lpr.txt">view the raw file</a> instead.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">lprun</span> -s -f nufft_python -T lp_results.txt nufft_python(x, y, 1000)
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">lprun</span> -s -f nufft_python -T lp_results.txt nufft_python(x, y, 1000)
 <span class="o">%</span><span class="k">cat</span> lp_results.txt
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-*** Profile printout saved to text file &#39;lp_results.txt&#39;. 
+*** Profile printout saved to text file 'lp_results.txt'. 
 Timer unit: 1e-06 s
 
 Total time: 0.040097 s
-File: &lt;ipython-input-4-02aa33b61f03&gt;
+File: <ipython-input-4-02aa33b61f03>
 Function: nufft_python at line 14
 
 Line #      Hits         Time  Per Hit   % Time  Line Contents
 ==============================================================
     14                                           def nufft_python(x, c, M, df=1.0, eps=1E-15, iflag=1):
-    15                                               &#34;&#34;&#34;Fast Non-Uniform Fourier Transform with Python&#34;&#34;&#34;
+    15                                               """Fast Non-Uniform Fourier Transform with Python"""
     16         1           41     41.0      0.1      Msp, Mr, tau = _compute_grid_params(M, eps)
     17         1            3      3.0      0.0      N = len(x)
     18                                           
@@ -1862,7 +1803,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     28      1000        11406     11.4     28.4          ftau[(m + mm) % Mr] += c[i] * spread
     29                                           
     30                                               # Compute the FFT on the convolved grid
-    31         1            2      2.0      0.0      if iflag &lt; 0:
+    31         1            2      2.0      0.0      if iflag < 0:
     32                                                   Ftau = (1 / Mr) * np.fft.fft(ftau)
     33                                               else:
     34         1          183    183.0      0.5          Ftau = np.fft.ifft(ftau)
@@ -1873,10 +1814,8 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     39         1           32     32.0      0.1      return (1 / N) * np.sqrt(np.pi / tau) * np.exp(tau * k ** 2) * Ftau</pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1888,7 +1827,6 @@ The loop is so expensive that even the FFT computation is just a trivial piece o
 This is actually pretty typical: due to dynamic typing, loops are generally very slow in Python.</p>
 <p>One of the surest strategies for speeding-up your code is to use broadcasting tricks in NumPy to remove these kinds of large loops: you can read one of my course lectures on the subject <a href="http://nbviewer.ipython.org/url/www.astro.washington.edu/users/vanderplas/Astr599_2014/notebooks/11_EfficientNumpy.ipynb">here</a>.
 We'll do this next.</p>
-
 </div>
 </div>
 </div>
@@ -1896,27 +1834,24 @@ We'll do this next.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="NUFFT-with-NumPy-Broadcasting">NUFFT with NumPy Broadcasting<a class="anchor-link" href="#NUFFT-with-NumPy-Broadcasting">&#182;</a></h2><p>Let's rewrite the above implementation and use broadcasting tricks to elliminate the loops.
+<h2 id="NUFFT-with-NumPy-Broadcasting">NUFFT with NumPy Broadcasting<a class="anchor-link" href="#NUFFT-with-NumPy-Broadcasting">¶</a></h2><p>Let's rewrite the above implementation and use broadcasting tricks to elliminate the loops.
 Because of the structure of this problem, the approach is a bit complicated here, but it turns out that we can take advantage here of the little-known <code>at()</code> method of NumPy's ufunc (available since NumPy 1.8).
 Briefly,</p>
-
-<pre><code>&gt;&gt;&gt; np.add.at(x, i, y)</code></pre>
+<pre><code>>>> np.add.at(x, i, y)</code></pre>
 <p>is similar to</p>
-
-<pre><code>&gt;&gt;&gt; x[i] += y</code></pre>
+<pre><code>>>> x[i] += y</code></pre>
 <p>but works as desired even if the incides <code>i</code> have duplicate entries.</p>
 <p>Using this, we can adjust our implementation as follows:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">nufft_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1E-15</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Fast Non-Uniform Fourier Transform&quot;&quot;&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">nufft_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1E-15</span><span class="p">):</span>
+    <span class="sd">"""Fast Non-Uniform Fourier Transform"""</span>
     <span class="n">Msp</span><span class="p">,</span> <span class="n">Mr</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="n">_compute_grid_params</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
@@ -1932,7 +1867,7 @@ Briefly,</p>
     <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">ftau</span><span class="p">,</span> <span class="n">mpmm</span> <span class="o">%</span> <span class="n">Mr</span><span class="p">,</span> <span class="n">spread</span><span class="p">)</span>
 
     <span class="c1"># Compute the FFT on the convolved grid</span>
-    <span class="k">if</span> <span class="n">iflag</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">iflag</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">Mr</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
@@ -1942,44 +1877,34 @@ Briefly,</p>
     <span class="n">k</span> <span class="o">=</span> <span class="n">nufftfreqs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tau</span> <span class="o">*</span> <span class="n">k</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ftau</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test it:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_numpy</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_numpy</span><span class="p">)</span>
 <span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_python</span><span class="p">)</span>
 <span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_fortran</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>------------------------------
 testing nufft_numpy
@@ -1996,10 +1921,8 @@ testing nufft_fortran
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2009,7 +1932,6 @@ testing nufft_fortran
 Still, though, we're sitting at about a factor of 10 slower than the Fortran version.
 The problem is that the <code>np.add.at()</code> call here requires construction of some very large and costly temporary arrays.
 If we want a faster execution time, we need to further optimize that main loop, and we can't do this with NumPy alone.</p>
-
 </div>
 </div>
 </div>
@@ -2017,20 +1939,19 @@ If we want a faster execution time, we need to further optimize that main loop, 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Optimization-with-Numba">Optimization with Numba<a class="anchor-link" href="#Optimization-with-Numba">&#182;</a></h2><p>When NumPy broadcasting tricks aren't enough, there are a few options: you can write Fortran or C code directly, you can use <a href="http://cython.org">Cython</a>, <a href="http://docs.scipy.org/doc/scipy/reference/tutorial/weave.html">Weave</a>, or other tools as a bridge to include compiled snippets in your script, or you can use a tool like <a href="http://cython.org">Numba</a> to speed-up your loops without ever leaving Python.</p>
+<h2 id="Optimization-with-Numba">Optimization with Numba<a class="anchor-link" href="#Optimization-with-Numba">¶</a></h2><p>When NumPy broadcasting tricks aren't enough, there are a few options: you can write Fortran or C code directly, you can use <a href="http://cython.org">Cython</a>, <a href="http://docs.scipy.org/doc/scipy/reference/tutorial/weave.html">Weave</a>, or other tools as a bridge to include compiled snippets in your script, or you can use a tool like <a href="http://cython.org">Numba</a> to speed-up your loops without ever leaving Python.</p>
 <p>Numba is a slick tool which runs Python functions through an LLVM just-in-time (JIT) compiler, leading to orders-of-magnitude faster code for certain operations.
 In this case, we need to optimize what amounts to a nested for-loop, so Numba fits the bill perfectly.
 For clarity, we'll pull-out the grid construction code that we want to optimize, and write it as follows:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span>
 
 <span class="c1"># nopython=True means an error will be raised</span>
 <span class="c1"># if fast compilation is not possible.</span>
@@ -2047,7 +1968,7 @@ For clarity, we'll pull-out the grid construction code that we want to optimize,
 
 
 <span class="k">def</span> <span class="nf">nufft_numba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1E-15</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Fast Non-Uniform Fourier Transform with Numba&quot;&quot;&quot;</span>
+    <span class="sd">"""Fast Non-Uniform Fourier Transform with Numba"""</span>
     <span class="n">Msp</span><span class="p">,</span> <span class="n">Mr</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="n">_compute_grid_params</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
@@ -2056,7 +1977,7 @@ For clarity, we'll pull-out the grid construction code that we want to optimize,
                       <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Mr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
 
     <span class="c1"># Compute the FFT on the convolved grid</span>
-    <span class="k">if</span> <span class="n">iflag</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">iflag</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">Mr</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
@@ -2066,43 +1987,33 @@ For clarity, we'll pull-out the grid construction code that we want to optimize,
     <span class="n">k</span> <span class="o">=</span> <span class="n">nufftfreqs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tau</span> <span class="o">*</span> <span class="n">k</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ftau</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this now:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_numba</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_numba</span><span class="p">)</span>
 <span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_fortran</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>------------------------------
 testing nufft_numba
@@ -2115,10 +2026,8 @@ testing nufft_fortran
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2130,16 +2039,15 @@ This type of careful logic is one reason the Fortran implementation is so fast, 
 <p>To gain some more speed, we can follow their advice and optimize the expressions at this level by precomputing expensive expressions and recombining these expressions later:
 This obfuscates the logic of the algorithm a bit, but it does lead to some faster execution.
 Here is an example of this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span>
 
 <span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">build_grid_fast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">Msp</span><span class="p">,</span> <span class="n">ftau</span><span class="p">,</span> <span class="n">E3</span><span class="p">):</span>
@@ -2166,7 +2074,7 @@ Here is an example of this:</p>
 
 
 <span class="k">def</span> <span class="nf">nufft_numba_fast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1E-15</span><span class="p">,</span> <span class="n">iflag</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Fast Non-Uniform Fourier Transform with Numba&quot;&quot;&quot;</span>
+    <span class="sd">"""Fast Non-Uniform Fourier Transform with Numba"""</span>
     <span class="n">Msp</span><span class="p">,</span> <span class="n">Mr</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="n">_compute_grid_params</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
@@ -2176,7 +2084,7 @@ Here is an example of this:</p>
                            <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Msp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
 
     <span class="c1"># Compute the FFT on the convolved grid</span>
-    <span class="k">if</span> <span class="n">iflag</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">iflag</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">Mr</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">Ftau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">ftau</span><span class="p">)</span>
@@ -2186,43 +2094,33 @@ Here is an example of this:</p>
     <span class="n">k</span> <span class="o">=</span> <span class="n">nufftfreqs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tau</span> <span class="o">*</span> <span class="n">k</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ftau</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test the result:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_numba_fast</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_numba_fast</span><span class="p">)</span>
 <span class="n">test_nufft</span><span class="p">(</span><span class="n">nufft_fortran</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>------------------------------
 testing nufft_numba_fast
@@ -2235,17 +2133,14 @@ testing nufft_fortran
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is looking good! With a bit of effort we are now within about 25% of the Fortran speed, and we retain all the advantages of having pure Python code!</p>
-
 </div>
 </div>
 </div>
@@ -2253,35 +2148,32 @@ testing nufft_fortran
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Final-Timing-Comparison">Final Timing Comparison<a class="anchor-link" href="#Final-Timing-Comparison">&#182;</a></h2><p>For good measure, let's take a look at the scaling with $M$ for all the fast algorithms we created.
+<h2 id="Final-Timing-Comparison">Final Timing Comparison<a class="anchor-link" href="#Final-Timing-Comparison">¶</a></h2><p>For good measure, let's take a look at the scaling with $M$ for all the fast algorithms we created.
 We'll compute the times for a range of input sizes for each algorithm.
 Be aware that the following code will take several minutes to run!</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="c1"># use seaborn for nice default plot settings</span>
 <span class="kn">import</span> <span class="nn">seaborn</span><span class="p">;</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Mrange</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">Mrange</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="n">t_python</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">t_numpy</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2305,43 +2197,32 @@ Be aware that the following code will take several minutes to run!</p>
     <span class="n">t_numba_fast</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t4</span><span class="o">.</span><span class="n">best</span><span class="p">)</span>
     <span class="n">t_fortran</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t5</span><span class="o">.</span><span class="n">best</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_python</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_numpy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;numpy&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_numba</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;numba #1&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_numba_fast</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;numba #2&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_fortran</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;fortran&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Elements&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Execution Time (s)&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_python</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'python'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_numpy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'numpy'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_numba</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'numba #1'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_numba_fast</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'numba #2'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Mrange</span><span class="p">,</span> <span class="n">t_fortran</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'fortran'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Number of Elements'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Execution Time (s)'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAf4AAAFsCAYAAAAtwdttAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8VGW++PHPTDKTOimk00M7KTSpgmCho4CA9KYoRV13
 7+797fq7d5u7199d1y3u3bteVwEbFpTem3QpoiDSQg5JSAjpvWf6+f0R9KK0CZDMTPJ9v168yEzm
@@ -2912,15 +2793,11 @@ uU8C/6goyn8m0pp+WFXV0E1eoxO9xv+1+/+OSNf9tdf8OFruLwE/8Ph3fI6vv4dOZIDiTOAkkWPY
 v6qqul9RlDU3+RzbgFNExgA8qijKuejneVNV1XPf8RohJiWDro/VDCIhhBBCJDvp6hdCCCGmEEn8
 QgghxBQiiV8IIYSYQiTxCyGEEFOIJH4hhBBiCpHEL4QQQkwhkviFEEKIKUQSvxBCCDGF/P+m3h5C
 TzywRwAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2929,7 +2806,6 @@ TzywRwAAAABJRU5ErkJggg==
 <p>As we see, all the algorithms scale as $\sim O[N\log N]$ in the large $N$ limit, albeit with very different constants of proportionality.
 Our final optimized Numba implementation nearly matches the Fortran version as $N$ grows large, and because it is written in pure Python, it retains all the advantages of pure Python code listed above.
 For that benefit, I think the cost of a ~25% slow-down is well worth it!</p>
-
 </div>
 </div>
 </div>
@@ -2937,13 +2813,12 @@ For that benefit, I think the cost of a ~25% slow-down is well worth it!</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>I hope you've enjoyed this exploration of how to write fast numerical code in pure Python.
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>I hope you've enjoyed this exploration of how to write fast numerical code in pure Python.
 As you think about writing efficient implementations of useful algorithms, I invite you to consider the points I listed above: in particular, how difficult will it be for your users to install, read, modify, and contribute to your code?
 In the long run, this may be much more important than shaving a few milliseconds off the execution time.
 Writing a fast implementation of a useful algorithm is an excellent and useful pursuit, but we should be careful to not forget the costs that come along with such optimization.</p>
 <p>If you're interested in using the pure-Python NUFFT implementation, I've adapted much of the above code in a repository at <a href="http://github.com/jakevdp/nufftpy/">http://github.com/jakevdp/nufftpy/</a>.
 It contains a packaged and unit-tested version of some of the above code, as well as a (hopefully) growing compendium of related routines.</p>
-
 </div>
 </div>
 </div>
@@ -2955,12 +2830,9 @@ It contains a packaged and unit-tested version of some of the above code, as wel
 <a href="http://jakevdp.github.io/downloads/notebooks/NUFFT.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/NUFFT.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2990,6 +2862,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Optimizing Python in the Real World: NumPy, Numba, and the NUFFT"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/optimizing-python-with-numpy-and-numba.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

@@ -1401,10 +1401,9 @@ h6:hover .anchor-link {
 Because of this, some of the code below will not work with the current release: please
 see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more information.</strong></p>
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>I've spent a lot of time recently attempting to push the boundaries of tools for interactive data exploration within the IPython notebook.  I have worked on animations, including an <a href="http://jakevdp.github.io/blog/2013/05/12/embedding-matplotlib-animations/">HTML5 embedding</a> and a <a href="http://jakevdp.github.io/blog/2013/05/19/a-javascript-viewer-for-matplotlib-animations/">Javascript Viewer</a>.  I have worked on <a href="http://jakevdp.github.io/blog/2013/06/01/ipython-notebook-javascript-python-communication/">javascript/python kernel interaction</a> and <a href="http://jakevdp.github.io/blog/2013/12/05/static-interactive-widgets/">static javascript widgets</a>.  But I would say that the holy grail of interactive data visualization in the IPython notebook is, as I've <a href="http://jakevdp.github.io/blog/2013/03/23/matplotlib-and-the-future-of-visualization-in-python/">mentioned previously</a>, a truly interactive in-browser matplotlib display.</p>
 <p>There are many people pushing in this direction in the Python world. <a href="http://continuum.io/blog/painless_streaming_plots_w_bokeh">Bokeh</a> and <a href="https://plot.ly/">Plotly</a> are new visualization packages which have built Python APIs from scratch.  The demos are beautiful and impressive, and the APIs are clean and intuitive.  But, because matplotlib is so well-established in the Python world, it would be nice to be able to continue using it even in the age of browser-based visualization. To this end, some of the matplotlib core devs have been working on a <a href="http://mdboom.github.io/blog/2012/10/11/matplotlib-in-the-browser-its-coming/">WebGL viewer</a> for matplotlib figures.  I've seen a working demo, and it's very cool, but last I heard it still has a long way to go.</p>
-<p>I've been wondering for a while whether it might be possible to create a solution using D3.js.  D3 (short for <a href="http://d3js.org/">data-driven documents</a>) is a framework which facilitates the easy creation and manipulation of groups of HTML objects.  Combined with the native SVG support of modern web browsers, it provides an extremely powerful and flexible low-level interface to creating interactive graphics on the web.  I've long wondered what it would take to write a D3 backend or frontend for matplotlib, but I'd never experimented with the idea. It was a couple weeks ago at <a href="http://seattle.beerandcode.org/">Seattle Beer &amp;&amp; Code</a> meetup that I chatted with some expert Javascript hackers who pointed out where I might start.</p>
+<p>I've been wondering for a while whether it might be possible to create a solution using D3.js.  D3 (short for <a href="http://d3js.org/">data-driven documents</a>) is a framework which facilitates the easy creation and manipulation of groups of HTML objects.  Combined with the native SVG support of modern web browsers, it provides an extremely powerful and flexible low-level interface to creating interactive graphics on the web.  I've long wondered what it would take to write a D3 backend or frontend for matplotlib, but I'd never experimented with the idea. It was a couple weeks ago at <a href="http://seattle.beerandcode.org/">Seattle Beer && Code</a> meetup that I chatted with some expert Javascript hackers who pointed out where I might start.</p>
 <p>I started to try things out, and over the course of a few late nights, came up with a first attempt at a partial interactive D3 viewer for matplotlib images: the result is the <code>mpld3</code> package, available on <a href="http://github.com/jakevdp/mpld3">my GitHub page</a>.</p>
 <!-- PELICAN_END_SUMMARY -->
 </div>
@@ -1414,68 +1413,55 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="A-First-Demo:-mpld3">A First Demo: <code>mpld3</code><a class="anchor-link" href="#A-First-Demo:-mpld3">&#182;</a></h2><p>The usage of <code>mpld3</code> is extremely simple: with it, we can simply create a matplotlib plot, call <code>display_d3</code>, and get an interactive result rendered using D3!  Here's a quick example: be sure to try panning and zooming the plot with your mouse.</p>
-
+<h2 id="A-First-Demo:-mpld3">A First Demo: <code>mpld3</code><a class="anchor-link" href="#A-First-Demo:-mpld3">¶</a></h2><p>The usage of <code>mpld3</code> is extremely simple: with it, we can simply create a matplotlib plot, call <code>display_d3</code>, and get an interactive result rendered using D3!  Here's a quick example: be sure to try panning and zooming the plot with your mouse.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpld3.display</span> <span class="k">import</span> <span class="n">display_d3</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
-        <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="s1">'or'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
-        <span class="s1">&#39;ob&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="s1">'ob'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;this is x&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;this is y&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Matplotlib Plot Rendered in D3!&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'this is x'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'this is y'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Matplotlib Plot Rendered in D3!'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
 <span class="n">display_d3</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    
-    <style>
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<style>
     
     div#figured3a49b0ad5cb4f5294b0636859a4b949
     .axesd3a49b0ad5cb4f5294b0636859a4b9491.axis line, .axesd3a49b0ad5cb4f5294b0636859a4b9491.axis path {
@@ -1547,10 +1533,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 
 
     </style>
-    
-    <div id='figured3a49b0ad5cb4f5294b0636859a4b949'></div>
-
-    <script type="text/javascript">
+<div id="figured3a49b0ad5cb4f5294b0636859a4b949"></div>
+<script type="text/javascript">
     funcd3a49b0ad5cb4f5294b0636859a4b949 = function(figure){
 
     var figwidth = 6.0 * 80;
@@ -1753,52 +1737,40 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
     // set a timeout of 0 to allow d3.js to load
     setTimeout(function(){ funcd3a49b0ad5cb4f5294b0636859a4b949(d3.select('#figured3a49b0ad5cb4f5294b0636859a4b949')) }, 0)
     </script>
-    
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-it-all-works">How it all works<a class="anchor-link" href="#How-it-all-works">&#182;</a></h2><p>So what exactly is the magic here?  We can take a look at what's going on under the hood by printing the html directly.  It's long, so we'll print just the first few lines:</p>
-
+<h2 id="How-it-all-works">How it all works<a class="anchor-link" href="#How-it-all-works">¶</a></h2><p>So what exactly is the magic here?  We can take a look at what's going on under the hood by printing the html directly.  It's long, so we'll print just the first few lines:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">mpld3</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">mpld3</span>
 <span class="n">html</span> <span class="o">=</span> <span class="n">mpld3</span><span class="o">.</span><span class="n">fig_to_d3</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-<span class="nb">print</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="mi">12</span><span class="p">])</span>
+<span class="nb">print</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)[:</span><span class="mi">12</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-    &lt;script type=&#34;text/javascript&#34; src=&#34;http://d3js.org/d3.v3.min.js&#34;&gt;&lt;/script&gt;
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     
-    &lt;style&gt;
+    <style>
     
     div#figuree09d25a157eb4ad5bd905939c03c3e30
     .axese09d25a157eb4ad5bd905939c03c3e301.axis line, .axese09d25a157eb4ad5bd905939c03c3e301.axis path {
@@ -1810,10 +1782,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1822,7 +1792,6 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 <p>You can download this notebook and print the full HTML to see more.</p>
 <p>The essential idea is this: matplotlib has a well-defined API with an <a href="http://matplotlib.org/api/index.html">abstract object structure</a> which is rendered to different formats (interactive displays, pdf, png, etc.) through specialized backends.  What I've done here is create a function which digs into the object structure of a matplotlib figure, sniffs out relevant information, and translates it into D3-powered vector graphics.  Having never used D3 before this week, I based it all on examples I found online (<a href="http://alignedleft.com/tutorials/d3/making-a-scatterplot">this</a>, <a href="http://jsfiddle.net/KSAbK/1/">that</a>, <a href="http://bl.ocks.org/weiglemc/6185069">and</a> <a href="http://stackoverflow.com/questions/15069959/d3-js-scatter-plot-zoom-drag-boundaries-zoom-buttons-reset-zoom-calculate-m">others</a>), which were extremely helpful in the process.</p>
 <p>Once that mapping of matplotlib object to D3-powered HTML/Javascript was complete, I tied the resulting HTML to the IPython's  <a href="http://nbviewer.ipython.org/github/ipython/ipython/blob/master/examples/notebooks/Part%205%20-%20Rich%20Display%20System.ipynb">rich display</a> hook, and the result is what you see above.</p>
-
 </div>
 </div>
 </div>
@@ -1830,8 +1799,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="What's-supported-and-what's-not">What's supported and what's not<a class="anchor-link" href="#What's-supported-and-what's-not">&#182;</a></h2><p>To be entirely fair, I should point out now that if you're expecting to take this and render your favorite matplotlib plot out-of-the-box, you're probably in for a disappointment.  The package is currently a limited proof-of-concept which works for a few of matplotlib's features; I'm hoping to add others with time (or better yet, let other contributors add to the library), but as of this posting only the following is supported:</p>
-<h4 id="Currently-Supported-Features">Currently Supported Features<a class="anchor-link" href="#Currently-Supported-Features">&#182;</a></h4><ul>
+<h2 id="What's-supported-and-what's-not">What's supported and what's not<a class="anchor-link" href="#What's-supported-and-what's-not">¶</a></h2><p>To be entirely fair, I should point out now that if you're expecting to take this and render your favorite matplotlib plot out-of-the-box, you're probably in for a disappointment.  The package is currently a limited proof-of-concept which works for a few of matplotlib's features; I'm hoping to add others with time (or better yet, let other contributors add to the library), but as of this posting only the following is supported:</p>
+<h4 id="Currently-Supported-Features">Currently Supported Features<a class="anchor-link" href="#Currently-Supported-Features">¶</a></h4><ul>
 <li>Defining figure sizes</li>
 <li>Adding axes of arbitrary extents (i.e. <code>plt.axes()</code>, <code>plt.subplot()</code>, etc.)</li>
 <li>Line plots with several plot styles (i.e. <code>plt.plot()</code>)</li>
@@ -1840,7 +1809,7 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 <li>xlabels, ylabels, titles, and text</li>
 </ul>
 <p>That's a small list out of a large number of features available.  Here are some of the future features to work on, to name a few:</p>
-<h4 id="Currently-Unsupported-Features">Currently Unsupported Features<a class="anchor-link" href="#Currently-Unsupported-Features">&#182;</a></h4><ul>
+<h4 id="Currently-Unsupported-Features">Currently Unsupported Features<a class="anchor-link" href="#Currently-Unsupported-Features">¶</a></h4><ul>
 <li>patches (i.e. shapes like histograms, etc.)</li>
 <li>polygons (filled plots, etc.)</li>
 <li>collections (scatter plots, etc.)</li>
@@ -1854,7 +1823,6 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 <li>legends and plot labels</li>
 </ul>
 <p>As you can see, there's a lot that's missing.  However, there's nothing fundamental keeping most of these from being added: it's just a matter of putting-in the coding hours.  I've tried to design the module so that it will be easy to extend; if you'd like to contribute, please take a look and try it out!  And, if you're reading this much past December 2013, I (and others) will hopefully have done some more work and implemented some more features.  Be sure to check the <a href="http://github.com/jakevdp/mpld3/">github repository</a> for updates.</p>
-
 </div>
 </div>
 </div>
@@ -1862,8 +1830,7 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="More-Examples">More Examples<a class="anchor-link" href="#More-Examples">&#182;</a></h2><p>The details out of the way, we can now take a look at a few more examples of what is possible here.  You'll see the lines, points, grids, and labels that are made possible in the current version of <code>mpld3</code>.  In each case, note the fact that we're not using any markup beyond the standard matplotlib syntax.  Throughout, I've tried to capture the relevant metadata and pass it on to the HTML-rendered plot:</p>
-
+<h2 id="More-Examples">More Examples<a class="anchor-link" href="#More-Examples">¶</a></h2><p>The details out of the way, we can now take a look at a few more examples of what is possible here.  You'll see the lines, points, grids, and labels that are made possible in the current version of <code>mpld3</code>.  In each case, note the fact that we're not using any markup beyond the standard matplotlib syntax.  Throughout, I've tried to capture the relevant metadata and pass it on to the HTML-rendered plot:</p>
 </div>
 </div>
 </div>
@@ -1871,45 +1838,35 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Multiple-Lines">Multiple Lines<a class="anchor-link" href="#Multiple-Lines">&#182;</a></h3>
+<h3 id="Multiple-Lines">Multiple Lines<a class="anchor-link" href="#Multiple-Lines">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="s2">&quot;Here are some curves&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Here are some curves"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
 <span class="n">display_d3</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    
-    <style>
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<style>
     
     div#figureb8bf736b9b07476a96e91cf22d3d3f23
     .axesb8bf736b9b07476a96e91cf22d3d3f231.axis line, .axesb8bf736b9b07476a96e91cf22d3d3f231.axis path {
@@ -2077,10 +2034,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 
 
     </style>
-    
-    <div id='figureb8bf736b9b07476a96e91cf22d3d3f23'></div>
-
-    <script type="text/javascript">
+<div id="figureb8bf736b9b07476a96e91cf22d3d3f23"></div>
+<script type="text/javascript">
     funcb8bf736b9b07476a96e91cf22d3d3f23 = function(figure){
 
     var figwidth = 6.0 * 80;
@@ -2341,60 +2296,46 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
     // set a timeout of 0 to allow d3.js to load
     setTimeout(function(){ funcb8bf736b9b07476a96e91cf22d3d3f23(d3.select('#figureb8bf736b9b07476a96e91cf22d3d3f23')) }, 0)
     </script>
-    
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Dots-and-Points">Dots and Points<a class="anchor-link" href="#Dots-and-Points">&#182;</a></h3>
+<h3 id="Dots-and-Points">Dots and Points<a class="anchor-link" href="#Dots-and-Points">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-        <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span>
-        <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="s1">'-o'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span>
+        <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">'lightgreen'</span><span class="p">,</span>
         <span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
         <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#EEEEEE&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#EEEEEE'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
 <span class="n">display_d3</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    
-    <style>
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<style>
     
     div#figuree3a56d30cf5e4081910b4dd2f6a947f1
     .axese3a56d30cf5e4081910b4dd2f6a947f11.axis line, .axese3a56d30cf5e4081910b4dd2f6a947f11.axis path {
@@ -2447,10 +2388,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 
 
     </style>
-    
-    <div id='figuree3a56d30cf5e4081910b4dd2f6a947f1'></div>
-
-    <script type="text/javascript">
+<div id="figuree3a56d30cf5e4081910b4dd2f6a947f1"></div>
+<script type="text/javascript">
     funce3a56d30cf5e4081910b4dd2f6a947f1 = function(figure){
 
     var figwidth = 6.0 * 80;
@@ -2617,64 +2556,50 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
     // set a timeout of 0 to allow d3.js to load
     setTimeout(function(){ funce3a56d30cf5e4081910b4dd2f6a947f1(d3.select('#figuree3a56d30cf5e4081910b4dd2f6a947f1')) }, 0)
     </script>
-    
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Moving-Window-Average">Moving Window Average<a class="anchor-link" href="#Moving-Window-Average">&#182;</a></h3>
+<h3 id="Moving-Window-Average">Moving Window Average<a class="anchor-link" href="#Moving-Window-Average">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
 
 <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="o">/</span> <span class="mf">25.</span>
-<span class="n">x_smooth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+<span class="n">x_smooth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'same'</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x_smooth</span><span class="p">,</span> <span class="s1">&#39;-k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;--k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x_smooth</span><span class="p">,</span> <span class="s1">'-k'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'--k'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">)</span>
 
 <span class="n">display_d3</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    
-    <style>
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<style>
     
     div#figure6e1d2713339141fea270bab0c3928c59
     .axes6e1d2713339141fea270bab0c3928c591.axis line, .axes6e1d2713339141fea270bab0c3928c591.axis path {
@@ -2765,10 +2690,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 
 
     </style>
-    
-    <div id='figure6e1d2713339141fea270bab0c3928c59'></div>
-
-    <script type="text/javascript">
+<div id="figure6e1d2713339141fea270bab0c3928c59"></div>
+<script type="text/javascript">
     func6e1d2713339141fea270bab0c3928c59 = function(figure){
 
     var figwidth = 6.0 * 80;
@@ -2931,29 +2854,25 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
     // set a timeout of 0 to allow d3.js to load
     setTimeout(function(){ func6e1d2713339141fea270bab0c3928c59(d3.select('#figure6e1d2713339141fea270bab0c3928c59')) }, 0)
     </script>
-    
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Subplots">Subplots<a class="anchor-link" href="#Subplots">&#182;</a></h3>
+<h3 id="Subplots">Subplots<a class="anchor-link" href="#Subplots">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># multiple subplots, adjusted for spacing</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># multiple subplots, adjusted for spacing</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 
@@ -2963,32 +2882,22 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;RGB = (</span><span class="si">{0:.2f}</span><span class="s2">, </span><span class="si">{1:.2f}</span><span class="s2">, </span><span class="si">{2:.2f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">),</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"RGB = (</span><span class="si">{0:.2f}</span><span class="s2">, </span><span class="si">{1:.2f}</span><span class="s2">, </span><span class="si">{2:.2f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">),</span>
                  <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
     
 <span class="n">display_d3</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    
-    <style>
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<style>
     
     div#figure3603b2400c444c8e8f59dcad0514e8c6
     .axes3603b2400c444c8e8f59dcad0514e8c61.axis line, .axes3603b2400c444c8e8f59dcad0514e8c61.axis path {
@@ -3194,10 +3103,8 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
 
 
     </style>
-    
-    <div id='figure3603b2400c444c8e8f59dcad0514e8c6'></div>
-
-    <script type="text/javascript">
+<div id="figure3603b2400c444c8e8f59dcad0514e8c6"></div>
+<script type="text/javascript">
     func3603b2400c444c8e8f59dcad0514e8c6 = function(figure){
 
     var figwidth = 8.0 * 80;
@@ -3798,30 +3705,23 @@ see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more inform
     // set a timeout of 0 to allow d3.js to load
     setTimeout(function(){ func3603b2400c444c8e8f59dcad0514e8c6(d3.select('#figure3603b2400c444c8e8f59dcad0514e8c6')) }, 0)
     </script>
-    
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>As I mentioned above, there is still a lot to be done to make this a truly useful tool for data exploration: right now, the list of usupported features alone likely dwarfs the size of the current code base! But as a proof-of-concept, I think this work is headed in the right direction.  I'm still not entirely convinced that a hacked approach like this should be preferred over a more bottom-up approach to interactive visualization, such as those being developed by the Bokeh and Plotly teams.  But if there's one thing I've learned in open source, it's that <a href="http://vcresearch.berkeley.edu/news/wresting-new-tricks-python-fernando-perez-wins-2012-award-advancement-free-software">afternoon hacks</a>, given time and talent, can turn into irreplaceable tools for scientific computing.  In the open, the truly useful hacks develop and evolve: all our most useful tools were started by someone, somewhere, who had a good idea and a bit of free time to try it out.  In open source work, we should never let the perfect be the enemy of the good.</p>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>As I mentioned above, there is still a lot to be done to make this a truly useful tool for data exploration: right now, the list of usupported features alone likely dwarfs the size of the current code base! But as a proof-of-concept, I think this work is headed in the right direction.  I'm still not entirely convinced that a hacked approach like this should be preferred over a more bottom-up approach to interactive visualization, such as those being developed by the Bokeh and Plotly teams.  But if there's one thing I've learned in open source, it's that <a href="http://vcresearch.berkeley.edu/news/wresting-new-tricks-python-fernando-perez-wins-2012-award-advancement-free-software">afternoon hacks</a>, given time and talent, can turn into irreplaceable tools for scientific computing.  In the open, the truly useful hacks develop and evolve: all our most useful tools were started by someone, somewhere, who had a good idea and a bit of free time to try it out.  In open source work, we should never let the perfect be the enemy of the good.</p>
 <p><em>This post was written entirely in the IPython notebook.  You can
 <a href="http://jakevdp.github.com/downloads/notebooks/mpld3Demo.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.com/downloads/notebooks/mpld3Demo.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -3851,6 +3751,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "A D3 Viewer for Matplotlib Visualizations"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/a-d3-viewer-for-matplotlib.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

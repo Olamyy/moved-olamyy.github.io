@@ -1397,7 +1397,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="(or,-Yes-You-Can-Fit-Models-With-More-Parameters-Than-Data-Points)">(or, Yes You Can Fit Models With More Parameters Than Data Points)<a class="anchor-link" href="#(or,-Yes-You-Can-Fit-Models-With-More-Parameters-Than-Data-Points)">&#182;</a></h2>
+<h2 id="(or,-Yes-You-Can-Fit-Models-With-More-Parameters-Than-Data-Points)">(or, Yes You Can Fit Models With More Parameters Than Data Points)<a class="anchor-link" href="#(or,-Yes-You-Can-Fit-Models-With-More-Parameters-Than-Data-Points)">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1406,7 +1406,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>An oft-repeated rule of thumb in any sort of statistical model fitting is "you can't fit a model with more parameters than data points".
 This idea appears to be as wide-spread as it is incorrect.
 On the contrary, if you construct your models carefully, <strong>you can fit models with more parameters than datapoints</strong>, and this is much more than mere trivia with which you can impress the nerdiest of your friends: as I will show here, this fact can prove to be very useful in real-world scientific applications.</p>
@@ -1424,23 +1423,22 @@ Finally, I'll discuss some practical examples of where such an underdetermined m
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Root-of-the-Model-Complexity-Myth">The Root of the Model Complexity Myth<a class="anchor-link" href="#The-Root-of-the-Model-Complexity-Myth">&#182;</a></h2><p>While the model complexity myth is not true in general, it is true in the specific case of simple linear models, which perhaps explains why the myth is so pervasive.
+<h2 id="The-Root-of-the-Model-Complexity-Myth">The Root of the Model Complexity Myth<a class="anchor-link" href="#The-Root-of-the-Model-Complexity-Myth">¶</a></h2><p>While the model complexity myth is not true in general, it is true in the specific case of simple linear models, which perhaps explains why the myth is so pervasive.
 In this section I first want to motivate the reason for the underdetermination issue in simple linear models, first from an intuitive view, and then from a more mathematical view.</p>
 <p>I'll start by defining some Python functions to create plots for the examples below; you can skip reading this code block for now:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Code to create figures</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Code to create figures</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">plot_simple_line</span><span class="p">():</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -1449,11 +1447,11 @@ In this section I first want to motivate the reason for the underdetermination i
     <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">xfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">yfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">xfit</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ok&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">yfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'ok'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">yfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">9.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
-             <span class="s2">&quot;y = </span><span class="si">{0:.2f}</span><span class="s2">x + </span><span class="si">{1:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">),</span>
-             <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">);</span>
+             <span class="s2">"y = </span><span class="si">{0:.2f}</span><span class="s2">x + </span><span class="si">{1:.2f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">),</span>
+             <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">);</span>
     
 <span class="k">def</span> <span class="nf">plot_underdetermined_fits</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">brange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
                               <span class="n">plot_conditioned</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1467,8 +1465,8 @@ In this section I first want to motivate the reason for the underdetermination i
         <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="n">b</span><span class="p">]])</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
         <span class="n">yfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">xfit</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">yfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#BBBBBB&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ok&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">yfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#BBBBBB'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'ok'</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">plot_conditioned</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -1477,7 +1475,7 @@ In this section I first want to motivate the reason for the underdetermination i
                                 <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
         <span class="n">Xfit</span> <span class="o">=</span> <span class="n">xfit</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">yfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Xfit</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">yfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">yfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">plot_underdetermined_line</span><span class="p">():</span>
     <span class="n">plot_underdetermined_fits</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -1489,17 +1487,15 @@ In this section I first want to motivate the reason for the underdetermination i
 <span class="k">def</span> <span class="nf">plot_conditioned_line</span><span class="p">():</span>
     <span class="n">plot_underdetermined_fits</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">plot_conditioned</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Fitting-a-Line-to-Data">Fitting a Line to Data<a class="anchor-link" href="#Fitting-a-Line-to-Data">&#182;</a></h3><p>The archetypical model-fitting problem is that of fitting a line to data:
+<h3 id="Fitting-a-Line-to-Data">Fitting a Line to Data<a class="anchor-link" href="#Fitting-a-Line-to-Data">¶</a></h3><p>The archetypical model-fitting problem is that of fitting a line to data:
 A straight-line fit is one of the simplest of linear models, and is usually specified by two parameters: the slope <em>m</em> and intercept <em>b</em>.
 For any observed value $x$, the model prediction for $y$ under the model $M$ is given by</p>
 <p>$$
@@ -1507,34 +1503,24 @@ y_M = m x + b
 $$</p>
 <p>for some particular choice of $m$ and $b$.
 Given $N$ obverved data points $\{x_i, y_i\}_{y=1}^N$, it is straightforward (see below) to compute optimal values for $m$ and $b$ which fit this data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_simple_line</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_simple_line</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXUAAAEECAYAAADXg6SsAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlUVGeePvCnRFlUdlFDIQgqiiCylEtslVVC3GIcLadN
 TqJMn5ws5iT2EpP0LzEdO50202RrNTqZAWOfnDOQ1pjYndEMLiRt0pFbBaKlIiiLiliCrGIVFHV/
@@ -1733,15 +1719,11 @@ t29HaGio4Z9RGzduRFxcnI0rs60LFy7gyJEj2LZtm61LsZmqqirs27cPOp0OkyZNwrPPPuuyN0u/
 +OILFBYWQiKRIDw8HE8//TRGjx6R2dc29/777+PixYtoaWmBn58f5HI55s2bZ9KURrYJICJyIrxR
 SkTkRBjqREROhKFOROREGOpERE6EoU5E5EQY6kREToShTkTkRBjqRERO5P8DwQUFv/3+YEgAAAAA
 SUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1749,34 +1731,24 @@ SUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The simple line-plus-intercept is a two-parameter model, and it becomes underdetermined when fitting it to fewer than two datapoints.
 This is easy to understand intuitively: after all, you can draw any number of perfectly-fit lines through a single data point:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_underdetermined_line</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_underdetermined_line</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEECAYAAAAmiP8hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnWuMa+dV/h/b27ft7e373M+ca9qGQW2R0qqo4dJQ9QME
 lEowIvlQKJdIDailqICIVKgUVVFTpRdEW6RKtEARcCJB4QPqh6ot/dBKaSEFNA2Uk5xzcs7cfPf2
@@ -2113,22 +2085,17 @@ RiwWO+/Dmhgf/OAHYVmWWDBZtH66stGdqqrC6G6eeemll7rSK9/73vee9yFNlM985jN4+eWXUa1W
 EYvFsL29jXe9613nfVgT4X/+53/wp3/6p9jc3ITH4wEAPPHEE3jrW996zkc2GV577TV87nOfg+M4
 cF0XP/3TP41f+qVf6rvtTAk9wzAMM3lmKnTDMAzDTB4WeoZhmAWHhZ5hGGbBYaFnGIZZcFjoGYZh
 FhwWeoZhmAWHhZ5hGGbBYaFnGIZZcP4fs6SDphj8S5AAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The single point simply isn't enough to pin-down both a slope and an intercept, and the model has no unique solution.</p>
-
 </div>
 </div>
 </div>
@@ -2136,7 +2103,7 @@ FhwWeoZhmAWHhZ5hGGbBYaFnGIZZcP4fs6SDphj8S5AAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Fitting-a-More-General-Linear-Model">Fitting a More General Linear Model<a class="anchor-link" href="#Fitting-a-More-General-Linear-Model">&#182;</a></h3><p>While it's harder to see intuitively, this same notion extends to simple linear models with more terms.
+<h3 id="Fitting-a-More-General-Linear-Model">Fitting a More General Linear Model<a class="anchor-link" href="#Fitting-a-More-General-Linear-Model">¶</a></h3><p>While it's harder to see intuitively, this same notion extends to simple linear models with more terms.
 For example, let's think consider fitting a general cubic curve to data.
 In this case our model is</p>
 <p>$$
@@ -2145,34 +2112,24 @@ $$</p>
 <p>Note that this is still a linear model: the "linear" refers to the linearity of model parameters $\theta$ rather than linearity of the dependence on the data $x$.
 Our cubic model is a four-parameter linear model, and just as a two-parameter model is underdetermined for fewer than two points, a four-parameter model is underdetermined for fewer than four points.
 For example, here are some of the possible solutions of the cubic model fit to three randomly-chosen points:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_underdetermined_cubic</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_underdetermined_cubic</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYIAAAEECAYAAAAlEzNMAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnUmsLFd9/781dFVP1fPcfXu4188Y3iIBWSKKIyGILWXY
 ICEsRUqU4EhINkJkQ1CIEiULEgECEZJAhIzN2lkkWWSBzCpREAsHW4leDPYdep7nsaq6hv/i/c9x
@@ -2561,22 +2518,17 @@ E1y6dAmtra0Apor0aQX7rMDI709z4sQJPProo5ZaPmokvnPnzuHChQuQJAlbtmzB008/Xc4mF2S2
 +BRFwYkTJxAIBJDJZLB9+3Zs3LixzK025tixY/jrr7+gKArcbjeef/55qKoKoDL6ltniK7RvYYkJ
 IqIqZ/rJYiIiKi0mAiKiKsdEQERU5ZgIiIiqHBMBEVGVYyIgIqpyTARERFWOiYCIqMr9D8jnz+td
 /VOYAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For any such simple linear model, an underdetermined system will lead to a similar result: an infinite set of best-fit solutions.</p>
-
 </div>
 </div>
 </div>
@@ -2584,7 +2536,7 @@ IqIqZ/rJYiIiKi0mAiKiKsdEQERU5ZgIiIiqHBMBEVGVYyIgIqpyTARERFWOiYCIqMr9D8jnz+td
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-Mathematics-of-Underdetermined-Models">The Mathematics of Underdetermined Models<a class="anchor-link" href="#The-Mathematics-of-Underdetermined-Models">&#182;</a></h3><p>To make more progress here, let's quickly dive into the mathematics behind these linear models.
+<h3 id="The-Mathematics-of-Underdetermined-Models">The Mathematics of Underdetermined Models<a class="anchor-link" href="#The-Mathematics-of-Underdetermined-Models">¶</a></h3><p>To make more progress here, let's quickly dive into the mathematics behind these linear models.
 Going back to the simple straight-line fit, we have our model</p>
 <p>$$
 y_M(x~|~\theta) = \theta_0 + \theta_1 x
@@ -2595,7 +2547,6 @@ For reasons I'll not discuss here, this is usually done by minimizing the sum of
 <p>$$
 \chi^2 = \sum_{n=1}^N [y_n - y_M(x_n~|~\theta)]^2
 $$</p>
-
 </div>
 </div>
 </div>
@@ -2611,10 +2562,10 @@ $$</p>
 <p>$$
 X = \left[
 \begin{array}{ll}
- 1 &amp; x_1 \\
- 1 &amp; x_2 \\
- \vdots &amp;\vdots \\
- 1 &amp; x_N \\
+ 1 & x_1 \\
+ 1 & x_2 \\
+ \vdots &\vdots \\
+ 1 & x_N \\
 \end{array}
 \right]
 $$</p>
@@ -2626,7 +2577,6 @@ $$</p>
 <p>$$
 \chi^2 = (y - X\theta)^T(y - X\theta)
 $$</p>
-
 </div>
 </div>
 </div>
@@ -2647,15 +2597,14 @@ For example, the cubic model considered above requires only a larger design matr
 <p>$$
 X = \left[
 \begin{array}{llll}
- 1 &amp; x_1 &amp; x_1^2 &amp; x_1^3\\
- 1 &amp; x_2 &amp; x_2^2 &amp; x_2^3\\
- \vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
- 1 &amp; x_N &amp; x_N^2 &amp; x_N^3\\
+ 1 & x_1 & x_1^2 & x_1^3\\
+ 1 & x_2 & x_2^2 & x_2^3\\
+ \vdots & \vdots & \vdots & \vdots\\
+ 1 & x_N & x_N^2 & x_N^3\\
 \end{array}
 \right]
 $$</p>
 <p>The added model complexity is completely encapsulated in the design matrix, and the expression to compute $\hat{\theta}_{MLE}$ from $X$ is unchanged!</p>
-
 </div>
 </div>
 </div>
@@ -2663,117 +2612,100 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Why-Underdetermined-Models-Break">Why Underdetermined Models Break<a class="anchor-link" href="#Why-Underdetermined-Models-Break">&#182;</a></h3><p>Taking a look at this Maximum Likelihood solution for $\theta$, we see that there is only one place that it might go wrong: the inversion of the matrix $X^T X$.
+<h3 id="Why-Underdetermined-Models-Break">Why Underdetermined Models Break<a class="anchor-link" href="#Why-Underdetermined-Models-Break">¶</a></h3><p>Taking a look at this Maximum Likelihood solution for $\theta$, we see that there is only one place that it might go wrong: the inversion of the matrix $X^T X$.
 If this matrix is not invertible (i.e. if it is a singular matrix) then the maximum likelihood solution will not be well-defined.</p>
 <p>The number of rows in $X$ corresponds to the number of data points, and the number of columns in $X$ corresponds to the number of parameters in the model.
 It turns out that a matrix $C = X^TX$ will <em>always</em> be singular if $X$ has fewer rows than columns, and this is the source of the problem.
 For underdetermined models, $X^TX$ is a singular matrix, and so the maximum likelihood fit is not well-defined.</p>
 <p>Let's take a look at this in the case of fitting a line to the single point shown above, $(x=0.37, y=0.95)$.
 For this value of $x$, here is the design matrix:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">]])</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">]])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use this to compute the <em>normal matrix</em>, which is the standard name for $X^TX$:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we try to invert this, we will get an error telling us the matrix is singular:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_text output_error">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">LinAlgError</span>                               Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-7-a6d66d9f99af&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>inv<span class="ansi-blue-fg">(</span>C<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg"><ipython-input-7-a6d66d9f99af></span> in <span class="ansi-cyan-fg"><module></span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----> 1</span><span class="ansi-red-fg"> </span>np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>inv<span class="ansi-blue-fg">(</span>C<span class="ansi-blue-fg">)</span>
 
 <span class="ansi-green-fg">/Users/jakevdp/anaconda/envs/py34/lib/python3.4/site-packages/numpy/linalg/linalg.py</span> in <span class="ansi-cyan-fg">inv</span><span class="ansi-blue-fg">(a)</span>
-<span class="ansi-green-intense-fg ansi-bold">    518</span>     signature <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;D-&gt;D&#39;</span> <span class="ansi-green-fg">if</span> isComplexType<span class="ansi-blue-fg">(</span>t<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">else</span> <span class="ansi-blue-fg">&#39;d-&gt;d&#39;</span>
+<span class="ansi-green-intense-fg ansi-bold">    518</span>     signature <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">'D->D'</span> <span class="ansi-green-fg">if</span> isComplexType<span class="ansi-blue-fg">(</span>t<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">else</span> <span class="ansi-blue-fg">'d->d'</span>
 <span class="ansi-green-intense-fg ansi-bold">    519</span>     extobj <span class="ansi-blue-fg">=</span> get_linalg_error_extobj<span class="ansi-blue-fg">(</span>_raise_linalgerror_singular<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 520</span><span class="ansi-red-fg">     </span>ainv <span class="ansi-blue-fg">=</span> _umath_linalg<span class="ansi-blue-fg">.</span>inv<span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">,</span> signature<span class="ansi-blue-fg">=</span>signature<span class="ansi-blue-fg">,</span> extobj<span class="ansi-blue-fg">=</span>extobj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--> 520</span><span class="ansi-red-fg">     </span>ainv <span class="ansi-blue-fg">=</span> _umath_linalg<span class="ansi-blue-fg">.</span>inv<span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">,</span> signature<span class="ansi-blue-fg">=</span>signature<span class="ansi-blue-fg">,</span> extobj<span class="ansi-blue-fg">=</span>extobj<span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">    521</span>     <span class="ansi-green-fg">return</span> wrap<span class="ansi-blue-fg">(</span>ainv<span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span>result_t<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">    522</span> 
 
 <span class="ansi-green-fg">/Users/jakevdp/anaconda/envs/py34/lib/python3.4/site-packages/numpy/linalg/linalg.py</span> in <span class="ansi-cyan-fg">_raise_linalgerror_singular</span><span class="ansi-blue-fg">(err, flag)</span>
 <span class="ansi-green-intense-fg ansi-bold">     88</span> 
 <span class="ansi-green-intense-fg ansi-bold">     89</span> <span class="ansi-green-fg">def</span> _raise_linalgerror_singular<span class="ansi-blue-fg">(</span>err<span class="ansi-blue-fg">,</span> flag<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 90</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">raise</span> LinAlgError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Singular matrix&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---> 90</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">raise</span> LinAlgError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">"Singular matrix"</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     91</span> 
 <span class="ansi-green-intense-fg ansi-bold">     92</span> <span class="ansi-green-fg">def</span> _raise_linalgerror_nonposdef<span class="ansi-blue-fg">(</span>err<span class="ansi-blue-fg">,</span> flag<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
 <span class="ansi-red-fg">LinAlgError</span>: Singular matrix</pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Evidently, if we want to fix the underdetermined model, we'll need to figure out how to modify the normal matrix so it is no longer singular.</p>
-
 </div>
 </div>
 </div>
@@ -2781,119 +2713,87 @@ For this value of $x$, here is the design matrix:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Fixing-an-Underdetermined-Model:-Conditioning">Fixing an Underdetermined Model: Conditioning<a class="anchor-link" href="#Fixing-an-Underdetermined-Model:-Conditioning">&#182;</a></h3><p>One easy way to make a singular matrix invertible is to <em>condition</em> it: that is, you add to it some multiple of the identity matrix before performing the inversion (in many ways this is equivalent to "fixing" a divide-by-zero error by adding a small value to the denominator).
+<h3 id="Fixing-an-Underdetermined-Model:-Conditioning">Fixing an Underdetermined Model: Conditioning<a class="anchor-link" href="#Fixing-an-Underdetermined-Model:-Conditioning">¶</a></h3><p>One easy way to make a singular matrix invertible is to <em>condition</em> it: that is, you add to it some multiple of the identity matrix before performing the inversion (in many ways this is equivalent to "fixing" a divide-by-zero error by adding a small value to the denominator).
 Mathematically, that looks like this:</p>
 <p>$$
 C = X^TX + \sigma I
 $$</p>
 <p>For example, by adding $\sigma = 10^{-3}$ to the diagonal of the normal matrix, we condition the matrix so that it can be inverted:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cond</span> <span class="o">=</span> <span class="mf">1E-3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">cond</span> <span class="o">=</span> <span class="mf">1E-3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">C</span> <span class="o">+</span> <span class="n">cond</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[ 121.18815362, -325.16038316],
        [-325.16038316,  879.69065823]])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Carrying this conditioned inverse through the computation, we get the following intercept and slope for our underdetermined problem:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">C</span> <span class="o">+</span> <span class="n">cond</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">C</span> <span class="o">+</span> <span class="n">cond</span><span class="p">,</span>
                        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.95</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conditioned best-fit model:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y = </span><span class="si">{0:.3f}</span><span class="s2"> x + </span><span class="si">{1:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Conditioned best-fit model:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"y = </span><span class="si">{0:.3f}</span><span class="s2"> x + </span><span class="si">{1:.3f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Conditioned best-fit model:
 y = 0.309 x + 0.835
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_conditioned_line</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_conditioned_line</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEECAYAAAAmiP8hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztvWuMY3d9//8+9vHdPr7PfWevAdKpgEoB0ZJekiIetGkV
 pHbV5AEtvUSCVlAq2qqpaJEiFBEUCFKBn4QEtKVqu5EK6oOKB4jbA6gCbWirISXdZHezO7M7vvv4
@@ -3235,15 +3135,11 @@ rK6u4g/+4A8Qj8dPe7emxgc/+EGYpikWTJatn65sdBcOh4XR3SLz4osv9qRXvuc97zntXZoqzz33
 HF566SXUajXE43FcvnwZDz300Gnv1lT43//9X/z1X/81tre3oSgKAODxxx/HW9/61lPes+nw2muv
 4bOf/Sxs24bjOPiFX/gF/Pqv/3rfbedK6BmGYZjpM1ehG4ZhGGb6sNAzDMMsOSz0DMMwSw4LPcMw
 zJLDQs8wDLPksNAzDMMsOSz0DMMwSw4LPcMwzJLz/wHFnWc4n36lxgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3252,7 +3148,6 @@ zJLDQs8wDLPksNAzDMMsOSz0DMMwSw4LPcMwzJLz/wHFnWc4n36lxgAAAABJRU5ErkJggg==
 <p>This conditioning caused the model to settle on a particular one of the infinite possibilities for a perfect fit to the data.
 Numerically we have fixed our issue, but this arbitrary conditioning is more than a bit suspect: why is this particular result chosen, and what does it actually mean in terms of our model fit?
 In the next two sections, we will briefly discuss the meaning of this conditioning term from both a frequentist and Bayesian perspective.</p>
-
 </div>
 </div>
 </div>
@@ -3260,7 +3155,7 @@ In the next two sections, we will briefly discuss the meaning of this conditioni
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Frequentist-Conditioning:-Regularization">Frequentist Conditioning: Regularization<a class="anchor-link" href="#Frequentist-Conditioning:-Regularization">&#182;</a></h2><p>In a frequentist approach, this type of conditioning is known as <em>regularization</em>.
+<h2 id="Frequentist-Conditioning:-Regularization">Frequentist Conditioning: Regularization<a class="anchor-link" href="#Frequentist-Conditioning:-Regularization">¶</a></h2><p>In a frequentist approach, this type of conditioning is known as <em>regularization</em>.
 Regularization is motivated by a desire to penalize large values of model parameters.
 For example, in the underdetermined fit above (with $(x, y) = (0.37, 0.95)$), you could fit the data perfectly with a slope of one billion and an intercept near negative 370 million, but in most real-world applications this would be a silly fit.
 To prevent this sort of canceling parameter divergence, in a frequentist setting you can "regularize" the model by adding a penalty term to the $\chi^2$; one popular choice is a penalty term proportional to the sum of squares of the model parameters themselves:</p>
@@ -3281,7 +3176,6 @@ That is, regulariation of this form is nothing more than a simple conditioning o
 The result of this conditioning is to push the absolute values of the parameters toward zero, and in the process make an ill-defined problem solvable.</p>
 <p>I'll add that the above form of regularization is known variably as <em>L2-regularization</em> or <em>Ridge Regularization</em>, and is only one of the possible regularization approaches.
 Another useful form of regularization is <em>L1-regularization,</em> also known as <em>Lasso Regularization</em>, which has the interesting property that it favors sparsity in the model.</p>
-
 </div>
 </div>
 </div>
@@ -3289,7 +3183,7 @@ Another useful form of regularization is <em>L1-regularization,</em> also known 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Bayesian-Conditioning:-Priors">Bayesian Conditioning: Priors<a class="anchor-link" href="#Bayesian-Conditioning:-Priors">&#182;</a></h2><p>Regularization illuminates the meaning of matrix conditioning, but it still sometimes seems like a bit of black magic.
+<h2 id="Bayesian-Conditioning:-Priors">Bayesian Conditioning: Priors<a class="anchor-link" href="#Bayesian-Conditioning:-Priors">¶</a></h2><p>Regularization illuminates the meaning of matrix conditioning, but it still sometimes seems like a bit of black magic.
 What does this penalization of model parameters within the $\chi^2$ actually mean?
 Here, we can make progress in understanding the problem by examining regularization from a Bayesian perspective.</p>
 <p>As I pointed out in my <a href="http://jakevdp.github.io/blog/2014/03/11/frequentism-and-bayesianism-a-practical-intro/">series of posts</a> on Frequentism and Bayesianism, for many simple problems, the frequentist likelihood (proportional to the negative exponent of the $\chi^2$) is equivalent to the Bayesian posterior (albeit with a subtlely but fundamentally different interpretation).</p>
@@ -3308,7 +3202,6 @@ P(D~|~\theta, M) \propto \exp[-\chi^2]\\
 P(\theta~|~M)  \propto 1
 $$</p>
 <p>That is, the simple frequentist likelihood is equivalent to the Bayesian posterior for the model with an implicit flat prior on $\theta$.</p>
-
 </div>
 </div>
 </div>
@@ -3329,34 +3222,24 @@ $$</p>
 This insight lifts the cover off the black box of regularization, and reveals that it is simply a roundabout way of adding a Bayesian prior within a frequentist paradigm.
 The stronger the regularization, the narrower the implicit Gaussian prior is.</p>
 <p>Returning to our single-point example above, we can quickly see how this intuition explains the particular model chosen by the regularized fit; it is equivalent to fitting the line while taking into account prior knowledge that both the intercept and slope should be near zero:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_conditioned_line</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_conditioned_line</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEECAYAAAAmiP8hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztvWuMY3d9//8+9vHdPr7PfWevAdKpgEoB0ZJekiIetGkV
 pHbV5AEtvUSCVlAq2qqpaJEiFBEUCFKBn4QEtKVqu5EK6oOKB4jbA6gCbWirISXdZHezO7M7vvv4
@@ -3698,15 +3581,11 @@ rK6u4g/+4A8Qj8dPe7emxgc/+EGYpikWTJatn65sdBcOh4XR3SLz4osv9qRXvuc97zntXZoqzz33
 HF566SXUajXE43FcvnwZDz300Gnv1lT43//9X/z1X/81tre3oSgKAODxxx/HW9/61lPes+nw2muv
 4bOf/Sxs24bjOPiFX/gF/Pqv/3rfbedK6BmGYZjpM1ehG4ZhGGb6sNAzDMMsOSz0DMMwSw4LPcMw
 zJLDQs8wDLPksNAzDMMsOSz0DMMwSw4LPcMwzJLz/wHFnWc4n36lxgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3716,7 +3595,6 @@ zJLDQs8wDLPksNAzDMMsOSz0DMMwSw4LPcMwzJLz/wHFnWc4n36lxgAAAABJRU5ErkJggg==
 For example, what if you have reason to believe your slope is near 1, but have no prior information on your intercept?
 In the Bayesian approach, it is easy to add such information to your model in a rigorous way.</p>
 <p>But regardless of which approach you use, this central fact remains clear: you <strong>can</strong> fit models with more parameters than data points, if you restrict your parameter space through the use of frequentist regularization or Bayesian priors.</p>
-
 </div>
 </div>
 </div>
@@ -3724,9 +3602,8 @@ In the Bayesian approach, it is easy to add such information to your model in a 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Underdetermined-Models-in-Action">Underdetermined Models in Action<a class="anchor-link" href="#Underdetermined-Models-in-Action">&#182;</a></h2><p>There are a few places where these ideas about underdetermined models come up in real life.
+<h2 id="Underdetermined-Models-in-Action">Underdetermined Models in Action<a class="anchor-link" href="#Underdetermined-Models-in-Action">¶</a></h2><p>There are a few places where these ideas about underdetermined models come up in real life.
 I'll briefly discuss a couple of them here, and then walk through the solution of a simple (but rather interesting) problem that demonstrates these ideas.</p>
-
 </div>
 </div>
 </div>
@@ -3734,40 +3611,30 @@ I'll briefly discuss a couple of them here, and then walk through the solution o
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Compressed-Sensing:-Image-Reconstruction">Compressed Sensing: Image Reconstruction<a class="anchor-link" href="#Compressed-Sensing:-Image-Reconstruction">&#182;</a></h3><p>One area where underdetermined models are often used is in the area of <em>Compressed Sensing</em>.
+<h3 id="Compressed-Sensing:-Image-Reconstruction">Compressed Sensing: Image Reconstruction<a class="anchor-link" href="#Compressed-Sensing:-Image-Reconstruction">¶</a></h3><p>One area where underdetermined models are often used is in the area of <em>Compressed Sensing</em>.
 Compressed sensing comprises a set of models in which underdetermined linear systems are solved using a sparsity prior,
 the classic example of which is the reconstruction of a full image from just a handful of its pixels.
 As a simple linear model this would fail, because there are far more unknown pixels than known pixels.
 But by carefully training a model on the structure of typical images and applying priors based on sparsity, this seemingly impossible problem becomes tractable.
 This <a href="http://www.wired.com/2010/02/ff_algorithm/">2010 Wired article</a> has a good popular-level discussion of the technique and its applications, and includes this image showing how a partially-hidden input image can be iteratively reconstructed from a handful of pixels using a sparsity prior:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span>
-<span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://www.wired.com/magazine/wp-content/images/18-03/ff_algorithm2_f.jpg&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="s1">'http://www.wired.com/magazine/wp-content/images/18-03/ff_algorithm2_f.jpg'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
 <div class="output_jpeg output_subarea output_execute_result">
 <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAANgAA/+4ADkFkb2JlAGTAAAAAAf/b
 AIQABwUFBQYFBwYGBwsHBgcLDAkHBwkMDgwMDAwMDhEMDAwMDAwRDhEREhERDhYWFxcWFiAfHx8g
@@ -4551,27 +4418,22 @@ oAf45JimUYXiKMa9/hH9cVUdQWzNq31h2CU3+AH7viGKhFaGJP0Un1l36H0eSDkU/Y5fFtkQkrrg
 Qb+o7D5ID+thhQn35YjVh5z079EFmuPU/eBgFX0f928zVtuOE8kh9Tmm9OvbKGbFvzQGln8s9aGq
 sVteK+gyqGcT819LgrFQTzp3yUOaDyeDeSh/uBufUd/R9QejVBU+P7WWHmxDXm9bE+XF+uuwl9Zf
 qhVAW518Cw/Z64pez/kn6v8AghfUr/vRJwr4UXKJ82UeT0PIMlnwfWP+LOHv9mv3dcVf/9k=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Kernel-based-Methods:-Gaussian-Processes">Kernel-based Methods: Gaussian Processes<a class="anchor-link" href="#Kernel-based-Methods:-Gaussian-Processes">&#182;</a></h3><p>Another area where a classically underdetermined model is solved is in the case of <em>Gaussian Process Regression</em>.
+<h3 id="Kernel-based-Methods:-Gaussian-Processes">Kernel-based Methods: Gaussian Processes<a class="anchor-link" href="#Kernel-based-Methods:-Gaussian-Processes">¶</a></h3><p>Another area where a classically underdetermined model is solved is in the case of <em>Gaussian Process Regression</em>.
 Gaussian Processes are an interesting beast, and one way to view them is that rather than fitting, say, a two-parameter line or four-parameter cubic curve, they actually fit an <em>infinite-dimensional</em> model to data!
 They accomplish this by judicious use of certain priors on the model, along with a so-called "kernel trick" which solves the infinite dimensional regression implicitly using a finite-dimensional representation constructed based on these priors.</p>
 <p>In my opinion, the best resource to learn more about Gaussian Process methods is the <a href="http://www.gaussianprocess.org/gpml/">Gaussian Processes for Machine Learning</a> book, which is available for free online (though it is a bit on the technical side).
 You might also take a look at the <a href="http://scikit-learn.org/stable/modules/gaussian_process.html">scikit-learn Gaussian Process</a> documentation.
 If you'd like to experiment with a fast and flexible Gaussian Process implementation in Python, check out the <a href="http://dan.iel.fm/george/current/"><code>george</code></a> library.</p>
-
 </div>
 </div>
 </div>
@@ -4579,7 +4441,7 @@ If you'd like to experiment with a fast and flexible Gaussian Process implementa
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Imperfect-Detectors:-Extrasolar-Planets">Imperfect Detectors: Extrasolar Planets<a class="anchor-link" href="#Imperfect-Detectors:-Extrasolar-Planets">&#182;</a></h3><p>Another place I've seen effective use of the above ideas is in situations where the data collection process has unavoidable imperfections or biases.
+<h3 id="Imperfect-Detectors:-Extrasolar-Planets">Imperfect Detectors: Extrasolar Planets<a class="anchor-link" href="#Imperfect-Detectors:-Extrasolar-Planets">¶</a></h3><p>Another place I've seen effective use of the above ideas is in situations where the data collection process has unavoidable imperfections or biases.
 There are two basic ways forward when working with such noisy and biased data:</p>
 <ul>
 <li>you can pre-process the data to try to remove and/or correct data imperfections, and then fit a conventional model to the corrected data.</li>
@@ -4587,7 +4449,6 @@ There are two basic ways forward when working with such noisy and biased data:</
 </ul>
 <p>If you'd like to see a great example of this style of forward-modeling analysis, check out the efforts of David Hogg's group in finding extrasolar planets in the Kepler survey's K2 data; there's a <a href="http://astrobites.org/2015/02/23/no-need-for-de-trending-finding-exoplanets-in-k2/">nice astrobytes post</a> which summarizes some of these results.
 While the group hasn't yet published any results based on truly underdetermined models, it is easy to imagine how this style of comprehensive forward-modeling analysis could be pushed to such an extreme.</p>
-
 </div>
 </div>
 </div>
@@ -4595,46 +4456,36 @@ While the group hasn't yet published any results based on truly underdetermined 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Example:-Fitting-a-Model-to-Biased-Data">Example: Fitting a Model to Biased Data<a class="anchor-link" href="#Example:-Fitting-a-Model-to-Biased-Data">&#182;</a></h3><p>While it might be fun to dive into the details of models for noisy exoplanet searches, I'll defer that to the experts.
+<h3 id="Example:-Fitting-a-Model-to-Biased-Data">Example: Fitting a Model to Biased Data<a class="anchor-link" href="#Example:-Fitting-a-Model-to-Biased-Data">¶</a></h3><p>While it might be fun to dive into the details of models for noisy exoplanet searches, I'll defer that to the experts.
 Instead, as a more approachable example of an underdetermined model, I'll <a href="http://jakevdp.github.io/blog/2014/06/06/frequentism-and-bayesianism-2-when-results-differ/">revisit</a> a toy example in which a classically underdetermined model is used to account for imperfections in the input data.</p>
 <p>Imagine you have some observed data you would like to model, but you know that your detector is flawed such that some observations (you don't know which) will have a bias that is not reflected in the estimated error: in short, there are outliers in your data.
 How can you fit a model to this data while accounting for the possibility of such outliers?</p>
 <p>To make this more concrete, consider the following data, which is drawn from a line with noise, and includes several outliers:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">theta</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">dy</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">y</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">15</span>
 <span class="n">y</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">10</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'ok'</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAEECAYAAADEVORYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAFsNJREFUeJzt3W1sU+cZxvHLJAvhxUkwgxoHEkxpN+aNFyWwTtnUwiLU
 baBB1Vkje0026IBqAqnbukhk1aIKQZcAEi9FWeOt0j4sfGimaVMneaWsgk5AoOpkaDXU2IM6NCKE
@@ -4739,31 +4590,26 @@ w0b3YkR5ebleffVVSdKpU6e0evXqCfdPiztyL168OOqSzc2bN9tdki3eeust/eIXv1BJSUnsa1pV
 VZVWrlxpc2X2unTpkv74xz/qZz/7md2l2CYcDuv48eMaHBzUfffdpx07dhh7MvcPf/iDTp06JYfD
 Ia/Xqx/96EfKzbX99GRKHDx4UJcvX1Zvb6+Kiork9/u1evXqhC7ZTIvQBwCkhu3TOwCA1CH0AcAg
 hD4AGITQBwCDEPoAYBBCHwAMQugDgEEIfQAwyP8AWtlIK7F+PpcAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we try to fit a line using the standard $\chi^2$ minimization approach, we will find an obviously biased result:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
 
 <span class="k">def</span> <span class="nf">chi2</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="n">dy</span><span class="p">):</span>
     <span class="n">y_model</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span>
@@ -4772,27 +4618,18 @@ hD4AGITQBwCDEPoAYBBCHwAMQugDgEEIfQAwyP8AWtlIK7F+PpcAAAAASUVORK5CYII=
 <span class="n">theta1</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fmin</span><span class="p">(</span><span class="n">chi2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">xfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">xfit</span><span class="p">,</span> <span class="s1">&#39;-k&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Standard $\chi^2$ Minimization&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'ok'</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">xfit</span><span class="p">,</span> <span class="s1">'-k'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Standard $\chi^2$ Minimization'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAEUCAYAAADHgubDAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt4U/X9B/B32tIbppeUtEkKLeUOgRZsQaFCAaPzAhs6
 140qQqswCm6TzZ+XMhBljoEWRAXkWnVP3Sw+UnU63aqAjMuAAnOLqCu0FegNeufS1Lbn9wfraUPT
@@ -4962,15 +4799,11 @@ XIPBgP/+979obGyEIAiKbotWCQkJ2LdvHwBg//79mDhxYpfru8Q0DCdPnrS6ZPO+++6TuyRZfP31
 Mvf999/H/v37oVKpEBMTg8WLF8PHR/bTk07x8ssv4/Tp06irq0NISAiSk5MxceJEuy7ZdInQJyIi
 55C9e4eIiJyHoU9EpCAMfSIiBWHoExEpCEOfiEhBGPpERArC0CciUpD/B9ddHFaeMhX1AAAAAElF
 TkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4983,7 +4816,6 @@ If it is an outlier, we use the standard model likelihood; if not, we use a like
 The result for our straight-line fit will be a model with $N + 2$ parameters, where $N$ is the number of data points.
 An overzealous application of lessons from simple linear models might lead you to believe this model can't be solved.
 But, if carefully constructed, it can! Let's see how it can be done.</p>
-
 </div>
 </div>
 </div>
@@ -5004,7 +4836,6 @@ $$</p>
 L_{out, i}(D~|~\theta) = \frac{1}{\sqrt{2\pi \sigma_y^2}} \exp\frac{-[y_i - y_M(x_i~|~\theta)]^2}{2 \sigma_y^2}
 $$</p>
 <p>where $\sigma_y$ is the standard deviation of the $y$ data: note that the only difference between the "inlier" and "outlier" likelihood is the width of the Gaussian distribution.</p>
-
 </div>
 </div>
 </div>
@@ -5022,7 +4853,6 @@ $$</p>
 P(g) = \exp\left[-\sum_i g_i\right]
 $$</p>
 <p>where, recall, $g_i \in \{0, 1\}$.</p>
-
 </div>
 </div>
 </div>
@@ -5034,23 +4864,22 @@ $$</p>
 To fit this, I'll make use of the excellent <a href="http://dan.iel.fm/emcee/current/"><code>emcee</code> package</a>.
 Because emcee doesn't have categorical variables, we'll instead allow $g_i$ to range continuously between 0 and 1, so that any single point will be some mixture of "outlier" and "inlier".</p>
 <p>We start by defining a function which computes the log-posterior given the data and model parameters, using some computational tricks for the sake of floating-point accuracy:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># theta will be an array of length 2 + N, where N is the number of points</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># theta will be an array of length 2 + N, where N is the number of points</span>
 <span class="c1"># theta[0] is the intercept, theta[1] is the slope,</span>
 <span class="c1"># and theta[2 + i] is the weight g_i</span>
 
 <span class="k">def</span> <span class="nf">log_prior</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
     <span class="c1">#g_i needs to be between 0 and 1</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">g</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">g</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">g</span> <span class="o"><</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">g</span> <span class="o">></span> <span class="mi">1</span><span class="p">)):</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="c1"># recall log(0) = -inf</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">g</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -5058,7 +4887,7 @@ Because emcee doesn't have categorical variables, we'll instead allow $g_i$ to r
 <span class="k">def</span> <span class="nf">log_likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">y_model</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># g&lt;0 or g&gt;1 leads to NaNs in logarithm</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># g<0 or g>1 leads to NaNs in logarithm</span>
     <span class="c1"># log-likelihood for in-lier</span>
     <span class="n">logL_in</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_model</span><span class="p">)</span> <span class="o">/</span> <span class="n">dy</span><span class="p">)</span><span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="c1"># log-likelihood for outlier</span>
@@ -5069,11 +4898,9 @@ Because emcee doesn't have categorical variables, we'll instead allow $g_i$ to r
 <span class="k">def</span> <span class="nf">log_posterior</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">log_prior</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">log_likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5081,20 +4908,19 @@ Because emcee doesn't have categorical variables, we'll instead allow $g_i$ to r
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we use the <code>emcee</code> package to run this model.
 Note that because of the high dimensionality of the model, the <code>run_mcmc</code> command below will take a couple minutes to complete:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">emcee</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">emcee</span>
 
 <span class="n">ndim</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># number of parameters in the model</span>
 <span class="n">nwalkers</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of MCMC walkers</span>
-<span class="n">nburn</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># &quot;burn-in&quot; period to let chains stabilize</span>
+<span class="n">nburn</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># "burn-in" period to let chains stabilize</span>
 <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">15000</span>  <span class="c1"># number of MCMC steps to take</span>
 
 <span class="c1"># set walkers near the maximum likelihood</span>
@@ -5110,30 +4936,21 @@ Note that because of the high dimensionality of the model, the <code>run_mcmc</c
 <span class="n">sample</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span>  <span class="c1"># shape = (nwalkers, nsteps, ndim)</span>
 <span class="n">sample</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="p">[:,</span> <span class="n">nburn</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>-c:21: RuntimeWarning: divide by zero encountered in log
 -c:22: RuntimeWarning: divide by zero encountered in log
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5141,36 +4958,26 @@ Note that because of the high dimensionality of the model, the <code>run_mcmc</c
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The Runtime warnings here are normal – they just indicate that we've hit <code>log(0) = -inf</code> for some pieces of the calculation.</p>
 <p>With the sample chain determined, we can plot the marginalized distribution of samples to get an idea of the value and uncertainty of slope and intercept with this model:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sample</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;,k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;slope&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sample</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">',k'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'intercept'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'slope'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYkAAAEWCAYAAACT7WsrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XtcU/f9+PEXgiAiKF5qJNXOCwyhGU7FiqVt8FLFdhNW
 K9a2OJyyaevSy7RjRetquqy6dqZ2Wp2VSVtX1C261UvnpWnLvFRs5RuhDm8tikTxCvWO8PuD3zlN
@@ -5521,15 +5328,11 @@ RxK0oqhUqvRNic1mw+3bt9HR0YGDBw/CarXiwoULuHfvHlpbW6FWq2GxWOBwOOY9v6CgAJcuXUJ7
 ezs8Hg90Oh32798Pi8WC2tpaCCFw9epVRKNRFBUVYceOHRkd2srLy+F2uyGEQF1dHSorKwEA27Zt
 w8uXL2G321FSUoJr16792eQQzYNLYIlyxM8lsJ2dnfNeGyHKBn4SiYhIEYsEEREp4nQTEREp4kiC
 iIgUsUgQEZEiFgkiIlLEIkFERIpYJIiISBGLBBERKfoHk7pqh4VksHQAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5537,42 +5340,32 @@ iIgUsUgQEZEiFgkiIlLEIkFERIpYJIiISBGLBBERKfoHk7pqh4VksHQAAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These points describe the marginalized posterior distribution of the slope and intercept for our model given the data.</p>
 <p>Finally, we can make use of the marginalized values of all $N + 2$ parameters and plot both the best-fit model, along with a model-derived indication of whether each point is an outlier:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">theta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">theta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">outliers</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">outliers</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span> <span class="o">></span> <span class="mf">0.5</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">xfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">theta2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">xfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">outliers</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">outliers</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mfc</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">mec</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Bayesian Fit&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'ok'</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">xfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xfit</span><span class="p">,</span> <span class="n">theta2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">xfit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">outliers</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">outliers</span><span class="p">],</span> <span class="s1">'ro'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mfc</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">mec</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Bayesian Fit'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAEPCAYAAACukxSbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVOX+B/DPsAwDzCBCIIui4BI1mphLFtedMp3x5u0W
 N71tWFpWv19a/cowafHm1sXl2mJRUt1W7KbdO0fRQEUTM0VMRTA1Bk0kElT2ZZjz+4PLAWJRYIYz
@@ -5799,15 +5592,11 @@ m9M22ztRFLFhwwYEBwdDp9PJXY6sZs+ejXfeeQdvvfUWFixYAK1Wi6eeekrusmTh7e2N6667Dvn5
 +vTBE0884bAXc7/55hukpaVBoVAgNDQUjz/+OFxcZL882S3Wrl2L7OxslJSUwNvbG9HR0Rg9enSH
 btm0idAnIqLuIXv3DhERdR+GPhGRA2HoExE5EIY+EZEDYegTETkQhj4RkQNh6BMRORCGPhGRA/l/
 w9UNz/Fm6MEAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5817,7 +5606,6 @@ w9UNz/Fm6MEAAAAASUVORK5CYII=
 For comparison, the grey line is the standard maximum likelihood fit.</p>
 <p>Notice that we have successfully fit an $(N + 2)$-parameter model to $N$ data points, and the best-fit parameters are actually <em>meaningful</em> in a deep way – the $N$ extra parameters give us individual estimates of whether each of the $N$ data points has misreported errors.
 I think this is a striking example of the practical use of a model which might seem impossible under the model complexity myth!</p>
-
 </div>
 </div>
 </div>
@@ -5825,10 +5613,9 @@ I think this is a striking example of the practical use of a model which might s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>I hope you will see after reading this post that the model complexity myth, while rooted in a solid understanding of simple linear models, should not be assumed to apply to all possible models.
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>I hope you will see after reading this post that the model complexity myth, while rooted in a solid understanding of simple linear models, should not be assumed to apply to all possible models.
 In fact, <strong>it is possible to fit models with more parameters than datapoints</strong>: and for the types of noisy, biased, and heterogeneous data we often encounter in scientific research, you can make a lot of progress by taking advantage of such models.
 Thanks for reading!</p>
-
 </div>
 </div>
 </div>
@@ -5840,12 +5627,9 @@ Thanks for reading!</p>
 <a href="http://jakevdp.github.io/downloads/notebooks/ModelComplexityMyth.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/ModelComplexityMyth.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -5875,6 +5659,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "The Model Complexity Myth"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/model-complexity-myth.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

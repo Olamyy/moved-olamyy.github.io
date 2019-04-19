@@ -1397,8 +1397,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><em>Edit 12/19/2017: added a <a href="#Fundamental-Matrix">new subsection</a> on analyzing Chutes &amp; Ladders as an Absorbing Markov Chain.</em></p>
-
+<p><em>Edit 12/19/2017: added a <a href="#Fundamental-Matrix">new subsection</a> on analyzing Chutes & Ladders as an Absorbing Markov Chain.</em></p>
 </div>
 </div>
 </div>
@@ -1407,11 +1406,10 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
-<p><img src="http://jakevdp.github.io/images/ChutesAndLadders-sim.gif" alt='[img: Chutes and Ladders animated simulation]'></p>
+<p><img alt="[img: Chutes and Ladders animated simulation]" src="http://jakevdp.github.io/images/ChutesAndLadders-sim.gif"></p>
 <p>This weekend I found myself in a particularly drawn-out game of Chutes and Ladders with my four-year-old. If you've not had the pleasure of playing it, Chutes and Ladders (also sometimes known as <a href="https://en.wikipedia.org/wiki/Snakes_and_Ladders">Snakes and Ladders</a>) is a classic kids board game wherein players roll a six-sided die to advance forward through 100 squares, using "ladders" to jump ahead, and avoiding "chutes" that send you backward. It's basically a glorified random walk with visual aids to help you build a narrative. Thrilling. But she's having fun practicing counting, learning to win and lose gracefully, and developing the requisite skills to be a <a href="https://xkcd.com/904/">passionate sports fan</a>, so I play along.</p>
 <p>On the approximately twenty third game of the morning, as we found ourselves in a near endless cycle of climbing ladders and sliding down chutes, never quite reaching that final square to end the game, I started wondering how much longer the game could last: what is the expected length of a game? How heavy are the tails of the game length distribution? How succinctly could I answer those questions in Python? And then, at some point, it <a href="https://twitter.com/jakevdp/status/942456865580924928">clicked</a>: Chutes and Ladders is memoryless — the effect of a roll depends only on where you are, not where you've been — and so it can be modeled as a Markov process! By the time we (finally) hit square 100, I basically had this blog post written, at least in my head.</p>
-<p>When I <a href="https://twitter.com/jakevdp/status/942456865580924928">tweeted about this</a>, people pointed me to a <a href="http://www.datagenetics.com/blog/november12011/">number</a> of <a href="https://gist.github.com/CamDavidsonPilon/1639d06c448904afaf7b7449910f3b72">similar</a> <a href="https://math.byu.edu/~jeffh/mathematics/games/chutes/chutes.html">treatments</a> of <a href="https://roycoding.github.io/chutes-ladders-d3/">Chutes</a> &amp; <a href="https://scipython.com/book/chapter-6-numpy/additional-problems/analysing-snakes-and-ladders-as-a-markov-chain/">Ladders</a>, so I'm under no illusion that this idea is original.
+<p>When I <a href="https://twitter.com/jakevdp/status/942456865580924928">tweeted about this</a>, people pointed me to a <a href="http://www.datagenetics.com/blog/november12011/">number</a> of <a href="https://gist.github.com/CamDavidsonPilon/1639d06c448904afaf7b7449910f3b72">similar</a> <a href="https://math.byu.edu/~jeffh/mathematics/games/chutes/chutes.html">treatments</a> of <a href="https://roycoding.github.io/chutes-ladders-d3/">Chutes</a> & <a href="https://scipython.com/book/chapter-6-numpy/additional-problems/analysing-snakes-and-ladders-as-a-markov-chain/">Ladders</a>, so I'm under no illusion that this idea is original.
 Think of this as a blog post version of a dad joke: my primary goal is not originality, but self-entertainment, and if anyone else finds it entertaining that's just an added bonus.</p>
 <!-- PELICAN_END_SUMMARY -->
 </div>
@@ -1421,62 +1419,58 @@ Think of this as a blog post version of a dad joke: my primary goal is not origi
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Direct-Simulation">Direct Simulation<a class="anchor-link" href="#Direct-Simulation">&#182;</a></h2><p>The most straightforward way to get a handle on the dynamics of the game is through direct simulation: if we simulate enough games, we'll obtain a distribution of game lengths that will approximate the "true" distribution.
+<h2 id="Direct-Simulation">Direct Simulation<a class="anchor-link" href="#Direct-Simulation">¶</a></h2><p>The most straightforward way to get a handle on the dynamics of the game is through direct simulation: if we simulate enough games, we'll obtain a distribution of game lengths that will approximate the "true" distribution.
 The first step in this is to examine the game board and somehow encode the positions of the chutes and ladders on the grid:</p>
-<p><img src='http://jakevdp.github.io/images/ChutesAndLadders-board.gif' width=400 alt='[img: Chutes and ladders game board]'/></p>
+<p><img alt="[img: Chutes and ladders game board]" src="http://jakevdp.github.io/images/ChutesAndLadders-board.gif" width="400"></p>
 <p><em>(Image source: <a href="http://uncyclopedia.wikia.com/wiki/Chutes_and_Ladders">uncyclopedia</a>)</em></p>
 <p>We'll use a Python dictionary to store these positions:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Mapping of start : end spaces of chutes &amp; ladders</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Mapping of start : end spaces of chutes & ladders</span>
 <span class="n">CHUTES_LADDERS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mi">38</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span><span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">:</span><span class="mi">84</span><span class="p">,</span> <span class="mi">36</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span>
                   <span class="mi">47</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span> <span class="mi">49</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span> <span class="mi">51</span><span class="p">:</span><span class="mi">67</span><span class="p">,</span> <span class="mi">56</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span> <span class="mi">62</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span> <span class="mi">64</span><span class="p">:</span><span class="mi">60</span><span class="p">,</span>
                   <span class="mi">71</span><span class="p">:</span><span class="mi">91</span><span class="p">,</span> <span class="mi">80</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="mi">87</span><span class="p">:</span><span class="mi">24</span><span class="p">,</span> <span class="mi">93</span><span class="p">:</span><span class="mi">73</span><span class="p">,</span> <span class="mi">95</span><span class="p">:</span><span class="mi">75</span><span class="p">,</span> <span class="mi">98</span><span class="p">:</span><span class="mi">78</span><span class="p">}</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With this in place, we can simulate the game in a few lines of Python:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">Random</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">Random</span>
 
 
 <span class="k">def</span> <span class="nf">simulate_cl_game</span><span class="p">(</span><span class="n">rseed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_roll</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Simulate a full Chutes &amp; Ladders game</span>
+    <span class="sd">"""</span>
+<span class="sd">    Simulate a full Chutes & Ladders game</span>
 <span class="sd">    and return the number of turns to finish</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rand</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="n">rseed</span><span class="p">)</span>
     <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">turns</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">position</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">position</span> <span class="o"><</span> <span class="mi">100</span><span class="p">:</span>
         <span class="n">turns</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">roll</span> <span class="o">=</span> <span class="n">rand</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_roll</span><span class="p">)</span>
         
-        <span class="c1"># if the roll takes us past square 100, we don&#39;t move</span>
-        <span class="k">if</span> <span class="n">position</span> <span class="o">+</span> <span class="n">roll</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="c1"># if the roll takes us past square 100, we don't move</span>
+        <span class="k">if</span> <span class="n">position</span> <span class="o">+</span> <span class="n">roll</span> <span class="o">></span> <span class="mi">100</span><span class="p">:</span>
             <span class="k">continue</span>
             
         <span class="c1"># otherwise, move the position according to the roll</span>
@@ -1486,108 +1480,81 @@ The first step in this is to examine the game board and somehow encode the posit
         <span class="n">position</span> <span class="o">=</span> <span class="n">CHUTES_LADDERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">turns</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Calling the function tells us how many moves were required to finish the particular game:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulate_cl_game</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">simulate_cl_game</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>28</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we simulate many games, the result will be a distribution of how many turns are required to get to the end:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Jupyter notebook plotting setup &amp; imports</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Jupyter notebook plotting setup & imports</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim_games</span> <span class="o">=</span> <span class="p">[</span><span class="n">simulate_cl_game</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sim_games</span> <span class="o">=</span> <span class="p">[</span><span class="n">simulate_cl_game</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sim_games</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Turns to win&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fraction of games&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Simulated Lengths of Chutes &amp; Ladders Games&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Number of Turns to win'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fraction of games'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Simulated Lengths of Chutes & Ladders Games'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfoAAAFlCAYAAAADJSrfAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlUU9e+B/BvIIQpqKBotYoDlaq1VNS2WkQE5NoqCIoC
 UvE6PrVFW60DzoqISJU6U63Te6gFKlqr7fW2DnUAtYrFqaJ11upVHKgElCHZ7w8XuaKEgBAIx+9n
@@ -1848,15 +1815,11 @@ M2fC19cXABATE6P3iP8vv/wSs2fPxrJly2BmZoZly5a9MKtQVsOHD0d4eDiSk5Ph5eVVrvva2dkh
 KCgI/fr1g6WlJZo3b46AgIBi2zg6OiI7OxsTJ07El19+iXPnziEgIACFhYXo0qULBg4c+EK73bp1
 w/r169GhQwdYWVmhoKCgxGl7Iing1euIiIgkjFP3REREEsagJyIikjAGPRERkYQx6ImIiCSMQU9E
 RCRhDHoiIiIJY9ATERFJGIOeiIhIwv4fqg/C7ywfct0AAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1864,7 +1827,6 @@ RCRhDHoiIiIJY9ATERFJGIOeiIhIwv4fqg/C7ywfct0AAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This gives us some insight, but the problem here is that the result is just an estimate of the "true" distribution; to make our estimate more precise will require many more simulations, and this can get computationally expensive.</p>
 <p>Fortunately, there's another approach.</p>
-
 </div>
 </div>
 </div>
@@ -1872,16 +1834,14 @@ RCRhDHoiIiIJY9ATERFJGIOeiIhIwv4fqg/C7ywfct0AAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Chutes-and-Ladders-as-a-Markov-Process">Chutes and Ladders as a Markov Process<a class="anchor-link" href="#Chutes-and-Ladders-as-a-Markov-Process">&#182;</a></h2><p>Instead of brute force simulation, we might think about the game probabilistically. On any given turn, there are six equally probable options: rolling a 1, 2, 3, 4, 5, or 6.
+<h2 id="Chutes-and-Ladders-as-a-Markov-Process">Chutes and Ladders as a Markov Process<a class="anchor-link" href="#Chutes-and-Ladders-as-a-Markov-Process">¶</a></h2><p>Instead of brute force simulation, we might think about the game probabilistically. On any given turn, there are six equally probable options: rolling a 1, 2, 3, 4, 5, or 6.
 Depending on which space you start on, these lead to six well-defined results.
 For example, the first turn, the possibilities are the squares 38, 2, 3, 14, 5, or 6, each with equal probability. We could encode this set of probabilities as a vector of length 101, with <code>1/6</code> in each associated index (here the zeroth element represents the start of the game, off of the board):</p>
-
 <pre><code>0: [0, 0, 1/6, 1/6, 0, 1/6, 1/6, 0, 0, ...]
 
 </code></pre>
 <p>Each entry in this vector is the probability of going from square zero to the corresponding square. This vector <em>completely describes</em> the first turn of the game.</p>
 <p>Similarly, we could construct the vector describing turns from square 2:</p>
-
 <pre><code>2: [0, 0, 0, 1/6, 0, 1/6, 1/6, 1/6, 1/6, 0, 0, ...]
 
 </code></pre>
@@ -1891,24 +1851,23 @@ For example, the first turn, the possibilities are the squares 38, 2, 3, 14, 5, 
 and can be <em>entirely</em> described by a <em>N x N</em> transition matrix where <em>N</em> is the number of states in the system (101 states for Chutes and Ladders).
 The columns of the matrix contain the probability vectors we discussed above, such that element <em>(n, m)</em> is the probability of transitioning to element <em>n</em> when starting from element <em>m</em>.</p>
 <p>Let's create a Markov transition matrix for Chutes and Ladders:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">def</span> <span class="nf">cl_markov_matrix</span><span class="p">(</span><span class="n">max_roll</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">jump_at_end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">"""</span>
 <span class="sd">    Create a Markov transition matrix</span>
 <span class="sd">    </span>
 <span class="sd">    If jump_at_end is True, then apply ladder/chute jumps at the end of each turn.</span>
 <span class="sd">    If False, then apply them at the beginning of the next turn.</span>
-<span class="sd">    &quot;&quot;&quot;</span>  
+<span class="sd">    """</span>  
     <span class="c1"># Create the basic transition matrix:</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">101</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">):</span>
@@ -1917,12 +1876,12 @@ The columns of the matrix contain the probability vectors we discussed above, su
     <span class="c1"># We could alternatively use scipy.linalg.circulent as follows:</span>
     <span class="c1"># mat = circulant([0, *np.ones(max_rolls) / 6, *np.zeros(100)])[:101, :101]</span>
 
-    <span class="c1"># rolls off the end of the board don&#39;t change the state;</span>
+    <span class="c1"># rolls off the end of the board don't change the state;</span>
     <span class="c1"># add these probabilities to the diagonal</span>
     <span class="n">mat</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># account for the presence of chutes and ladders</span>
-    <span class="c1"># we&#39;ll do this via  another transition matrix</span>
+    <span class="c1"># we'll do this via  another transition matrix</span>
     <span class="n">cl_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">101</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
     <span class="n">ind</span> <span class="o">=</span> <span class="p">[</span><span class="n">CHUTES_LADDERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">)]</span>
     <span class="n">cl_mat</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1935,23 +1894,14 @@ The columns of the matrix contain the probability vectors we discussed above, su
 <span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV8AAAFVCAYAAABILuznAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAEf1JREFUeJzt3W1olfUfx/HP2ZaGm0v2QEHE8OSkv0iEyjZhTp/YkpJI
 DG9gSvbAu7CZ1dZsN+Ih04VUk9ICE0zpTh8EIZVKHefNqSQNhxRlCM451O3BdpB2bef6P/K0bOo8
@@ -2035,15 +1985,11 @@ qfLuEHfSf31D2fPXX38d/zgQCMQ/TuTQ2D0n3/LycuXk/JPRruvG/9Hc3Fx1dXWpu7tbeXl58b9z
 iSZOnKjGxka98MILunr1qmKxGJUDkAZSvS5IBq/2PNTr0+47fKuqqlRbW6sdO3YoGAyqvLxc2dnZ
 mjlzphYvXqxYLKa6urohLQoA/I7LiwHAAFe4AYABwhcADBC+AGCA8AUAA4QvABggfAHAAOELAAYI
 XwAw8H9T874yIVKcywAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2051,41 +1997,30 @@ XwAw8H9T874yIVKcywAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The above matrix encodes <em>everything you need to know</em> about the game of Chutes and Ladders. (Note that there are two ways to construct this matrix: applying the chutes and ladders jumps at the end of each turn, as typically played, or applying them at the beginning of the next turn. We make this second option available for later).</p>
 <p>The game starts with a state vector describing 100% probability of being in the zeroth state:</p>
-
 <pre><code>v_0 = [1, 0, 0, 0, 0...]
 
 </code></pre>
 <p>If you think about it for a while, you can convince yourself that the way to evolve this (probabilistically) to the next state is to left-multiply the vector by our transition matrix:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">v_0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
 <span class="n">mat</span> <span class="o">@</span> <span class="n">v_0</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 0.  ,  0.  ,  0.17,  0.17,  0.  ,  0.17,  0.17,  0.  ,  0.  ,
         0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.17,  0.  ,  0.  ,  0.  ,
@@ -2100,12 +2035,9 @@ XwAw8H9T874yIVKcywAAAABJRU5ErkJggg==
         0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,
         0.  ,  0.  ])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2114,58 +2046,46 @@ XwAw8H9T874yIVKcywAAAABJRU5ErkJggg==
 <p>The result is precisely the vector we described above, encoding the probabilities of game state after one move.</p>
 <p>To perform multiple moves, we could repeatedly multiply this vector by our transition matrix, but repeating such an operation can compound floating-point inaccuracies; a more effective (and more efficient) approach is to use a matrix power.
 With this in mind, lets compute the probability of finishing the game in <em>n</em> moves for several values of <em>n</em>, and compare it to the simulation result from above:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cl_probability</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the state vector after n turns&quot;&quot;&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cl_probability</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">"""Compute the state vector after n turns"""</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">cl_markov_matrix</span><span class="p">()</span>
     <span class="n">v_0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">@</span> <span class="n">v_0</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">probs</span> <span class="o">=</span> <span class="p">[</span><span class="n">cl_probability</span><span class="p">(</span><span class="n">i</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">probs</span> <span class="o">=</span> <span class="p">[</span><span class="n">cl_probability</span><span class="p">(</span><span class="n">i</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sim_games</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-         <span class="n">align</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">probs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chutes and Ladders Completion Rate&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;number of turns&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;fraction of games completed&#39;</span><span class="p">);</span>
+         <span class="n">align</span><span class="o">=</span><span class="s1">'mid'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">probs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Chutes and Ladders Completion Rate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'number of turns'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'fraction of games completed'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfoAAAFlCAYAAAADJSrfAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlcVOUeBvBnmGHYF1HEXDA3NBMCtFxRQFxzITEzFNfU
 6lZX2yTXRAEtWzSV7FqW5ILlkktp7riioriQqKFi5oayzrAMMOf+QTOKQoPKzJnl+X4+fK4zZ+ac
@@ -2585,15 +2505,11 @@ hI4dO17zNqxWK0OHDkWtVrNkyRJ0Oh2TJk1i3rx5xMbGYrfbmTZtGiaTiR9++KHG7cyaNYs5c+Y4
 a9fHx8cTFBRU43jhrVq1orCwkGnTprF48WJiYmIYNGhQpccMdTV27Fiee+45Nm/ejEaj4dVXX72m
 9wvRkEiteyGEEKIBk1v3QgghRAMmiV4IIYRowCTRCyGEEA2YJHohhBCiAZNEL4QQQjRgkuiFEEKI
 BkwSvRBCCNGASaIXQgghGrD/B3maZN34Acf+AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2601,39 +2517,29 @@ BkwSvRBCCNGASaIXQgghGrD/B3maZN34Acf+AAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>By eye it looks like our direct simulation was quite close to the Markov model, which indicates that we're on the right track in our thinking.</p>
 <p>The cumulative distribution is also interesting:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sim_games</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-         <span class="n">align</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="n">cumulative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">probs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chutes and Ladders Cumulative Completion Rate&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;number of turns&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;cumulative fraction of games completed&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sim_games</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">align</span><span class="o">=</span><span class="s1">'mid'</span><span class="p">,</span> <span class="n">cumulative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">probs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Chutes and Ladders Cumulative Completion Rate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'number of turns'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'cumulative fraction of games completed'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAe8AAAFlCAYAAADComBzAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl4TPfDBfAzM5nsQSJLBbGEULWEorYgISqR2KKlCN7S
 VpVWWzu1BKXoz1bVVltKW3ssQZHFViQUsbQVLUpiiYTs+8x83z/STAVxEzJzs5zP8+Qx986dO+fG
@@ -3000,15 +2906,11 @@ tWtXCgoKqK6uprS09LGHvZctW8aePXt49913iYmJMbklVoVoSXLlLUQb17lzZ8LCwpg4cSI9evTg
 t8p1Oh0ODg4PXW+5f//+lJeXExUVRWJiIh4eHrzzzjv1hvibKzg4mE8++YT09HS0Wi1Lly59rNcL
 0Z7It82FEEIIEyPD5kIIIYSJkeIthBBCmBgp3kIIIYSJkeIthBBCmBgp3kIIIYSJkeIthBBCmBgp
 3kIIIYSJkeIthBBCmJj/AuvvInvLNm2AAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3016,7 +2918,6 @@ t8p1Oh0ODg4PXW+5f//+lJeXExUVRWJiIh4eHrzzzjv1hvibKzg4mE8++YT09HS0Wi1Lly59rNcL
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From this, we can see that 90% of single-player games finish within about 72 moves, though it is possible for games to be much longer.</p>
 <p>With two players, this translates to a 1% chance that the game will go 72 moves without either of the players winning. Assuming roughly 20 seconds per round, that is about 24 minutes of play time, though from personal experience I can say it feels roughly twenty times that long.</p>
-
 </div>
 </div>
 </div>
@@ -3024,101 +2925,75 @@ t8p1Oh0ODg4PXW+5f//+lJeXExUVRWJiIh4eHrzzzjv1hvibKzg4mE8++YT09HS0Wi1Lly59rNcL
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Minimum-Game-Length">Minimum Game Length<a class="anchor-link" href="#Minimum-Game-Length">&#182;</a></h3><p>But what if you get <em>really</em> lucky... how quickly can the game end?
+<h3 id="Minimum-Game-Length">Minimum Game Length<a class="anchor-link" href="#Minimum-Game-Length">¶</a></h3><p>But what if you get <em>really</em> lucky... how quickly can the game end?
 From our Markov chain results, we see that there is a nonzero probability of finishing the game in just seven moves, and this will happen about once in every 660 games:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">probs</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">probs</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0015110596707818924]</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The Markov chain approach doesn't immediately tell us <em>how</em> this happens, though the transition matrix encodes a sparse graph that can be used by <code>scipy.sparse.csgraph</code> to find one of these shortest paths:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse.csgraph</span> <span class="k">import</span> <span class="n">shortest_path</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse.csgraph</span> <span class="k">import</span> <span class="n">shortest_path</span>
 <span class="n">lengths</span><span class="p">,</span> <span class="n">predecessors</span> <span class="o">=</span> <span class="n">shortest_path</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                       <span class="n">unweighted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_predecessors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>lengths</code> here is the length of the shortest path from state 0 to each of the other states:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lengths</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">lengths</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([  0.,  inf,   1.,   1.,  inf,   1.,   1.,   2.,   2.,  inf,   2.,
          2.,   2.,   3.,   1.,   2.,  inf,   2.,   2.,   2.,   2.,  inf,
@@ -3131,103 +3006,74 @@ From our Markov chain results, we see that there is a nonzero probability of fin
          5.,   5.,   5.,   5.,   6.,  inf,   6.,  inf,   6.,   6.,  inf,
          7.,   7.])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use the <code>predecessors</code> vector here to reconstruct one of the shortest paths to state 100:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span>
-<span class="k">while</span> <span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+<span class="k">while</span> <span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">></span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">predecessors</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
 <span class="n">path</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>[0, 38, 39, 45, 67, 70, 75, 100]</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Typical-Game-Length">Typical Game Length<a class="anchor-link" href="#Typical-Game-Length">&#182;</a></h2><p>We've talked about the extremes, but how long should you expect the typical game to last?
+<h2 id="Typical-Game-Length">Typical Game Length<a class="anchor-link" href="#Typical-Game-Length">¶</a></h2><p>We've talked about the extremes, but how long should you expect the typical game to last?
 The answer to that question depends on what you mean by <em>typical</em>.
 Some common approaches to defining <em>typical</em> are the mean, median, or mode of game lengths.</p>
 <p>The mean game length is the expected value of the number of turns, averaged over all possibilities and weighted by their relative probability:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">turns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">turns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
 <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">probs</span><span class="p">),</span> <span class="n">turns</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>39.106460290714438</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3236,42 +3082,29 @@ Some common approaches to defining <em>typical</em> are the mean, median, or mod
 <p>We see that, on average, a player will finish the game in about 39 turns.</p>
 <p>This value, though, is weighted by game length, so the small possibility of having a very long game contributes to this estimate in an outsized way.
 Often the median game length is a more useful statistic:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>32</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3279,42 +3112,29 @@ Often the median game length is a more useful statistic:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This tells us that approximately 50% of games will be finished in fewer than 32 moves, and 50% will be finished in more than 32 moves.</p>
 <p>But both the mean and the median are offset from the peak (or mode) of the probability distribution, which we can compute as follows:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>22</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3322,42 +3142,29 @@ Often the median game length is a more useful statistic:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This says that you'll finish the game in 22 moves more often than any other specific number of moves.</p>
 <p>Probably the most useful types of statistics for skewed probability distributions like this one, though, are quantiles. For example:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 11, 106])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3365,49 +3172,35 @@ Often the median game length is a more useful statistic:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This tells us that 95% of the time, games will last between 11 and 106 turns.
 Or, to tighten the constraints a bit:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[19]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([22, 50])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>half of all games will last between 22 and 50 moves.</p>
-
 </div>
 </div>
 </div>
@@ -3415,8 +3208,7 @@ Or, to tighten the constraints a bit:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Learning-More-from-the-Markov-Process">Learning More from the Markov Process<a class="anchor-link" href="#Learning-More-from-the-Markov-Process">&#182;</a></h2><p>Aside from summary statistics, the Markov transition matrix for Chutes and Ladders can tell us a number of other interesting things, which we'll explore here.</p>
-
+<h2 id="Learning-More-from-the-Markov-Process">Learning More from the Markov Process<a class="anchor-link" href="#Learning-More-from-the-Markov-Process">¶</a></h2><p>Aside from summary statistics, the Markov transition matrix for Chutes and Ladders can tell us a number of other interesting things, which we'll explore here.</p>
 </div>
 </div>
 </div>
@@ -3424,7 +3216,7 @@ Or, to tighten the constraints a bit:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Shannon-Entropy">Shannon Entropy<a class="anchor-link" href="#Shannon-Entropy">&#182;</a></h3>
+<h3 id="Shannon-Entropy">Shannon Entropy<a class="anchor-link" href="#Shannon-Entropy">¶</a></h3>
 </div>
 </div>
 </div>
@@ -3435,42 +3227,32 @@ Or, to tighten the constraints a bit:</p>
 <p>One interesting thing we can explore is the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory">entropy</a> of the distribution: you can think of the entropy as a measure of how "spread out" the distribution is in probability space; a high entropy state is one in which we have very little knowledge of where an individual draw will lie.</p>
 <p>We can compute and visualize the entropy using the <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html"><code>entropy</code></a> function from SciPy's <code>stats</code> module.
 Let's plot the entropy as a function of the number of turns played:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
 
 <span class="n">turns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
 <span class="n">entropy</span> <span class="o">=</span> <span class="p">[</span><span class="n">stats</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">cl_probability</span><span class="p">(</span><span class="n">turn</span><span class="p">))</span> <span class="k">for</span> <span class="n">turn</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">turns</span><span class="p">,</span> <span class="n">entropy</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;number of turns&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;entropy of distribution&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chutes and Ladders Entropy&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'number of turns'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'entropy of distribution'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Chutes and Ladders Entropy'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAecAAAFlCAYAAADRdSCHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdY1WX/B/D395zDPuy9BZShgKLmStyamqampamUZT+b
 mj1PU81KG9p4GvpYaT2WlqWWq2G5cyNuQHChyN5D5lnf3x8oaopH5Gzer+viujzAOd8PN8ib+/7e
@@ -3806,64 +3588,46 @@ qlU2l9HX10dCQgKOjo6cOXOGOXPmcOjQIfLz84mLi2N4eBiNRsOiRYt49OjRT8vJzs4mLy9PeSpb
 q9Xi5+c36vWpkYKCgujt7UWj0aDT6YiNjWXbtm2jmuAnS61Wk56ejl6vx8nJicLCQpv2F2K2kae1
 hRBCCDsjzdpCCCGEnZHkLIQQQtgZSc5CCCGEnZHkLIQQQtgZSc5CCCGEnZHkLIQQQtgZSc5CCCGE
 nZHkLIQQQtiZfwAEl/k+j8dRiAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that the entropy is maximized after eleven turns:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[21]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>11</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What this tells you is that when you complete 11 turns, you should expect positions of various players to be very spread out. Prior to this, the probability distribution is clumped near the beginning of the board. After 11 moves, you can take heart that you're unavoidably on the path to the game's end.</p>
-
 </div>
 </div>
 </div>
@@ -3871,80 +3635,57 @@ nZHkLIQQQtiZfwAEl/k+j8dRiAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Eigenvectors-and-Stationary-States">Eigenvectors and Stationary States<a class="anchor-link" href="#Eigenvectors-and-Stationary-States">&#182;</a></h3><p>The Markov transition matrix can be examined directly to learn about the dynamics of the game.
+<h3 id="Eigenvectors-and-Stationary-States">Eigenvectors and Stationary States<a class="anchor-link" href="#Eigenvectors-and-Stationary-States">¶</a></h3><p>The Markov transition matrix can be examined directly to learn about the dynamics of the game.
 For example, the eigenvectors of a transition matrix with eigenvalue equal to one tell us about <em>stationary states</em>; that is, states which are unchanged after applying the transition matrix.</p>
 <p>We can compute these eigenvectors this way:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
 <span class="n">evals</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[22]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 1.00+0.j  ,  0.83+0.j  ,  0.96+0.j  ,  0.40+0.65j,  0.40-0.65j,
         0.76+0.j  ,  0.60+0.32j,  0.60-0.32j,  0.24+0.59j,  0.24-0.59j])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There is only one stationary state in Chutes and Ladders (with eigenvalue equal to one); let's see what it is:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">evecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">evecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[23]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,
         0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,
@@ -3962,12 +3703,9 @@ For example, the eigenvectors of a transition matrix with eigenvalue equal to on
         0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,
         0.+0.j,  0.+0.j,  1.+0.j])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3975,7 +3713,6 @@ For example, the eigenvectors of a transition matrix with eigenvalue equal to on
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Graciously, the single stationary state is a completed game. What this means is that you are very unlikely to find yourself in an infinitely looping, unending game.
 I doubt the game designers did this stationary state calculation when designing the game, but I bless them for their accidental success in this regard.</p>
-
 </div>
 </div>
 </div>
@@ -3983,27 +3720,24 @@ I doubt the game designers did this stationary state calculation when designing 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Fundamental-Matrix">Fundamental Matrix<a class="anchor-link" href="#Fundamental-Matrix">&#182;</a></h3><p>As we have set up the transition matrix, once you reach state 100 you remain there with 100% probability.
+<h3 id="Fundamental-Matrix">Fundamental Matrix<a class="anchor-link" href="#Fundamental-Matrix">¶</a></h3><p>As we have set up the transition matrix, once you reach state 100 you remain there with 100% probability.
 In mathematical terms, the end of the game is an "absorbing state", because once you are there you cannot transition to any other state.
 What this means is that Chutes and Ladders is an <a href="https://en.wikipedia.org/wiki/Absorbing_Markov_chain">absorbing Markov Chain</a>, and we can do a few more interesting things with the transition matrix.</p>
 <p>This all starts with computing the <a href="https://hips.seas.harvard.edu/blog/2013/02/15/the-fundamental-matrix-of-a-finite-markov-chain/">fundamental matrix</a> <em>N</em> of the absorbing Markov chain, which is a simple transformation of the Markov transition matrix:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">cl_markov_matrix</span><span class="p">(</span><span class="n">jump_at_end</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">cl_markov_matrix</span><span class="p">(</span><span class="n">jump_at_end</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="n">M</span><span class="p">[:</span><span class="mi">100</span><span class="p">,</span> <span class="p">:</span><span class="mi">100</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4012,37 +3746,27 @@ What this means is that Chutes and Ladders is an <a href="https://en.wikipedia.o
 <p>(Note that we used the version of our process where jumps happen at the beginning of the turn, so that we can more easily reason about the effects of ladders and chutes).</p>
 <p>The <em>(n,m)</em> entry of the fundamental matrix tells us the expected number of times that we will visit state <em>n</em> when starting at state <em>m</em> on our way to the absorbing state.</p>
 <p>Let's plot these expected values when starting at state 0, the beginning of the game</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">expected_visits</span> <span class="o">=</span> <span class="n">N</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">expected_visits</span> <span class="o">=</span> <span class="n">N</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">expected_visits</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Square Number&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Expected Number of Visits in a Game&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Square Number'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Expected Number of Visits in a Game'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAe8AAAFXCAYAAACLEMbVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8VFX6P/DPnZlMek9IbySEFnoRBVRAxLIqFgQLul/1
 67prWZVdd9mf7aurrOuuYltXXcUVsCIq6CorTaUbIEAghfRCek9mkszMvb8/JjNJSJmUmTt3ks/7
@@ -4455,15 +4179,11 @@ kJiYyPbt21t1Zf/xj3/k6aefRqPR4O/vz8CBA40XBrdavXo1SUlJbNiwATMzM9544w0UCsVdY42M
 jCQ6Oppz584BEBsbS0JCAjExMYwYMQJHR8cOfXcfHx/jqlYjRoxg+vTpqFQqVqxYQUJCAnq9Hicn
 p1ZrxwvR28mqYkKYmPz8fNavX096enpPhyKE6CHSbS6EEEKYGGl5CyGEECZGWt5CCCGEiZHiLYQQ
 QpgYKd5CCCGEiZHiLYQQQpgYKd5CCCGEiZHiLYQQQpiY/wch6I9SAz7YVQAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4472,43 +4192,30 @@ QpgYKd5CCCGEiZHiLYQQQpgYKd5CCCGEiZHiLYQQQpiY/wch6I9SAz7YVQAAAABJRU5ErkJggg==
 <p>The profile is pretty interesting. The most striking feature is that you're expected to visit square 99 approximately 1.5 times per game, on average!
 This is due to the fact that once you land on square 99, you have to roll a 1 to exit it; each additional turn that you don't roll a 1 is counted as another visit.</p>
 <p>Let's look at the top few other most visited states:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">col</span> <span class="o">=</span> <span class="n">N</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">col</span> <span class="o">=</span> <span class="n">N</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">col</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[26]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([99,  0, 47, 97, 46])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4518,42 +4225,29 @@ This is due to the fact that once you land on square 99, you have to roll a 1 to
 After that is square 47, which is visited about 3/4 times per game on average.
 Interestingly, this square is the top of a chute, and thus is the most used of all chutes in the game.</p>
 <p>We can also look at the least visited squares on the board:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">col</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">col</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[27]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([67,  1,  2,  3, 68])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4561,7 +4255,6 @@ Interestingly, this square is the top of a chute, and thus is the most used of a
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Surprisingly, the least likely square is 67, and is visited even less often than square 1, which you have the possibility of hitting only once per game, if you roll a 1 on the first roll!
 Looking at the graph above, it is clear that squares 55-75 or so are visited relatively rarely, due to the positions of chutes and of ladders within the game board.</p>
-
 </div>
 </div>
 </div>
@@ -4569,7 +4262,7 @@ Looking at the graph above, it is clear that squares 55-75 or so are visited rel
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="The-Big-Chute-and-Big-Ladder">The Big Chute and Big Ladder<a class="anchor-link" href="#The-Big-Chute-and-Big-Ladder">&#182;</a></h4>
+<h4 id="The-Big-Chute-and-Big-Ladder">The Big Chute and Big Ladder<a class="anchor-link" href="#The-Big-Chute-and-Big-Ladder">¶</a></h4>
 </div>
 </div>
 </div>
@@ -4578,82 +4271,56 @@ Looking at the graph above, it is clear that squares 55-75 or so are visited rel
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One thing my daughter would probably like to know: how often will you to hit the "big slide" or the "big ladder" during a game? These are at squares 87, and 28, respectively:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">col</span><span class="p">[</span><span class="mi">87</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">col</span><span class="p">[</span><span class="mi">87</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[28]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0.52512870634459763</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">col</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">col</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[29]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0.57577654067476058</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that a player is expected to slide down the big chute a bit over once in every two games on average, and climb the big ladder slightly more often: just under six times in every ten games on average.</p>
-
 </div>
 </div>
 </div>
@@ -4661,35 +4328,25 @@ Looking at the graph above, it is clear that squares 55-75 or so are visited rel
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Time-to-Absorption">Time to Absorption<a class="anchor-link" href="#Time-to-Absorption">&#182;</a></h4><p>The fundamental matrix can also be used to compute other quantities; for example the matrix product with a column of ones gives the expected "time to absorption"; that is, the expected number of turns until finishing the game from any given square. Let's use the "jump-at-the-end" version of the matrix again:</p>
-
+<h4 id="Time-to-Absorption">Time to Absorption<a class="anchor-link" href="#Time-to-Absorption">¶</a></h4><p>The fundamental matrix can also be used to compute other quantities; for example the matrix product with a column of ones gives the expected "time to absorption"; that is, the expected number of turns until finishing the game from any given square. Let's use the "jump-at-the-end" version of the matrix again:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[30]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 39.7,  35.4,  40.2,  39.7,  37.6,  39.8,  39.6,  39.3,  39.1,
         36.7,  39.2,  38.7,  38.3,  37.9,  37.6,  37.1,  39.6,  35.9,
@@ -4703,12 +4360,9 @@ Looking at the graph above, it is clear that squares 55-75 or so are visited rel
         25.9,  24.8,  23.8,  22.9,  21.9,  21.2,  34.8,  17.9,  18.1,
         17.1,  16.2,  16.9,  21. ,  12.3,  19.2,  11. ,  11. ,  20.9,   6. ])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4720,7 +4374,6 @@ Looking at the graph above, it is clear that squares 55-75 or so are visited rel
 <p>The fundamental matrix lets you quantititatively explore a number of other properties of the game; for example, we could adjust the matrix to make square 80 an absorber as well, and ask how probable we are to complete the game there versus landing on square 100 directly. Or we could compute quantities such as the variance of the number of visits and number of steps above.
 For more discussion of applications of the fundamental matrix of an absorbing Markov chain, see the <a href="https://en.wikipedia.org/wiki/Absorbing_Markov_chain">wikipedia article</a>.
 A nice undergraduate-level introduction to these concepts can be found in Chapter 11 of Grinstead and Snell's “Introduction to Probability” (pdf available <a href="http://www.dartmouth.edu/~chance/teaching_aids/books_articles/probability_book/Chapter11.pdf">here</a>).</p>
-
 </div>
 </div>
 </div>
@@ -4728,18 +4381,17 @@ A nice undergraduate-level introduction to these concepts can be found in Chapte
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Visualizing-the-Board">Visualizing the Board<a class="anchor-link" href="#Visualizing-the-Board">&#182;</a></h2><p>Just for fun, let's use Python's tools to visualize these probability states in an intuitive way.
+<h2 id="Visualizing-the-Board">Visualizing the Board<a class="anchor-link" href="#Visualizing-the-Board">¶</a></h2><p>Just for fun, let's use Python's tools to visualize these probability states in an intuitive way.
 We'll use the above scan of the original Chutes and Ladders game as our background, and plot the probability distribution on top of this using a custom colormap with changing transparency</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">colors</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">colors</span>
 
 <span class="c1"># Make a blue colorbar with increasing opacity</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -4750,9 +4402,9 @@ We'll use the above scan of the original Chutes and Ladders game as our backgrou
 
 <span class="k">def</span> <span class="nf">show_board</span><span class="p">(</span><span class="n">turn</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-    <span class="n">board</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;ChutesAndLadders-board.gif&#39;</span><span class="p">)</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">'ChutesAndLadders-board.gif'</span><span class="p">)</span>
     
-    <span class="c1"># Compute &amp; reshape the probability vector</span>
+    <span class="c1"># Compute & reshape the probability vector</span>
     <span class="n">prob</span> <span class="o">=</span> <span class="n">cl_probability</span><span class="p">(</span><span class="n">turn</span><span class="p">)</span>
     <span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">prob</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">prob</span><span class="p">[::</span><span class="mi">2</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -4762,51 +4414,39 @@ We'll use the above scan of the original Chutes and Ladders game as our backgrou
     <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">810</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
                    <span class="n">norm</span><span class="o">=</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">1E-3</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
                    <span class="n">cmap</span><span class="o">=</span><span class="n">TransparencyMap</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fraction of games&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Turn </span><span class="si">{turn}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Fraction of games'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s2">"Turn </span><span class="si">{turn}</span><span class="s2">"</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">fig</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using this, we can visualize the probability distribution after any number of turns:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZwAAAFXCAYAAACWbvhOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXd8HPWd//+c2abtsrSStshykyX3Isl2MMVgWqhpd6GF
 XC4Qknzz4y6XC6nESQgpHCGN40iAlOMCBzkSeggJGDBg4yLZsixbzUW2VloVy9rd2V1tmZnfH6NZ
@@ -7732,49 +7372,35 @@ SUlJuTk88MADPP/883zmM59BSsnXvva1TT2eVDSQkpKSkrIhpCG1lJSUlJQNITU4KSkpKSkbQmpw
 UlJSUlI2hNTgpKSkpKRsCKnBSUlJSUnZEFKDk5KSkpKyIaQGJyUlJSVlQ0gNTkpKSkrKhpAanJSU
 lJSUDSE1OCkpKSkpG0JqcFJSUlJSNoTU4KSkpKSkbAipwUlJSUlJ2RBSg5OSkpKSsiGkBiclJSUl
 ZUNIDU5KSkpKyoaQGpyUlJSUlA3h/wJ2+n3TTaJazQAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After one turn, the distribution is quite tight: there are six possible states we can find ourselves in.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZwAAAFXCAYAAACWbvhOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXl4G9W9//+a0Wbtji3bWpzdsbMvtpOUsATCVtbS5Zat
 0N5Cafvtj7a3t7S3hdKW0lIupS3l9tICbbncwoVu7KUUCCRAQhY7cRwn3rLYsWR5iWNJI8laZub3
@@ -10693,49 +10319,35 @@ X/7ysl5PKBoIESJEiBA3BaFLLUSIECFC3BSEhBMiRIgQIW4KQsIJESJEiBA3BSHhhAgRIkSIm4KQ
 cEKECBEixE1BSDghQoQIEeKmICScECFChAhxUxASTogQIUKEuCkICSdEiBAhQtwUhIQTIkSIECFu
 CkLCCREiRIgQNwUh4YQIESJEiJuCkHBChAgRIsRNQUg4IUKECBHipiAknBAhQoQIcVMQEk6IECFC
 hLgpCAknRIgQIULcFPw/TsbhlNNgCCMAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After two turns, things become more spread out, though they are still clumped around a few more likely values.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZwAAAFXCAYAAACWbvhOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXl8G3ed//+c0WXdji3bOuycjp37sJ2Epkfa9KInUHbp
 RbssLQW+/MqyLIUFSlm6XaBbCpRut9CWY7u0tCzQm1Jo0zZtk+awE8dx4iuHE0uWbMexpJFkHTPz
@@ -13657,49 +13269,35 @@ wYMHD7cGjz76KK+//jrvf//7EULw6U9/ekVfj2ca8ODBgwcPtwVeSM2DBw8ePNwWeITjwYMHDx5u
 CzzC8eDBgwcPtwUe4Xjw4MGDh9sCj3A8ePDgwcNtgUc4Hjx48ODhtsAjHA8ePHjwcFvgEY4HDx48
 eLgt8AjHgwcPHjzcFniE48GDBw8ebgs8wvHgwYMHD7cFHuF48ODBg4fbAo9wPHjw4MHDbYFHOB48
 ePDg4bbAIxwPHjx48HBb4BGOBw8ePHi4LfAIx4MHDx483Bb8fzMbaShibqI5AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After 3 turns, the distribution is getting even further apart.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_board</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZwAAAFXCAYAAACWbvhOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXeYJFd99/upqs5hYs9MT94wO7M5B2mFAgoIFBYFkEQQ
 NtEvXHjNfV9kXzAPtnlswFdG4Cu/lgEZ25gkAZJYWRIgEFoJhc15d3Z2Nszs5O6J3V3dXd116v5R
@@ -16690,22 +16288,17 @@ NRqE00ADDTTwM4qhoSFeeuklAMbGxujp6fkJe1xdXHfRQAMNNNBAA1cHd955J6+++ioPPfQQsizz
 aOCaoEE4DTTQQAMNXBM0CKeBBhpooIFrggbhNNBAAw00cE3QIJwGGmiggQauCRqE00ADDTTQwDVB
 g3AaaKCBBhq4JmgQTgMNNNBAA9cEDcJpoIEGGmjgmqBBOA000EADDVwTNAingQYaaKCBa4IG4TTQ
 QAMNNHBN0CCcBhpooIEGrgkahNNAAw000MA1wf8PAMOPf4C00DMAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After 50 turns, many games will be finished, but there's still a non-negligible probability of finding yourself in spaces across the board.</p>
-
 </div>
 </div>
 </div>
@@ -16713,19 +16306,18 @@ QAMNNHBN0CCcBhpooIEGrgkahNNAAw000MA1wf8PAMOPf4C00DMAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Animating-the-Simulations">Animating the Simulations<a class="anchor-link" href="#Animating-the-Simulations">&#182;</a></h3><p>These board visualizations will be a bit more intuitive if we animate the results; here I'll do this using the excellent <a href="http://imageio.github.io/">ImageIO</a> package to stitch together an animated GIF from the individual matplotlib plots.
+<h3 id="Animating-the-Simulations">Animating the Simulations<a class="anchor-link" href="#Animating-the-Simulations">¶</a></h3><p>These board visualizations will be a bit more intuitive if we animate the results; here I'll do this using the excellent <a href="http://imageio.github.io/">ImageIO</a> package to stitch together an animated GIF from the individual matplotlib plots.
 (Note that you can also do this sort of animation <a href="http://jakevdp.github.io/blog/2012/08/18/matplotlib-animation-tutorial/">directly in matplotlib</a>, but matplotlib's GIF writer requires some extra command-line tools that ImageIO does not).</p>
 <p>Let's start with a function that will build a GIF using ImageIO from a generator of matplotlib figures:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">imageio</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">imageio</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
 
 <span class="k">def</span> <span class="nf">make_gif</span><span class="p">(</span><span class="n">figures</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -16733,53 +16325,47 @@ QAMNNHBN0CCcBhpooIEGrgkahNNAAw000MA1wf8PAMOPf4C00DMAAAAASUVORK5CYII=
     <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="n">figures</span><span class="p">:</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>  <span class="c1"># close figure when we&#39;re finished to prevent matplotlib warnings</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>  <span class="c1"># close figure when we're finished to prevent matplotlib warnings</span>
         <span class="n">output</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
     <span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can create some simulations and make a GIF. I'll tweak the frame durations of the gif a bit to emphasize the more interesting earlier frames:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
 <span class="n">sims</span> <span class="o">=</span> <span class="p">(</span><span class="n">show_board</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">)</span>
 
 <span class="n">duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">))</span>
 <span class="n">duration</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">duration</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-<span class="n">make_gif</span><span class="p">(</span><span class="n">sims</span><span class="p">,</span> <span class="s1">&#39;ChutesAndLadders-sim.gif&#39;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
+<span class="n">make_gif</span><span class="p">(</span><span class="n">sims</span><span class="p">,</span> <span class="s1">'ChutesAndLadders-sim.gif'</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The resulting GIF looks like this:</p>
-<p><img src='http://jakevdp.github.io/images/ChutesAndLadders-sim.gif' alt='[img: Chutes and Ladders animated simulation]'></p>
-
+<p><img alt="[img: Chutes and Ladders animated simulation]" src="http://jakevdp.github.io/images/ChutesAndLadders-sim.gif"></p>
 </div>
 </div>
 </div>
@@ -16787,10 +16373,9 @@ QAMNNHBN0CCcBhpooIEGrgkahNNAAw000MA1wf8PAMOPf4C00DMAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>I hope you've enjoyed this exploration of Chutes &amp; Ladders, and even if you haven't, I'm certain you'll take solace in the fact that I did.
-And to Jace: if you ever come across this post at some point years down the road, I hope you'll someday experience the joy of playing Chutes &amp; Ladders with your kids for as many hours as I did with you.</p>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>I hope you've enjoyed this exploration of Chutes & Ladders, and even if you haven't, I'm certain you'll take solace in the fact that I did.
+And to Jace: if you ever come across this post at some point years down the road, I hope you'll someday experience the joy of playing Chutes & Ladders with your kids for as many hours as I did with you.</p>
 <p>Thanks for reading!</p>
-
 </div>
 </div>
 </div>
@@ -16802,12 +16387,9 @@ And to Jace: if you ever come across this post at some point years down the road
 <a href="http://jakevdp.github.io/downloads/notebooks/ChutesAndLadders.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.jupyter.org/url/jakevdp.github.io/downloads/notebooks/ChutesAndLadders.ipynb">on nbviewer</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -16837,6 +16419,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Simulating Chutes & Ladders in Python"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/simulating-chutes-and-ladders.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

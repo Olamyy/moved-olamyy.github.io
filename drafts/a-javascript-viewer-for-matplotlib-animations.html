@@ -1403,69 +1403,50 @@ javascript-based animation viewer, with hooks to embed
 it in IPython.  It's best viewed in a modern browser
 (unfortunately Firefox does not currently qualify as
 "modern" due to its lack of HTML5 support)</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 Welcome to pylab, a matplotlib-based Python environment [backend: module://IPython.kernel.zmq.pylab.backend_inline].
-For more information, type &#39;help(pylab)&#39;.
+For more information, type 'help(pylab)'.
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get the JSAnimation import at https://github.com/jakevdp/JSAnimation</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get the JSAnimation import at https://github.com/jakevdp/JSAnimation</span>
 <span class="kn">from</span> <span class="nn">JSAnimation</span> <span class="k">import</span> <span class="n">examples</span>
 <span class="n">examples</span><span class="o">.</span><span class="n">basic_animation</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, loop_select_id){
@@ -1601,14 +1582,13 @@ For more information, type &#39;help(pylab)&#39;.
     if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
   }
 </script>
-
-<div class="animation" align="center">
-    <img id="_anim_img2846384">
-    <br>
-    <input id="_anim_slider2846384" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="anim2846384.set_frame(parseInt(this.value));"></input>
-    <br>
-    <button onclick="anim2846384.slower()">&#8211;</button>
-    <button onclick="anim2846384.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<div align="center" class="animation">
+<img id="_anim_img2846384">
+<br>
+<input id="_anim_slider2846384" max="1" min="0" name="points" onchange="anim2846384.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0">
+<br>
+<button onclick="anim2846384.slower()">–</button>
+<button onclick="anim2846384.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9L
 QnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ
 0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUV
@@ -1617,14 +1597,14 @@ cO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSae
 OwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76
 rV+/blxKMZUnLgAAAABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846384.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846384.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO
 4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8y
 MLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j
 4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAw
 h8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC
 "></button>
-    <button onclick="anim2846384.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846384.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8o
 w3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdN
 v7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mU
@@ -1634,14 +1614,14 @@ H8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuN
 vs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVO
 RK5CYII=
 "></button>
-    <button onclick="anim2846384.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846384.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCAN
 TEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgx
 MDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj
 +MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAA
 AABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846384.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846384.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1I
 QmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUa
 tOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/Yg
@@ -1650,14 +1630,14 @@ gAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU
 gevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56Sl
 Rpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846384.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846384.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie
 4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxn
 Y1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/
 YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAys
 qNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC
 "></button>
-    <button onclick="anim2846384.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846384.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEv
 Q3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSI
 SaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6
@@ -1666,15 +1646,13 @@ xEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e
 +540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aH
 FnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846384.faster()">+</button>
-  <form action="#n" name="_anim_loop_select2846384" class="anim_control">
-    <input type="radio" name="state" value="once"> Once </input>
-    <input type="radio" name="state" value="loop" checked> Loop </input>
-    <input type="radio" name="state" value="reflect"> Reflect </input>
+<button onclick="anim2846384.faster()">+</button>
+<form action="#n" class="anim_control" name="_anim_loop_select2846384">
+<input name="state" type="radio" value="once"> Once 
+    <input checked="" name="state" type="radio" value="loop"> Loop 
+    <input name="state" type="radio" value="reflect"> Reflect 
   </form>
 </div>
-
-
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -19297,14 +19275,10 @@ AElFTkSuQmCC\
       anim2846384 = new Animation(frames, img_id, slider_id, loop_select_id);
   }, 0);
 </script>
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -19312,7 +19286,6 @@ AElFTkSuQmCC\
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I think the result is pretty good, if I do say so myself.
 <!-- PELICAN_END_SUMMARY --></p>
-
 </div>
 </div>
 </div>
@@ -19320,7 +19293,7 @@ AElFTkSuQmCC\
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Background">The Background<a class="anchor-link" href="#The-Background">&#182;</a></h2>
+<h2 id="The-Background">The Background<a class="anchor-link" href="#The-Background">¶</a></h2>
 </div>
 </div>
 </div>
@@ -19346,7 +19319,6 @@ and Javascript -- my first real foray into the latter.  The result is a small
 python package, available on my github page:
 <a href="https://github.com/jakevdp/JSAnimation">https://github.com/jakevdp/JSAnimation</a>.
 See the README and examples on that page for details of how this can be used.</p>
-
 </div>
 </div>
 </div>
@@ -19354,7 +19326,7 @@ See the README and examples on that page for details of how this can be used.</p
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="So-what's-going-on-here?">So what's going on here?<a class="anchor-link" href="#So-what's-going-on-here?">&#182;</a></h2>
+<h2 id="So-what's-going-on-here?">So what's going on here?<a class="anchor-link" href="#So-what's-going-on-here?">¶</a></h2>
 </div>
 </div>
 </div>
@@ -19370,7 +19342,6 @@ the animation to an embeddable html document.  This writer is capable of saving 
 animation to a stand-alone HTML file, with the frames either embedded or in a separate
 directory: this stand-alone file is created, read-in, and embedded into the document
 as raw HTML.</p>
-
 </div>
 </div>
 </div>
@@ -19381,41 +19352,33 @@ as raw HTML.</p>
 <p>For IPython, the animation creates frames that are embedded directly in the HTML source
 via the base-64 representation.  A base-64 representation is a standard
 way of encoding binary data to a normal string of text, which looks like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
 <span class="c1"># write the figure to a temporary file, and encode the results to base64</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">'.png'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'base64'</span><span class="p">)</span>
     
 <span class="c1"># close the figure and display the data</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">data</span><span class="p">[:</span><span class="mi">460</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXt0XVW977877zZN2iZ9QJNAgYQ+KLRotaCi4VFLKxQF
@@ -19426,10 +19389,8 @@ sIAxDMMwiYQFjGEYhkkkLGAMwzBMImEBYxiGYRIJCxjDMAyTSFjAGIZhmETCAsYwDMMkEhYwhmE
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -19440,33 +19401,24 @@ The magic of this is that contained in that string is all the information needed
 to reconstruct the original PNG image.  We can see that directly by inserting the
 string into an HTML image tag, which results in a frame embedded in the
 document itself:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
-<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;img src=&quot;data:image/png;base64,</span><span class="si">{0}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'<img src="data:image/png;base64,</span><span class="si">{0}</span><span class="s1">">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXt0XVW977877zZN2iZ9QJNAgYQ+KLRotaCi4VFLKxQF
@@ -19844,12 +19796,9 @@ jGEYhkkkLGAMwzBMImEBYxiGYRIJCxjDMAyTSFjAGIZhmETCAsYwDMMkEhYwhmEYJpGwgDEMwzCJ
 hAWMYRiGSSQsYAzDMEwi+f87BDaQAmWDfgAAAABJRU5ErkJggg==
 ">
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -19860,7 +19809,6 @@ embedded figures in an IPython notebook.</p>
 <p>By embedding all the frames this way, we're able to use Javascript to switch
 between them at a given frame-rate using the javascript <code>setInterval()</code>
 function.  The rest is just straightforward javascript event handling.</p>
-
 </div>
 </div>
 </div>
@@ -19868,7 +19816,7 @@ function.  The rest is just straightforward javascript event handling.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Embedding-Your-Own-Animation">Embedding Your Own Animation<a class="anchor-link" href="#Embedding-Your-Own-Animation">&#182;</a></h2>
+<h2 id="Embedding-Your-Own-Animation">Embedding Your Own Animation<a class="anchor-link" href="#Embedding-Your-Own-Animation">¶</a></h2>
 </div>
 </div>
 </div>
@@ -19882,16 +19830,15 @@ To embed your animation in the notebook, import <code>IPython_display</code> fro
 package.  This will add the <code>_repr_html_</code> method to the animation class, so that creating
 the animation will lead to it being displayed via the Javascript embedding.</p>
 <p>Here is an example showing how the above animation was created:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">animation</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">animation</span>
 <span class="kn">from</span> <span class="nn">JSAnimation</span> <span class="k">import</span> <span class="n">IPython_display</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -19911,23 +19858,14 @@ the animation will lead to it being displayed via the Javascript embedding.</p>
 <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, loop_select_id){
@@ -20063,14 +20001,13 @@ the animation will lead to it being displayed via the Javascript embedding.</p>
     if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
   }
 </script>
-
-<div class="animation" align="center">
-    <img id="_anim_img2846385">
-    <br>
-    <input id="_anim_slider2846385" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="anim2846385.set_frame(parseInt(this.value));"></input>
-    <br>
-    <button onclick="anim2846385.slower()">&#8211;</button>
-    <button onclick="anim2846385.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<div align="center" class="animation">
+<img id="_anim_img2846385">
+<br>
+<input id="_anim_slider2846385" max="1" min="0" name="points" onchange="anim2846385.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0">
+<br>
+<button onclick="anim2846385.slower()">–</button>
+<button onclick="anim2846385.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9L
 QnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ
 0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUV
@@ -20079,14 +20016,14 @@ cO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSae
 OwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76
 rV+/blxKMZUnLgAAAABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846385.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846385.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO
 4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8y
 MLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j
 4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAw
 h8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC
 "></button>
-    <button onclick="anim2846385.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846385.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8o
 w3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdN
 v7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mU
@@ -20096,14 +20033,14 @@ H8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuN
 vs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVO
 RK5CYII=
 "></button>
-    <button onclick="anim2846385.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846385.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCAN
 TEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgx
 MDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj
 +MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAA
 AABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846385.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846385.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1I
 QmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUa
 tOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/Yg
@@ -20112,14 +20049,14 @@ gAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU
 gevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56Sl
 Rpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846385.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846385.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie
 4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxn
 Y1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/
 YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAys
 qNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC
 "></button>
-    <button onclick="anim2846385.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
+<button onclick="anim2846385.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+H
 j8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEv
 Q3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSI
 SaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6
@@ -20128,15 +20065,13 @@ xEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e
 +540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aH
 FnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg==
 "></button>
-    <button onclick="anim2846385.faster()">+</button>
-  <form action="#n" name="_anim_loop_select2846385" class="anim_control">
-    <input type="radio" name="state" value="once"> Once </input>
-    <input type="radio" name="state" value="loop" checked> Loop </input>
-    <input type="radio" name="state" value="reflect"> Reflect </input>
+<button onclick="anim2846385.faster()">+</button>
+<form action="#n" class="anim_control" name="_anim_loop_select2846385">
+<input name="state" type="radio" value="once"> Once 
+    <input checked="" name="state" type="radio" value="loop"> Loop 
+    <input name="state" type="radio" value="reflect"> Reflect 
   </form>
 </div>
-
-
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -37759,20 +37694,16 @@ AElFTkSuQmCC\
       anim2846385 = new Animation(frames, img_id, slider_id, loop_select_id);
   }, 0);
 </script>
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Remaining-Issues">Remaining Issues<a class="anchor-link" href="#Remaining-Issues">&#182;</a></h2>
+<h2 id="Remaining-Issues">Remaining Issues<a class="anchor-link" href="#Remaining-Issues">¶</a></h2>
 </div>
 </div>
 </div>
@@ -37799,7 +37730,6 @@ hacking abilities.  It would be very cool if someone could run with this idea
 and create what would amount to a Javascript video codec to reduce the size of
 these embedded animations.  I think it could be done with some effort.</p>
 <p>As it is, though, I think this is a pretty neat widget and will definitely find good uses.</p>
-
 </div>
 </div>
 </div>
@@ -37812,12 +37742,9 @@ these embedded animations.  I think it could be done with some effort.</p>
 <a href="http://jakevdp.github.io/downloads/notebooks/JSAnimation.ipynb"><em>here</em></a>,
 <em>or viewed statically</em>
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/JSAnimation.ipynb"><em>here</em></a></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -37847,6 +37774,18 @@ these embedded animations.  I think it could be done with some effort.</p>
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "A Javascript Viewer for Matplotlib Animations"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/a-javascript-viewer-for-matplotlib-animations.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

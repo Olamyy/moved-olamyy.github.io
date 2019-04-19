@@ -1398,16 +1398,13 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>I've spent much of the last decade using Python for my research, teaching Python tools to other scientists and developers, and developing Python tools for efficient data manipulation, scientific and statistical computation, and visualization.
 The Python-for-data landscape has changed immensely since I first installed NumPy and SciPy from via a flickering CRT display.
 Among the new developments since those early days, the one with perhaps the broadest impact on my daily work has been the introduction of <a href="http://conda.pydata.org">conda</a>, the open-source cross-platform package manager first released in 2012.</p>
 <p>In the four years since its initial release, many words have been spilt introducing conda and espousing its merits, but one thing I have consistently noticed is the number of misconceptions that seem to remain in the (often fervent) discussions surrounding this tool.
 I hope in this post to do a small part in putting these myths and misconceptions to rest.</p>
 <!-- PELICAN_END_SUMMARY -->
-
 <p>I've tried to be as succinct as I can, but if you want to skim this article and get the gist of the discussion, you can read each heading along with the the bold summary just below it.</p>
-
 </div>
 </div>
 </div>
@@ -1415,14 +1412,13 @@ I hope in this post to do a small part in putting these myths and misconceptions
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#1:-Conda-is-a-distribution,-not-a-package-manager">Myth #1: Conda is a distribution, not a package manager<a class="anchor-link" href="#Myth-#1:-Conda-is-a-distribution,-not-a-package-manager">&#182;</a></h3><p><strong>Reality: Conda is a package manager; Anaconda is a distribution. Although Conda is packaged with Anaconda, the two are distinct entities with distinct goals.</strong></p>
+<h3 id="Myth-#1:-Conda-is-a-distribution,-not-a-package-manager">Myth #1: Conda is a distribution, not a package manager<a class="anchor-link" href="#Myth-#1:-Conda-is-a-distribution,-not-a-package-manager">¶</a></h3><p><strong>Reality: Conda is a package manager; Anaconda is a distribution. Although Conda is packaged with Anaconda, the two are distinct entities with distinct goals.</strong></p>
 <p>A <em>software distribution</em> is a pre-built and pre-configured collection of packages that can be installed and used on a system.
 A <em>package manager</em> is a tool that automates the process of installing, updating, and removing packages.
 Conda, with its "<code>conda install</code>", "<code>conda update</code>", and "<code>conda remove</code>" sub-commands, falls squarely under the second definition: it is a package manager.</p>
 <p>Perhaps the confusion here comes from the fact that Conda <em>is</em> tightly coupled to two software distributions: <a href="https://docs.continuum.io/anaconda/">Anaconda</a> and <a href="http://conda.pydata.org/miniconda.html">Miniconda</a>. Anaconda is a full distribution of the central software in the PyData ecosystem, and includes Python itself along with binaries for several hundred third-party open-source projects. Miniconda is essentially an installer for an empty conda environment, containing only Conda and its dependencies, so that you can install what you need from scratch.</p>
 <p>But make no mistake: Conda is as distinct from Anaconda/Miniconda as is Python itself, and (if you wish) can be installed without ever touching Anaconda/Miniconda.
 For more on each of these, see the <a href="http://conda.pydata.org/docs/faq.html#general-questions">conda FAQ</a>.</p>
-
 </div>
 </div>
 </div>
@@ -1430,15 +1426,13 @@ For more on each of these, see the <a href="http://conda.pydata.org/docs/faq.htm
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#2:-Conda-is-a-Python-package-manager">Myth #2: Conda is a <em>Python</em> package manager<a class="anchor-link" href="#Myth-#2:-Conda-is-a-Python-package-manager">&#182;</a></h3><p><strong>Reality: Conda is a general-purpose package management system, designed to build and manage software of any type from any language. As such, it also works well with Python packages.</strong></p>
+<h3 id="Myth-#2:-Conda-is-a-Python-package-manager">Myth #2: Conda is a <em>Python</em> package manager<a class="anchor-link" href="#Myth-#2:-Conda-is-a-Python-package-manager">¶</a></h3><p><strong>Reality: Conda is a general-purpose package management system, designed to build and manage software of any type from any language. As such, it also works well with Python packages.</strong></p>
 <p>Because conda arose from within the Python (more specifically PyData) community, many mistakenly assume that it is fundamentally a Python package manager.
 This is not the case: conda is designed to manage packages and dependencies within <em>any</em> software stack.
 In this sense, it's less like pip, and more like a cross-platform version of apt or yum.</p>
 <p>If you use conda, you are already probably taking advantage of many non-Python packages; the following command will list the ones in your environment:</p>
-
 <pre><code>$ conda search --canonical  | grep -v 'py\d\d'</code></pre>
-<p>On my system, there are 350 results: these are packages within my Conda/Python environment that <em>are fundamentally unmanageable by Python-only tools like pip &amp; virtualenv</em>.</p>
-
+<p>On my system, there are 350 results: these are packages within my Conda/Python environment that <em>are fundamentally unmanageable by Python-only tools like pip & virtualenv</em>.</p>
 </div>
 </div>
 </div>
@@ -1446,7 +1440,7 @@ In this sense, it's less like pip, and more like a cross-platform version of apt
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#3:-Conda-and-pip-are-direct-competitors">Myth #3: Conda and pip are direct competitors<a class="anchor-link" href="#Myth-#3:-Conda-and-pip-are-direct-competitors">&#182;</a></h3><p><strong>Reality: Conda and pip serve different purposes, and only directly compete in a small subset of tasks: namely installing Python packages in isolated environments.</strong></p>
+<h3 id="Myth-#3:-Conda-and-pip-are-direct-competitors">Myth #3: Conda and pip are direct competitors<a class="anchor-link" href="#Myth-#3:-Conda-and-pip-are-direct-competitors">¶</a></h3><p><strong>Reality: Conda and pip serve different purposes, and only directly compete in a small subset of tasks: namely installing Python packages in isolated environments.</strong></p>
 <p><a href="https://pip.pypa.io/">Pip</a>, which stands for <strong>P</strong>ip <strong>I</strong>nstalls <strong>P</strong>ackages, is Python's officially-sanctioned package manager, and is most commonly used to install packages published on the <a href="https://pypi.python.org/">Python Package Index (PyPI)</a>. Both pip and PyPI are governed and supported by the <a href="https://www.pypa.io/">Python Packaging Authority (PyPA)</a>.</p>
 <p>In short, pip is a general-purpose manager for Python packages; conda is a language-agnostic cross-platform environment manager.
 For the user, the most salient distinction is probably this: pip installs <em>python</em> packages within <em>any</em> environment; conda installs <em>any</em> package within <em>conda</em> environments.
@@ -1456,7 +1450,6 @@ By isolated environment I mean a conda-env or virtualenv, in which you can insta
 If you want to, say, manage Python packages within an existing system Python installation, conda can't help you: by design, it can only install packages within conda environments.
 If you want to, say, work with the many Python packages which rely on external dependencies (NumPy, SciPy, and Matplotlib are common examples), while tracking those dependencies in a meaningful way, pip can't help you: by design, it manages Python packages and only Python packages.</p>
 <p>Conda and pip are not competitors, but rather tools focused on different groups of users and patterns of use.</p>
-
 </div>
 </div>
 </div>
@@ -1464,7 +1457,7 @@ If you want to, say, work with the many Python packages which rely on external d
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#4:-Creating-conda-in-the-first-place-was-irresponsible-&amp;-divisive">Myth #4: Creating conda in the first place was irresponsible &amp; divisive<a class="anchor-link" href="#Myth-#4:-Creating-conda-in-the-first-place-was-irresponsible-&amp;-divisive">&#182;</a></h3><p><strong>Reality: Conda's creators pushed Python's standard packaging to its limits for over a decade, and only created a second tool when it was clear it was the only reasonable way forward.</strong></p>
+<h3 id="Myth-#4:-Creating-conda-in-the-first-place-was-irresponsible-&-divisive">Myth #4: Creating conda in the first place was irresponsible & divisive<a class="anchor-link" href="#Myth-#4:-Creating-conda-in-the-first-place-was-irresponsible-&-divisive">¶</a></h3><p><strong>Reality: Conda's creators pushed Python's standard packaging to its limits for over a decade, and only created a second tool when it was clear it was the only reasonable way forward.</strong></p>
 <p>According to the <a href="https://www.python.org/dev/peps/pep-0020/#the-zen-of-python">Zen of Python</a>, when doing anything in Python "There should be one – and preferably only one – obvious way to do it." So why would the creators of <code>conda</code> muddy the field by introducing a new way to install Python packages? Why didn't they contribute back to the Python community and improve <code>pip</code> to overcome its deficiencies?</p>
 <p>As it turns out, that is exactly what they did. Prior to 2012, the developers of the PyData/SciPy ecosystem went to great lengths to work within the constraints of the package management solutions developed by the Python community.
 As far back as 2001, the NumPy project <a href="https://github.com/numpy/numpy/tree/master/numpy/distutils">forked distutils</a> in an attempt to make it handle the complex requirements of a NumPy distribution.
@@ -1473,10 +1466,9 @@ An entire generation of scientific Python users spent countless hours struggling
 If you were on Windows, forget about it.
 To read some of the details about these pain-points and how they led to Conda, I'd suggest Travis Oliphant's <a href="http://technicaldiscovery.blogspot.com/2013/12/why-i-promote-conda.html">2013 blog post</a> on the topic.</p>
 <p>But why didn't Conda's creators just <em>talk</em> to the Python packaging folks and figure out these challenges together? As it turns out, they did.</p>
-<p>The genesis of Conda came after Guido van Rossum was invited to speak at the inaugural PyData meetup in 2012; in a Q&amp;A on the subject of packaging difficulties, he told us that when it comes to packaging, "it really sounds like your needs are so unusual compared to the larger Python community that you're just better off building your own" (<a href="https://www.youtube.com/watch?v=QjXJLVINsSA&amp;feature=youtu.be&amp;t=3555">See video of this discussion</a>).
+<p>The genesis of Conda came after Guido van Rossum was invited to speak at the inaugural PyData meetup in 2012; in a Q&A on the subject of packaging difficulties, he told us that when it comes to packaging, "it really sounds like your needs are so unusual compared to the larger Python community that you're just better off building your own" (<a href="https://www.youtube.com/watch?v=QjXJLVINsSA&feature=youtu.be&t=3555">See video of this discussion</a>).
 Even while following this nugget of advice from the BDFL, the PyData community continued dialog and collaboration with core Python developers on the topic: one more public example of this was the invitation of CPython core developer Nick Coghlan to keynote at SciPy 2014 (<a href="https://www.youtube.com/watch?v=IVzjVqr_Bzs">See video here</a>). He gave an excellent talk which specifically discusses pip and conda in the context of the "unsolved problem" of software distribution, and mentions the value of having multiple means of distribution tailored to the needs of specific users.</p>
 <p>Far from insinuating that Conda is divisive, Nick and others at the Python Packaging Authority officially <a href="https://packaging.python.org/key_projects/#conda">recognize conda</a> as one of many important redistributors of Python code, and are working hard to better enable such tools to work seamlessly with the Python Package Index.</p>
-
 </div>
 </div>
 </div>
@@ -1484,7 +1476,7 @@ Even while following this nugget of advice from the BDFL, the PyData community c
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#5:-conda-doesn't-work-with-virtualenv,-so-it's-useless-for-my-workflow">Myth #5: conda doesn't work with virtualenv, so it's useless for my workflow<a class="anchor-link" href="#Myth-#5:-conda-doesn't-work-with-virtualenv,-so-it's-useless-for-my-workflow">&#182;</a></h3><p><strong>Reality: You actually can install (some) conda packages within a virtualenv, but better is to use Conda's own environment manager: it is fully-compatible with pip and has several advantages over virtualenv.</strong></p>
+<h3 id="Myth-#5:-conda-doesn't-work-with-virtualenv,-so-it's-useless-for-my-workflow">Myth #5: conda doesn't work with virtualenv, so it's useless for my workflow<a class="anchor-link" href="#Myth-#5:-conda-doesn't-work-with-virtualenv,-so-it's-useless-for-my-workflow">¶</a></h3><p><strong>Reality: You actually can install (some) conda packages within a virtualenv, but better is to use Conda's own environment manager: it is fully-compatible with pip and has several advantages over virtualenv.</strong></p>
 <p><a href="https://virtualenv.pypa.io/en/stable/">virtualenv</a>/<a href="https://docs.python.org/3/library/venv.html">venv</a> are utilites that allow users to create isolated Python environments that work with <code>pip</code>.
 Conda has its own <a href="http://conda.pydata.org/docs/using/envs.html">built-in environment manager</a> that works seamlessly with both conda and pip, and in fact has several advantages over virtualenv/venv:</p>
 <ul>
@@ -1494,7 +1486,6 @@ Conda has its own <a href="http://conda.pydata.org/docs/using/envs.html">built-i
 <li>While virtualenvs are not compatible with conda packages, conda environments are <em>entirely</em> compatible with pip packages. First <code>conda install pip</code>, and then you can <code>pip install</code> any available package within that environment. You can even <a href="https://github.com/conda/conda-env/#environment-file-example">explicitly list pip packages</a> in conda environment files, meaning the full software stack is entirely reproducible from a single environment metadata file.</li>
 </ul>
 <p>That said, if you would like to use conda within your virtualenv, <a href="https://twitter.com/jakevdp/status/768157827655282688">it is possible</a>:</p>
-
 <pre><code>$ virtualenv test_conda
 
 $ source test_conda/bin/activate
@@ -1507,7 +1498,6 @@ I wouldn't recommend this: I can't find documentation for this feature, and the 
 This appears not to be some fundamental incompatibility between conda and virtualenv, but rather related to some subtle inconsistencies in the build process, and thus is potentially fixable (see <a href="https://github.com/conda/conda/issues/1367">conda Issue 1367</a> and <a href="https://github.com/ContinuumIO/anaconda-issues/issues/498">anaconda Issue 498</a>, for example).</p>
 <p>If you want to avoid these difficulties, a better idea would be to <code>pip install conda</code> and then <a href="http://conda.pydata.org/docs/using/envs.html#create-an-environment">create a new conda environment</a> in which to install conda packages.
 For someone accustomed to <code>pip</code>/<code>virtualenv</code>/<code>venv</code> command syntax who wants to try conda, the conda docs include a <a href="http://conda.pydata.org/docs/_downloads/conda-pip-virtualenv-translator.html">translation table</a> between <code>conda</code> and <code>pip</code>/<code>virtualenv</code> commands.</p>
-
 </div>
 </div>
 </div>
@@ -1515,7 +1505,7 @@ For someone accustomed to <code>pip</code>/<code>virtualenv</code>/<code>venv</c
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#6:-Now-that-pip-uses-wheels,-conda-is-no-longer-necessary">Myth #6: Now that pip uses <em>wheels</em>, conda is no longer necessary<a class="anchor-link" href="#Myth-#6:-Now-that-pip-uses-wheels,-conda-is-no-longer-necessary">&#182;</a></h3><p><strong>Reality: wheels address just one of the many challenges that prompted the development of conda, and wheels have weaknesses that Conda's binaries address.</strong></p>
+<h3 id="Myth-#6:-Now-that-pip-uses-wheels,-conda-is-no-longer-necessary">Myth #6: Now that pip uses <em>wheels</em>, conda is no longer necessary<a class="anchor-link" href="#Myth-#6:-Now-that-pip-uses-wheels,-conda-is-no-longer-necessary">¶</a></h3><p><strong>Reality: wheels address just one of the many challenges that prompted the development of conda, and wheels have weaknesses that Conda's binaries address.</strong></p>
 <p>One difficulty which drove the creation of Conda was the fact that pip could distribute only source code, not pre-compiled binary distributions, an issue that was particularly challenging for users building extension-heavy modules like NumPy and SciPy.
 After Conda had solved this problem in its own way, pip itself added support for <a href="https://www.python.org/dev/peps/pep-0427/">wheels</a>, a binary format designed to address this difficulty within <code>pip</code>.
 With this issue addressed within the common tool, shouldn't Conda early-adopters now flock back to pip?</p>
@@ -1525,7 +1515,6 @@ Because pip's dependency tracking is limited to Python packages, the main way of
 <p>For scientific users, conda also allows things like linking builds to optimized linear algebra libraries, as Continuum does with its freely-provided <a href="https://docs.continuum.io/mkl-optimizations/">MKL-enabled NumPy/SciPy</a>.
 Conda can even distribute non-Python build requirements, such as <code>gcc</code>, which greatly streamlines the process of building other packages <em>on top</em> of the pre-compiled binaries it distributes.
 If you try to do this using pip's wheels, you better hope that your system has compilers and settings compatible with those used to originally build the wheel in question.</p>
-
 </div>
 </div>
 </div>
@@ -1533,7 +1522,7 @@ If you try to do this using pip's wheels, you better hope that your system has c
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#7:-conda-is-not-open-source;-it-is-tied-to-a-for-profit-company-who-could-start-charging-for-the-service-whenever-they-want">Myth #7: conda is not open source; it is tied to a for-profit company who could start charging for the service whenever they want<a class="anchor-link" href="#Myth-#7:-conda-is-not-open-source;-it-is-tied-to-a-for-profit-company-who-could-start-charging-for-the-service-whenever-they-want">&#182;</a></h3><p><strong>Reality: conda (the package manager and build system) is 100% open-source, and Anaconda (the distribution) is nearly there as well.</strong></p>
+<h3 id="Myth-#7:-conda-is-not-open-source;-it-is-tied-to-a-for-profit-company-who-could-start-charging-for-the-service-whenever-they-want">Myth #7: conda is not open source; it is tied to a for-profit company who could start charging for the service whenever they want<a class="anchor-link" href="#Myth-#7:-conda-is-not-open-source;-it-is-tied-to-a-for-profit-company-who-could-start-charging-for-the-service-whenever-they-want">¶</a></h3><p><strong>Reality: conda (the package manager and build system) is 100% open-source, and Anaconda (the distribution) is nearly there as well.</strong></p>
 <p>In the open source world, there is (sometimes quite rightly) a fundamental distrust of for-profit entities, and the fact that Anaconda was created by <a href="https://www.continuum.io/">Continuum Analytics</a> and is a free component of a <a href="https://www.continuum.io/anaconda-subscriptions/anaconda-pro">larger enterprise product</a> causes some to worry.</p>
 <p>Let's set aside the fact that Continuum is, in my opinion, one of the few companies really doing open software the right way (a topic for another time).
 Ignoring that, the fact is that Conda itself – the package manager that provides the utilities to build, distribute, install, update, and manage software in a cross-platform manner – is 100% open-source, <a href="https://github.com/conda/conda">available on GitHub</a> and <a href="https://github.com/conda/conda/blob/master/LICENSE.txt">BSD-Licensed</a>.
@@ -1541,7 +1530,6 @@ Even for Anaconda (the distribution), the EULA is simply a <a href="https://docs
 In short, there is no need to worry about intellectual property issues when using Conda.</p>
 <p>If the Anaconda/Miniconda <em>distributions</em> still worry you, rest assured: you don't need to install Anaconda or Miniconda to get <code>conda</code>, though those are convenient avenues to its use.
 As we saw above, you can "<code>pip install conda</code>" to install it <a href="https://pypi.python.org/pypi/conda">via PyPI</a> without ever touching Continuum's website.</p>
-
 </div>
 </div>
 </div>
@@ -1549,7 +1537,7 @@ As we saw above, you can "<code>pip install conda</code>" to install it <a href=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#8:-But-Conda-packages-themselves-are-closed-source,-right?">Myth #8: But Conda packages themselves are closed-source, right?<a class="anchor-link" href="#Myth-#8:-But-Conda-packages-themselves-are-closed-source,-right?">&#182;</a></h3><p><strong>Reality: though conda's default channel is not yet entirely open, there is a community-led effort (Conda-Forge) to make conda packaging &amp; distribution entirely open.</strong></p>
+<h3 id="Myth-#8:-But-Conda-packages-themselves-are-closed-source,-right?">Myth #8: But Conda packages themselves are closed-source, right?<a class="anchor-link" href="#Myth-#8:-But-Conda-packages-themselves-are-closed-source,-right?">¶</a></h3><p><strong>Reality: though conda's default channel is not yet entirely open, there is a community-led effort (Conda-Forge) to make conda packaging & distribution entirely open.</strong></p>
 <p>Historically, the package build process for the default conda channel have not been as open as they could be, and the process of getting a build updated has mostly relied on knowing someone at Continuum.
 Rumor is that this was largely because the original conda package creation process was not as well-defined and streamlined as it is today.</p>
 <p>But this is changing. Continuum is making the effort to <a href="https://github.com/ContinuumIO/anaconda-recipes">open their package recipes</a>, and I've been told that only a few dozen of the 500+ packages remain to be ported. These few recipes are the only remaining piece of the Anaconda <em>distribution</em> that are not entirely open.</p>
@@ -1558,7 +1546,6 @@ Packages are maintained in the open via github, with binaries automatically buil
 All the metadata for each package lives in a Github repository, and package updates are accomplished through merging a Github pull request (<a href="https://github.com/conda-forge/vega-feedstock/pull/3/files">here</a> is an example of what a package update looks like in conda-forge).</p>
 <p>Conda-forge is <strong>entirely community-founded and community-led</strong>, and while conda-forge is probably not yet mature enough to completely replace the default conda channel, Continuum's founders have <a href="https://twitter.com/teoliphant/status/729625025200984065">publicly stated</a> that this is a direction they would support.
 You can read more about the promise of conda-forge in Wes McKinney's recent blog post, <a href="http://wesmckinney.com/blog/conda-forge-centos-moment/">conda-forge and PyData's CentOS moment</a>.</p>
-
 </div>
 </div>
 </div>
@@ -1566,16 +1553,15 @@ You can read more about the promise of conda-forge in Wes McKinney's recent blog
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#9:-OK,-but-if-Continuum-Analytics-folds,-conda-won't-work-anymore-right?">Myth #9: OK, but if Continuum Analytics folds, conda won't work anymore right?<a class="anchor-link" href="#Myth-#9:-OK,-but-if-Continuum-Analytics-folds,-conda-won't-work-anymore-right?">&#182;</a></h3><p><strong>Reality: nothing about Conda inherently ties it to Continuum Analytics; the company serves the community by providing free hosting of build artifacts. All software distributions need to be hosted by somebody, even PyPI.</strong></p>
+<h3 id="Myth-#9:-OK,-but-if-Continuum-Analytics-folds,-conda-won't-work-anymore-right?">Myth #9: OK, but if Continuum Analytics folds, conda won't work anymore right?<a class="anchor-link" href="#Myth-#9:-OK,-but-if-Continuum-Analytics-folds,-conda-won't-work-anymore-right?">¶</a></h3><p><strong>Reality: nothing about Conda inherently ties it to Continuum Analytics; the company serves the community by providing free hosting of build artifacts. All software distributions need to be hosted by somebody, even PyPI.</strong></p>
 <p>It's true that even conda-forge publishes its package builds to <a href="http://anaconda.org/">http://anaconda.org/</a>, a website owned and maintained by Continuum Analytics.
 But there is nothing in Conda that <em>requires</em> this site.
 In fact, the creation of <a href="http://conda.pydata.org/docs/custom-channels.html">Custom Channels</a> in conda is well-documented, and there would be nothing to stop someone from building and hosting their own private distribution using Conda as a package manager (<a href="http://conda.pydata.org/docs/commands/build/conda-index.html">conda index</a> is the relevant command).
 Given the openness of conda recipes and build systems on conda-forge, it would not be all that hard to mirror all of conda-forge on your own server if you have reason to do so.</p>
 <p>If you're still worried about Continuum Analytics – a for-profit company – serving the community by hosting conda packages, you should probably be equally worried about Rackspace – a for-profit company – serving the community by hosting the <a href="http://pypi.python.org">Python Package Index</a>.
 In both cases, a for-profit company is integral to the <em>current manifestation</em> of the community's package management system.
-But in neither case would the demise of that company threaten the underlying architecture of the build &amp; distribution system, which is entirely free and open source.
+But in neither case would the demise of that company threaten the underlying architecture of the build & distribution system, which is entirely free and open source.
 If either Rackspace or Continuum were to disappear, the community would simply have to find another host and/or financial sponsor for the open distribution it relies on.</p>
-
 </div>
 </div>
 </div>
@@ -1583,16 +1569,15 @@ If either Rackspace or Continuum were to disappear, the community would simply h
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Myth-#10:-Everybody-should-abandon-(conda-|-pip)-and-use-(pip-|-conda)-instead!">Myth #10: Everybody should abandon (conda | pip) and use (pip | conda) instead!<a class="anchor-link" href="#Myth-#10:-Everybody-should-abandon-(conda-|-pip)-and-use-(pip-|-conda)-instead!">&#182;</a></h3><p><strong>Reality: pip and conda serve different needs, and we should be focused less on how they compete and more on how they work together.</strong></p>
+<h3 id="Myth-#10:-Everybody-should-abandon-(conda-|-pip)-and-use-(pip-|-conda)-instead!">Myth #10: Everybody should abandon (conda | pip) and use (pip | conda) instead!<a class="anchor-link" href="#Myth-#10:-Everybody-should-abandon-(conda-|-pip)-and-use-(pip-|-conda)-instead!">¶</a></h3><p><strong>Reality: pip and conda serve different needs, and we should be focused less on how they compete and more on how they work together.</strong></p>
 <p>As mentioned in Myth #2, Conda and pip are different projects with different intended audiences: pip installs <em>python</em> packages within <em>any</em> environment; conda installs <em>any</em> package within <em>conda</em> environments. Given the lofty ideals raised in the <em>Zen of Python</em>, one might hope that pip and conda could somehow be combined, so that there would be one and only one obvious way of installing packages.</p>
-<p>But this will never happen. The goals of the two projects are just too different. Unless the pip project is broadly re-scoped, it will <em>never</em> be able to meaningfully install and track all the non-Python packages that conda does: the architecture is Python-specific and (rightly) Python-focused. Pip, along with PyPI, aims to be a flexible publication &amp; distribution platform and manager for Python packages, and it does phenomenally well at that.</p>
-<p>Likewise, unless the conda package is broadly re-scoped, it will <em>never</em> make sense for it to replace pip/PyPI as a general publishing &amp; distribution platform for Python code.
+<p>But this will never happen. The goals of the two projects are just too different. Unless the pip project is broadly re-scoped, it will <em>never</em> be able to meaningfully install and track all the non-Python packages that conda does: the architecture is Python-specific and (rightly) Python-focused. Pip, along with PyPI, aims to be a flexible publication & distribution platform and manager for Python packages, and it does phenomenally well at that.</p>
+<p>Likewise, unless the conda package is broadly re-scoped, it will <em>never</em> make sense for it to replace pip/PyPI as a general publishing & distribution platform for Python code.
 At its very core, conda concerns itself with the type of detailed dependency tracking that is required for robustly running a complex multi-language software stack across multiple platforms.
 Every installation artifact in conda's repositories is tied to an <em>exact</em> dependency chain: by design, it wouldn't allow you to, say, substitute Jython for Python in a given package.
 You could certainly use conda to build a Jython software stack, but each package would require a new Jython-specific installation artifact – that is what is required to maintain the strict dependency chain that conda users rely on. Pip is much more flexible here, but once cost of that is its inability to precisely define and resolve dependencies as conda does.</p>
 <p>Finally, the focus on pip vs. conda entirely misses the broad swath of purpose-designed redistributors of Python code. From platform-specific package managers like <a href="https://wiki.debian.org/Apt">apt</a>, <a href="http://www.linuxcommand.org/man_pages/yum8.html">yum</a>, <a href="https://www.macports.org/">macports</a>, and <a href="http://brew.sh/">homebrew</a>, to cross-platform tools like <a href="http://cournape.github.io/Bento/">bento</a>, <a href="http://www.buildout.org/en/latest/">buildout</a>, <a href="http://hashdist.readthedocs.io/en/latest/">hashdist</a>, and <a href="http://software.llnl.gov/spack/">spack</a>, there are a wide range of specific packaging solutions aimed at installing Python (and other) packages for particular users.
 It would be more fruitful for us to view these, as the <a href="https://packaging.python.org/key_projects/">Python Packaging Authority does</a>, not as competitors to pip/PyPI, but as downstream tools that can take advantage of the heroic efforts of all those who have developed and maintained pip, PyPI, and associated toolchain.</p>
-
 </div>
 </div>
 </div>
@@ -1600,9 +1585,8 @@ It would be more fruitful for us to view these, as the <a href="https://packagin
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Where-to-Go-from-Here?">Where to Go from Here?<a class="anchor-link" href="#Where-to-Go-from-Here?">&#182;</a></h2><p>So it seems we're left with two packaging solutions which are distinct, but yet have broad overlap for many Python users (i.e. when installing Python packages in isolated environments). So where should the community go from here?
+<h2 id="Where-to-Go-from-Here?">Where to Go from Here?<a class="anchor-link" href="#Where-to-Go-from-Here?">¶</a></h2><p>So it seems we're left with two packaging solutions which are distinct, but yet have broad overlap for many Python users (i.e. when installing Python packages in isolated environments). So where should the community go from here?
 I think the main thing we can do is make sure the projects (1) work together as well as possible, and (2) learn from each other's successes.</p>
-
 </div>
 </div>
 </div>
@@ -1610,14 +1594,13 @@ I think the main thing we can do is make sure the projects (1) work together as 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Conda">Conda<a class="anchor-link" href="#Conda">&#182;</a></h3><p>As mentioned above, conda is already has a fully open toolchain, and is on a steady trend toward fully open packages (but is not entirely there just yet).
+<h3 id="Conda">Conda<a class="anchor-link" href="#Conda">¶</a></h3><p>As mentioned above, conda is already has a fully open toolchain, and is on a steady trend toward fully open packages (but is not entirely there just yet).
 An obvious direction is to push forward on community development and maintenance of the conda stack via conda-forge, perhaps eventually using it to replace conda's current default channel.</p>
 <p>As we push forward on this, I believe the conda and conda-forge community could benefit from imitating the clear and open governance model of the Python Packaging Authority.
 For example, PyPA has an open governance model with <a href="https://www.pypa.io/en/latest/future/">explicit goals</a>, a clear <a href="https://www.pypa.io/en/latest/roadmap/">roadmap</a> for new developments and features, and well-defined channels of communication and discussion, and community oversight of the full pip/PyPI system from the ground up.</p>
 <p>With conda and conda-forge, on the other hand, the code (and soon all recipes) is open, but the model for governance and control of the system is far less explicit.
 Given the importance of conda particularly in the PyData community, it would benefit all of this to clarify this somehow – perhaps under the umbrella of the <a href="http://www.numfocus.org/">NumFOCUS</a> organization.</p>
 <p>That being said, folks involved with conda-forge have told me that this is currently being addressed by the core team, including generation of governing documents, a code of conduct, and framework for enhancement proposals.</p>
-
 </div>
 </div>
 </div>
@@ -1625,7 +1608,7 @@ Given the importance of conda particularly in the PyData community, it would ben
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="PyPI/pip">PyPI/pip<a class="anchor-link" href="#PyPI/pip">&#182;</a></h3><p>While the Python Package Index seems to have its governance in order, there are aspects of conda/conda-forge that I think would benefit it.
+<h3 id="PyPI/pip">PyPI/pip<a class="anchor-link" href="#PyPI/pip">¶</a></h3><p>While the Python Package Index seems to have its governance in order, there are aspects of conda/conda-forge that I think would benefit it.
 For example, currently most Python packages can be loaded to conda-forge with just a few steps:</p>
 <ol>
 <li>Post a public code release somewhere on the web (on github, bitbucket, PyPI, etc.)</li>
@@ -1636,7 +1619,6 @@ For example, currently most Python packages can be loaded to conda-forge with ju
 Additionally, managing and updating the package takes place transparently via github, where package updates can be reviewed by collaborators and tested by CI systems <em>before they go live</em>.</p>
 <p>I find this process far preferable to the (by comparison relatively opaque and manual) process of publishing to PyPI, which is mostly done by a single user working in private at a local terminal.
 Perhaps PyPI could take advantage of conda-forge's existing build system, and creating an option to automatically build multi-platform wheels and source distributions, and automatically push them to PyPI in a single transparent command. It is <a href="https://twitter.com/ncoghlan_dev/status/765583477597089792">definitely a possibility</a>.</p>
-
 </div>
 </div>
 </div>
@@ -1644,7 +1626,7 @@ Perhaps PyPI could take advantage of conda-forge's existing build system, and cr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Postscript:-Which-Tool-Should-I-Use?">Postscript: Which Tool Should I Use?<a class="anchor-link" href="#Postscript:-Which-Tool-Should-I-Use?">&#182;</a></h2><p>I hope I've convinced you that conda and pip both have a role to play within the Python community. With that behind us, which should you use if you're starting out? The answer depends on what you want to do:</p>
+<h2 id="Postscript:-Which-Tool-Should-I-Use?">Postscript: Which Tool Should I Use?<a class="anchor-link" href="#Postscript:-Which-Tool-Should-I-Use?">¶</a></h2><p>I hope I've convinced you that conda and pip both have a role to play within the Python community. With that behind us, which should you use if you're starting out? The answer depends on what you want to do:</p>
 <p><strong>If you have an existing system Python installation and you want to install packages in or on it, use pip+virtualenv</strong>. For example, perhaps you used <code>apt</code> or another system package manager to install Python, along with some packages linked to system tools that are not (yet) easily installable via conda or pip. Pip+virtualenv will allow you to install new Python packages and build environments on top of that existing distribution, and you should be able to rely on your system package manager for any difficult-to-install dependencies.</p>
 <p><strong>If you want to flexibly manage a multi-language software stack and don't mind using an isolated environment, use conda</strong>. Conda's multi-language dependency management and cross-platform binary installations can do things in this situation that pip cannot do.
 A huge benefit is that for most packages, the result will be immediately compatible with multiple operating systems.</p>
@@ -1655,7 +1637,6 @@ The result of all our efforts was a single non-reproducible working stack on a s
 Then conda-forge was introduced. We went through the process again, this time creating a <a href="https://github.com/conda-forge/staged-recipes/pull/277/files">conda recipe</a>, from which a <a href="https://github.com/conda-forge/megaman-feedstock">conda-forge feedstock</a> was built.
 We now have a cross-platform solution that will install a working version of the package and its dependencies with a single command, in seconds, on nearly any computer.
 If there is a way to build and distribute software with that kind of dependency graph seamlessly with pip+PyPI, I haven't seen it.</p>
-
 </div>
 </div>
 </div>
@@ -1664,7 +1645,6 @@ If there is a way to build and distribute software with that kind of dependency 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-
 </div>
 </div>
 </div>
@@ -1676,12 +1656,9 @@ If there is a way to build and distribute software with that kind of dependency 
 My own desire is that we as a community can continue to rally around both these tools, improving them for the benefit of current and future users.
 Python packaging has improved immensely in the last decade, and I'm excited to see where it will go from here.</p>
 <p><em>Thanks to Filipe Fernandez, Aaron Meurer, Bryan van de Ven, and Phil Elson for helpful feedback on early drafts of this post. As always, any mistakes are my own.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1711,6 +1688,18 @@ Python packaging has improved immensely in the last decade, and I'm excited to s
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Conda: Myths and Misconceptions"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/conda-myths-and-misconceptions.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

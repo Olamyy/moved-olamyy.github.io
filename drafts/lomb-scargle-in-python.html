@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <div style="float: right; margin-top: 10px; margin-bottom: 50px; width: 280px; height: 240px; margin: 10px;">
 <center>
 <a href="http://www.astroml.org/_images/fig_LS_example_1.png"><img src="http://www.astroml.org/_images/fig_LS_example_1.png"></a>
@@ -1411,7 +1410,7 @@ It is in many ways analogous to the more familiar Fourier Power Spectral Density
 <p>Despite the importance of this method, until recently there have not been any (in my opinion) solid implementations of the algorithm available for easy use in Python.
 That has changed with the introduction of the <a href="http://astroml.org/gatspy/">gatspy</a> package, which I recently released.
 In this post, I will compare several available Python implementations of the Lomb-Scargle periodogram, and discuss some of the considerations required when using it to analyze data.</p>
-<p>To cut to the chase, I'd recommend using the <a href="http://astroml.org/gatspy/">gatspy</a> package for Lomb-Scargle periodograms in Python, and particularly its <code>gatspy.periodic.LombScargleFast</code> algorithm which implements an efficient pure-Python version of Press &amp; Rybicki's $O[N\log N]$ periodogram.
+<p>To cut to the chase, I'd recommend using the <a href="http://astroml.org/gatspy/">gatspy</a> package for Lomb-Scargle periodograms in Python, and particularly its <code>gatspy.periodic.LombScargleFast</code> algorithm which implements an efficient pure-Python version of Press & Rybicki's $O[N\log N]$ periodogram.
 Below, I'll dive into the reasons for this recommendation.</p>
 <!-- PELICAN_END_SUMMARY -->
 </div>
@@ -1421,22 +1420,21 @@ Below, I'll dive into the reasons for this recommendation.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example:-Lomb-Scargle-on-Variable-Stars">Example: Lomb-Scargle on Variable Stars<a class="anchor-link" href="#Example:-Lomb-Scargle-on-Variable-Stars">&#182;</a></h2><p>As an motivation, let's briefly consider some data from my own field: observations of an <a href="https://en.wikipedia.org/wiki/RR_Lyrae_variable"><em>RR Lyrae-type</em></a> variable star.
+<h2 id="Example:-Lomb-Scargle-on-Variable-Stars">Example: Lomb-Scargle on Variable Stars<a class="anchor-link" href="#Example:-Lomb-Scargle-on-Variable-Stars">¶</a></h2><p>As an motivation, let's briefly consider some data from my own field: observations of an <a href="https://en.wikipedia.org/wiki/RR_Lyrae_variable"><em>RR Lyrae-type</em></a> variable star.
 RR Lyrae are small stars – about 50% the mass of our sun – which pulsate with a regular period on order half a day.
 Their relatively consistent peak intrinsic brightness allows for an accurate estimation of their distance from the sun, and thus they are important for studies such as <a href="http://www.mpia.de/~bsesar/media.html">understanding the substructure</a> of the Milky Way galaxy.
 Because of this and other similar applications, detecting the telltale periodic variation of RR Lyrae stars within noisy data is an important statistical task for astronomers.</p>
 <p>Here we will quickly demonstrate what this looks like in practice, using tools from the <a href="http://astroML.org">astroML</a> package to download some data, and tools from the <a href="http://astroml.org/gatspy/">gatspy</a> package to detect the periodicity.</p>
 <p>We'll start with some typical Python import statements:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Do preliminary imports and notebook setup</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Do preliminary imports and notebook setup</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1444,11 +1442,9 @@ Because of this and other similar applications, detecting the telltale periodic 
 <span class="c1"># use seaborn for plot styles</span>
 <span class="kn">import</span> <span class="nn">seaborn</span><span class="p">;</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1456,43 +1452,33 @@ Because of this and other similar applications, detecting the telltale periodic 
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we'll download some data from the <a href="https://en.wikipedia.org/wiki/Lincoln_Near-Earth_Asteroid_Research">LINEAR</a> dataset, using tools in astroML.
 We'll plot the data to see what we're working with:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astroML.datasets</span> <span class="k">import</span> <span class="n">fetch_LINEAR_sample</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astroML.datasets</span> <span class="k">import</span> <span class="n">fetch_LINEAR_sample</span>
 <span class="n">LINEAR_data</span> <span class="o">=</span> <span class="n">fetch_LINEAR_sample</span><span class="p">()</span>
 <span class="n">star_id</span> <span class="o">=</span> <span class="mi">10040133</span>
 <span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span> <span class="o">=</span> <span class="n">LINEAR_data</span><span class="o">.</span><span class="n">get_light_curve</span><span class="p">(</span><span class="n">star_id</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.k&#39;</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Time (days)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;magitude&#39;</span><span class="p">,</span>
-       <span class="n">title</span><span class="o">=</span><span class="s1">&#39;LINEAR object </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_id</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'.k'</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">'Time (days)'</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">'magitude'</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s1">'LINEAR object </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_id</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">();</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgIAAAFtCAYAAAB1DwLeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XucHHWZ7/FPBzMsl0R0mRBxxgQvPCYgCiHiZlkRjbCG
 ddlld4+iBAQHNV6GiIrH4DHqrsh6ScIoRjcTNAaPHtcFER1Eo64KnINhUVwWfBQ3ExK5RRSTUWQC
@@ -1765,15 +1751,11 @@ DQQDECEIFn4N3E3QAvDTcN8bgLPNbCvwGeA6YD6Au/8RuAX4Ynj7CWA1sCV8/l8AawDM7FjgZ+7+
 u4Y+vYg0RcsQi0jTzOw44L3u/j9afP1sgkDgpe7+0BTPXQt8S9MHReKhFgERaVrYcrDDzF4w5ZNr
 mNkLCZr5P9NAENALdCsIEImPWgREREQKTC0CIiIiBaZAQEREpMAUCIiIiBSYAgEREZECUyAgIiJS
 YAoERERECuz/A6aaHnYjYywuAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1783,42 +1765,32 @@ YAoERERECuz/A6aaHnYjYywuAAAAAElFTkSuQmCC
 If the series were regularly-sampled, we'd be far above the Nyquist limit and all hope would be lost.
 Fortunately for astronomers, the assumptions behind the Nyquist sampling limit do not hold for irregular sampling rates, and we can proceed with no problem.</p>
 <p>Let's start by computing and plotting the Lomb-Scargle Periodogram for this data, using tools from gatspy:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">LombScargleFast</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">LombScargleFast</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LombScargleFast</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">)</span>
 <span class="n">periods</span><span class="p">,</span> <span class="n">power</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">periodogram_auto</span><span class="p">(</span><span class="n">nyquist_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">periods</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span>
-       <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;period (days)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Lomb-Scargle Power&#39;</span><span class="p">);</span>
+       <span class="n">xlabel</span><span class="o">=</span><span class="s1">'period (days)'</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">'Lomb-Scargle Power'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAAFkCAYAAADSRRn0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XecHXW9//HXbnrZECALUgQp8gULgkRBEC/Ije2KF9R7
 lavyE8HCxV4AG3rFQjGCdAihQ0BKAANEWgrppFe+6b1tks32vuf3xzlnM+fsnDlzypwy+34+HpCd
@@ -2122,15 +2094,11 @@ sMslDZOItVKPfeYrwIPGmAVEG8lFrLW1wP3AitgUsI3AIGNM/J39U0Qb1cWn6HwMMLH0TCP6QBB/
 DXAe8ILfDBIRTdsqUhZireKvsdZ+tgTS8izRxnAr0u7c+7OVwPeAk6y1P06z72HAs9bac732E5FE
 escuUh6cJe5i+wnwB2LV9hl6jmh3vU/72Pdaot34RCQDKrGLiIiEiN6xi4iIhIgCu4iISIgosIuI
 iISIAruIiEiIKLCLiIiEyP8HeXC/5CkLe7YAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2139,34 +2107,26 @@ iISIAruIiEiIKLCLiIiEyP8HeXC/5CkLe7YAAAAASUVORK5CYII=
 <p>The periodogram gives a measure of periodic content as a function of period; we see here a strong peak at around 0.61 days.
 Other lower peaks are due to some combination of higher-order harmonics in the data and effects of the irregular survey window.
 While we could find this maximum manually from the above grid, <code>gatspy</code> provides a better way: a built-in two-stage grid-search that accurately determines the best period in a specified range:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># set range and find period</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># set range and find period</span>
 <span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">period_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">)</span>
 <span class="n">period</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">best_period</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;period = </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"period = </span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Finding optimal frequency:
  - Estimated peak width = 0.0032
@@ -2179,10 +2139,8 @@ period = 0.6105387801103276
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2190,48 +2148,38 @@ period = 0.6105387801103276
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that the optimizer determined that it needed a grid of over 40,000 points to adequately cover the frequency grid (more on this below), and in the end arrived at a best period of 0.6105 days.
 Given this detected period, we can fold the input data and over-plot a best-fit empirical RR Lyrae template to see the fit:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compute phases of the obsevations</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Compute phases of the obsevations</span>
 <span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="n">period</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span>
 
 <span class="c1"># Compute best-fit RR Lyrae template</span>
 <span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">RRLyraeTemplateModeler</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RRLyraeTemplateModeler</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">RRLyraeTemplateModeler</span><span class="p">(</span><span class="s1">'r'</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">)</span>
 <span class="n">phase_fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">mag_fit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">period</span> <span class="o">*</span> <span class="n">phase_fit</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
 
-<span class="c1"># Plot the phased data &amp; model</span>
+<span class="c1"># Plot the phased data & model</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.k&#39;</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phase_fit</span><span class="p">,</span> <span class="n">mag_fit</span><span class="p">,</span> <span class="s1">&#39;-k&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Phase&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;magitude&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'.k'</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phase_fit</span><span class="p">,</span> <span class="n">mag_fit</span><span class="p">,</span> <span class="s1">'-k'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">'Phase'</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">'magitude'</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">();</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfsAAAFkCAYAAAAnu5JEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlYVPX+wPH3ACIIKKLjQqLmdtwQxSVQa3BLiSKza5mU
 Wrbdbr/ytmjXbvti1/ZVW8wtMlvMHTUXUBFCQxHBjlskigvGIigIKr8/YKYBZ2AGZmCAz+t5fBzm
@@ -2667,22 +2615,17 @@ nLvFzH4B1AAzzezf8GoPH3XO/UfomH2AfX69EBGJTdX4IpKwULA+BbjXOfd74EtADzPLNbOPgL85
 56YAM4CzgYXAWDM71syOAuYAo7so+SJZS8FeRBJZ+rIFaHHONQFPAR+Y2XKgGa/q/xi8tvvXj4IB
 TgAAAFZJREFUzOx/8NaJf8Q59zLwW7ymgfeBVc65GT68BhGJQ0vcioiIBJxK9iIiIgGnYC8iIhJw
 CvYiIiIBp2AvIiIScAr2IiIiAadgLyIiEnAK9iIiIgH3/2r7ZVjeePWlAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This very close template fit gives a strong indication that the star in question is an RR Lyrae.</p>
-
 </div>
 </div>
 </div>
@@ -2690,7 +2633,7 @@ CvYiIiIBp2AvIiIScAr2IiIiAadgLyIiEnAK9iIiIgH3/2r7ZVjeePWlAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Computational-Considerations-for-Lomb-Scargle">Computational Considerations for Lomb-Scargle<a class="anchor-link" href="#Computational-Considerations-for-Lomb-Scargle">&#182;</a></h2><p>The Lomb-Scargle periodogram involves the computation of a power $P(\omega)$ at a set of frequencies $\omega_i$.
+<h2 id="Computational-Considerations-for-Lomb-Scargle">Computational Considerations for Lomb-Scargle<a class="anchor-link" href="#Computational-Considerations-for-Lomb-Scargle">¶</a></h2><p>The Lomb-Scargle periodogram involves the computation of a power $P(\omega)$ at a set of frequencies $\omega_i$.
 For data $\{y_k\}$ pre-centered such that $\sum_k y_k = 0$, the expression for the power is:</p>
 <p>$$
 P(\omega) \propto
@@ -2707,7 +2650,6 @@ It turns out that the grid-spacing question is <em>very</em> important.
 If you choose too fine a grid, you do much more computation than is required.
 Worse, if you choose too coarse a grid, the periodogram peak may fall between grid points and you'll miss it entirely!</p>
 <p>Let's think about the required frequency range and frequency spacing for Lomb-Scargle.</p>
-
 </div>
 </div>
 </div>
@@ -2715,7 +2657,7 @@ Worse, if you choose too coarse a grid, the periodogram peak may fall between gr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Frequency-spacing">Frequency spacing<a class="anchor-link" href="#Frequency-spacing">&#182;</a></h3><p>First we'll choose the spacing of the frequency grid.
+<h3 id="Frequency-spacing">Frequency spacing<a class="anchor-link" href="#Frequency-spacing">¶</a></h3><p>First we'll choose the spacing of the frequency grid.
 If you're asking about a candidate frequency $f$, then data with range $T = t_{max} - t_{min}$ contains $T \cdot f$ complete cycles. If our error in frequency is $\delta f$, then $T\cdot\delta f$ is the error in number of cycles between the endpoints of the data.
 It's clear that this error must not be a significant fraction of a cycle, or the fit could be drastically affected.
 This leads to an approximate grid-spacing criterion:</p>
@@ -2723,7 +2665,6 @@ This leads to an approximate grid-spacing criterion:</p>
 T\cdot\delta f \ll 1
 $$</p>
 <p>Commonly, we'll choose some oversampling factor (say, 5) and use $\delta f = (5T)^{-1}$ as our frequency grid spacing.</p>
-
 </div>
 </div>
 </div>
@@ -2731,13 +2672,13 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Frequency-limits">Frequency limits<a class="anchor-link" href="#Frequency-limits">&#182;</a></h3><p>Next, we need to choose the upper and lower limits of the frequency grid. On the low end, $f=0$ is suitable, but causes some numerical problems – we'll go one step away and use $\delta f$ as our minimum frequency.
+<h3 id="Frequency-limits">Frequency limits<a class="anchor-link" href="#Frequency-limits">¶</a></h3><p>Next, we need to choose the upper and lower limits of the frequency grid. On the low end, $f=0$ is suitable, but causes some numerical problems – we'll go one step away and use $\delta f$ as our minimum frequency.
 But on the high end, we need to make a choice: what's the highest frequency we'd trust our data to be sensitive to?
 At this point, many people are tempted to mis-apply the Nyquist-Shannon sampling theorem, and choose some version of the Nyquist limit for the data (based on, say, the minimum or mean spacing between observations).
 But this is entirely wrong! The Nyquist frequency is derived from special properties of regularly-sampled data, and does not apply – even approximately – to irregularly-sampled time-series.
 In fact, as we saw above, irregularly-sampled data can be sensitive to much, much higher frequencies than even the minimum spacing between observations.
 With this in mind, the upper limit for frequencies should be determined based on <strong>what kind of signal you are looking for.</strong></p>
-<p>Still, a common (if dubious) rule-of-thumb is that the high frequency is some multiple of what Press &amp; Rybicki call the "average" Nyquist frequency,</p>
+<p>Still, a common (if dubious) rule-of-thumb is that the high frequency is some multiple of what Press & Rybicki call the "average" Nyquist frequency,</p>
 <p>$$
 \hat{f}_{Ny} = \frac{N}{2T}
 $$</p>
@@ -2746,7 +2687,6 @@ $$</p>
 N_{freq} \sim O\left[\frac{\hat{f}_{Ny}}{\delta f}\right] \sim O\left[\frac{N/(2T)}{1/T}\right] \sim O[N]
 $$</p>
 <p>That is, the number of frequencies to search will scale with the number of data points!</p>
-
 </div>
 </div>
 </div>
@@ -2754,12 +2694,11 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Computational-Complexity">Computational Complexity<a class="anchor-link" href="#Computational-Complexity">&#182;</a></h3><p>From the above considerations, we see that the determination of the optimal Lomb-Scargle period within $N$ points requires computing an $O[N]$ expression for power across $O[N]$ grid points; that is, Lomb-Scargle is naively an $O[N^2]$ algorithm.</p>
+<h3 id="Computational-Complexity">Computational Complexity<a class="anchor-link" href="#Computational-Complexity">¶</a></h3><p>From the above considerations, we see that the determination of the optimal Lomb-Scargle period within $N$ points requires computing an $O[N]$ expression for power across $O[N]$ grid points; that is, Lomb-Scargle is naively an $O[N^2]$ algorithm.</p>
 <p>This computational complexity can be improved in one of several ways.
 Most notably, in a <a href="http://adsabs.harvard.edu/full/1989ApJ...338..277P">1989 paper</a>, Press and Rybicki proposed a clever method whereby a Fast Fourier Transform is used on a grid <em>extirpolated</em> from the original data, such that this naively $O[N^2]$ problem can be solved in $O[N\log N]$ time.
 The broad idea is that when you compute sums of sines and cosines for one frequency, this gives you some amount of information about those sums computed at another frequency, and by carefully using all information across a frequency grid, you can significantly reduce the number of required operations.</p>
-<p>Thus the fundamental divide between Lomb-Scargle implementations is whether they use the naive $O[N^2]$ algorithm or the $O[N\log N]$ algorithm of Press &amp; Rybicki and other similar approaches.</p>
-
+<p>Thus the fundamental divide between Lomb-Scargle implementations is whether they use the naive $O[N^2]$ algorithm or the $O[N\log N]$ algorithm of Press & Rybicki and other similar approaches.</p>
 </div>
 </div>
 </div>
@@ -2767,7 +2706,7 @@ The broad idea is that when you compute sums of sines and cosines for one freque
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Lomb-Scargle-Algorithms-in-Python">Lomb-Scargle Algorithms in Python<a class="anchor-link" href="#Lomb-Scargle-Algorithms-in-Python">&#182;</a></h2><p>Now we get to the meat of this post: Lomb-Scargle implementations written in Python.
+<h2 id="Lomb-Scargle-Algorithms-in-Python">Lomb-Scargle Algorithms in Python<a class="anchor-link" href="#Lomb-Scargle-Algorithms-in-Python">¶</a></h2><p>Now we get to the meat of this post: Lomb-Scargle implementations written in Python.
 If you search this on Google, you'll currently find links to several available implementations.
 Here I'm going to delve into and compare the following four implementations:</p>
 <ul>
@@ -2777,7 +2716,6 @@ Here I'm going to delve into and compare the following four implementations:</p>
 <li><code>gatspy.periodic.LombScargleFast</code>, an $O[N\log N]$ implementation, also from <a href="http://astroml.org/gatspy/">gatspy</a>.</li>
 </ul>
 <p>Let's see some examples of the above tools:</p>
-
 </div>
 </div>
 </div>
@@ -2785,7 +2723,7 @@ Here I'm going to delve into and compare the following four implementations:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="scipy.signal.lombscargle"><code>scipy.signal.lombscargle</code><a class="anchor-link" href="#scipy.signal.lombscargle">&#182;</a></h4><p>The SciPy Lomb-Scargle periodogram is a C implementation of the naive $O[N^2]$ algorithm.
+<h4 id="scipy.signal.lombscargle"><code>scipy.signal.lombscargle</code><a class="anchor-link" href="#scipy.signal.lombscargle">¶</a></h4><p>The SciPy Lomb-Scargle periodogram is a C implementation of the naive $O[N^2]$ algorithm.
 The algorithm cannot account for noise in the data, and has some other quirks as well:</p>
 <ul>
 <li>it requires you to center your data (by subtracting the mean) before computing the periodogram. If you do not, the results will be garbage.</li>
@@ -2795,16 +2733,15 @@ The algorithm cannot account for noise in the data, and has some other quirks as
 <p>Let's use scipy's algorithm to plot the periodogram of the data shown above.
 Note that the results will not be identical, because this algorithm ignores the noise in the data and doesn't fit for the data mean.</p>
 <p>Against the above recommendations, we'll choose a simple regular grid in period for the plot:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">lombscargle</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">lombscargle</span>
 
 <span class="c1"># Choose a period grid</span>
 <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mi">4000</span><span class="p">)</span>
@@ -2821,26 +2758,17 @@ Note that the results will not be identical, because this algorithm ignores the 
 <span class="c1"># plot the results</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">periods</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;period (days)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Lomb-Scargle Power&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">'period (days)'</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">'Lomb-Scargle Power'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAAFkCAYAAADSRRn0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmYHFW9//H3TPZlwpIMywVk5yBC2AKEABpQVLziBVG5
 /FSURQRcEFDBBRXFK6BhB4FA2BeBENkDCNkYQkISQvYTsi9kmUySmck2maV+f3T3THV3dXf1Ut09
@@ -3136,15 +3064,11 @@ tTuu6e8BPzfGzCISYL9prW0mElS/YYz5GPgusM4jDa8SbaUeXed84BFjzHQijeQca+0m4CFgbnQI
 GRdOXrcSuBw4zFr7iwzL7gGMttaelm45EYmnZ+winYO7xF1qVwN/Jlptn6UXibyu9xUfy15P5DU+
 EcmCSuwiIiIhomfsIiIiIaLALiIiEiIK7CIiIiGiwC4iIhIiCuwiIiIh8v8BhpR37C3Rxg4AAAAA
 SUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3152,7 +3076,6 @@ SUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comparing to the first periodogram plot, we see that becuase our period grid here is too coarse at low frequencies, some of the peak structure is missed by this visualization.
 Consider this a warning against arbitrarily choosing a period gridding!</p>
-
 </div>
 </div>
 </div>
@@ -3160,9 +3083,8 @@ Consider this a warning against arbitrarily choosing a period gridding!</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="astroML.time_series.lomb_scargle"><code>astroML.time_series.lomb_scargle</code><a class="anchor-link" href="#astroML.time_series.lomb_scargle">&#182;</a></h4><p>AstroML has two $O[N^2]$ implementations of Lomb-Scargle: one in <code>astroML</code> and one in <code>astroML_addons</code>, which is a collection of C extensions which replace slower functionality in the pure-python astroML package.
+<h4 id="astroML.time_series.lomb_scargle"><code>astroML.time_series.lomb_scargle</code><a class="anchor-link" href="#astroML.time_series.lomb_scargle">¶</a></h4><p>AstroML has two $O[N^2]$ implementations of Lomb-Scargle: one in <code>astroML</code> and one in <code>astroML_addons</code>, which is a collection of C extensions which replace slower functionality in the pure-python astroML package.
 In order to use the faster version, make sure you install both packages; e.g.</p>
-
 <pre><code>$ pip install astroML
 $ pip install astroML_addons</code></pre>
 <p>Some important features of astroML's Lomb Scargle periodogram:</p>
@@ -3172,41 +3094,31 @@ $ pip install astroML_addons</code></pre>
 <li>unlike scipy, it implements a <em>floating mean periodogram</em>, meaning that the data centering required for scipy is not required here, but it goes beyond simple centering: the mean of the data is fit <em>as part of the model</em>, which has advantages in many real-world scenarios. To directly compare to scipy's standard Lomb Scargle pass <code>generalized=False</code>.</li>
 </ul>
 <p>Let's repeat the above plot with this periodogram:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astroML.time_series</span> <span class="k">import</span> <span class="n">lomb_scargle</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astroML.time_series</span> <span class="k">import</span> <span class="n">lomb_scargle</span>
 <span class="n">power</span> <span class="o">=</span> <span class="n">lomb_scargle</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">,</span> <span class="n">ang_freqs</span><span class="p">)</span>
 
 <span class="c1"># plot the results</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">periods</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;period (days)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Lomb-Scargle Power&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">'period (days)'</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">'Lomb-Scargle Power'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAAFkCAYAAADSRRn0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XecG8X9//HXnbt9Zxvw0cH0oYXqBFNDCQmQkEDqlxQS
 QotDICT5BUgjhRASgukhgOmYEowxHVPdbWzc+7jggvu53p2vn/T7Q9JZp1tJu5JW0u29n48H+CRt
@@ -3531,25 +3443,20 @@ jQ5peJNoL/XoOt8DnjTGzCDSSS5srd0GPAYsiE4BWwP0MMbE2uz/R6RTXWyKzuGAiaZnHJEbglgz
 wNnAa24zSEQ0batIhxDtFX+ztfbCIkjLSCKd4RakXbj9uqXAz4AjrLU3pll2T2CktfbMVMuJSFtq
 YxfpGOJL3IX2K+BvRKvtPXqFyON6X3Gx7C1EHuMTEQ9UYhcREQkQtbGLiIgEiAK7iIhIgCiwi4iI
 BIgCu4iISIAosIuIiATI/weQJ0IXi7wJJgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="gatspy.periodic.LombScargle"><code>gatspy.periodic.LombScargle</code><a class="anchor-link" href="#gatspy.periodic.LombScargle">&#182;</a></h4><p>Gatspy's basic Lomb-Scargle algorithm is an $O[N^2]$ implementation, but is implemented differently than either of the above versions.
+<h4 id="gatspy.periodic.LombScargle"><code>gatspy.periodic.LombScargle</code><a class="anchor-link" href="#gatspy.periodic.LombScargle">¶</a></h4><p>Gatspy's basic Lomb-Scargle algorithm is an $O[N^2]$ implementation, but is implemented differently than either of the above versions.
 It uses a direct linear algebra approach which carries some additional computational and memory overhead.
-The reason for this approach is that it naturally accommodates several extensions to the periodogram, including floating mean, multiple terms, regularization, and multi-band models (more details in <a href="http://adsabs.harvard.edu/abs/2015arXiv150201344V">VanderPlas &amp; Ivezic (2015)</a>, the paper that inspired <code>gatspy</code>).</p>
+The reason for this approach is that it naturally accommodates several extensions to the periodogram, including floating mean, multiple terms, regularization, and multi-band models (more details in <a href="http://adsabs.harvard.edu/abs/2015arXiv150201344V">VanderPlas & Ivezic (2015)</a>, the paper that inspired <code>gatspy</code>).</p>
 <p>Gatspy is a pure python package, and thus installation is easy and requires no compilation of C or Fortran code:</p>
-
 <pre><code>$ pip install gatspy</code></pre>
 <p>Some important features of this implementation:</p>
 <ul>
@@ -3559,16 +3466,15 @@ The reason for this approach is that it naturally accommodates several extension
 <li>it has an API inspired by scikit-learn, where the model itself is a class instance, the model is applied to data with a <code>fit()</code> method, and the periodogram is computed via a <code>score()</code> method.</li>
 </ul>
 <p>Let's repeat the above periodogram using this tool:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">LombScargle</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">LombScargle</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LombScargle</span><span class="p">(</span><span class="n">fit_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">)</span>
 <span class="n">power</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
@@ -3576,26 +3482,17 @@ The reason for this approach is that it naturally accommodates several extension
 <span class="c1"># plot the results</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">periods</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;period (days)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Lomb-Scargle Power&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">'period (days)'</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">'Lomb-Scargle Power'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAAFkCAYAAADSRRn0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XecG8X9//HXnbt9Zxvw0cH0oYXqBFNDCQmQkEDqlxQS
 QotDICT5BUgjhRASgukhgOmYEowxHVPdbWzc+7jggvu53p2vn/T7Q9JZp1tJu5JW0u29n48H+CRt
@@ -3920,21 +3817,17 @@ jQ5peJNoL/XoOt8DnjTGzCDSSS5srd0GPAYsiE4BWwP0MMbE2uz/R6RTXWyKzuGAiaZnHJEbglgz
 wNnAa24zSEQ0batIhxDtFX+ztfbCIkjLSCKd4RakXbj9uqXAz4AjrLU3pll2T2CktfbMVMuJSFtq
 YxfpGOJL3IX2K+BvRKvtPXqFyON6X3Gx7C1EHuMTEQ9UYhcREQkQtbGLiIgEiAK7iIhIgCiwi4iI
 BIgCu4iISIAosIuIiATI/weQJ0IXi7wJJgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="gatspy.periodic.LombScargleFast"><code>gatspy.periodic.LombScargleFast</code><a class="anchor-link" href="#gatspy.periodic.LombScargleFast">&#182;</a></h4><p>Gatspy's fast Lomb-Scargle is an $O[N\log N]$ algorithm built on a pure Python/numpy implementation of the Press &amp; Rybicki FFT/extirpolation method.
+<h4 id="gatspy.periodic.LombScargleFast"><code>gatspy.periodic.LombScargleFast</code><a class="anchor-link" href="#gatspy.periodic.LombScargleFast">¶</a></h4><p>Gatspy's fast Lomb-Scargle is an $O[N\log N]$ algorithm built on a pure Python/numpy implementation of the Press & Rybicki FFT/extirpolation method.
 Note that a requirement of this fast algorithm is that it be computed on a regular grid of <em>frequencies</em> (not periods), and so to attain this performance it provides the <code>score_frequency_grid()</code> method which takes 3 arguments: the minimum frequency <code>f0</code>, the frequency spacing <code>df</code>, and the number of grid points <code>N</code>.</p>
 <p>Some features of the model</p>
 <ul>
@@ -3944,16 +3837,15 @@ Note that a requirement of this fast algorithm is that it be computed on a regul
 <li>it has an identical API to the <code>LombScargle</code> object above.</li>
 </ul>
 <p>Let's take a look at computing the periodogram:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">LombScargleFast</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gatspy.periodic</span> <span class="k">import</span> <span class="n">LombScargleFast</span>
 
 <span class="n">fmin</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">periods</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">fmax</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">periods</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
@@ -3967,26 +3859,17 @@ Note that a requirement of this fast algorithm is that it be computed on a regul
 <span class="c1"># plot the results</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;period (days)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Lomb-Scargle Power&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">'period (days)'</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">'Lomb-Scargle Power'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAAFkCAYAAADSRRn0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd8HMX9//GXJFsuWLbBFr0bGEIxzQSHXhNS+AZCSEIK
 v5AACYEkpHwT0uCbb/JNCAmEFodgeigBA6Zjmm2Mu427sce9N1mWJdmy+v3+2Dtpdbqye3d7Te/n
@@ -4316,15 +4199,11 @@ SCHZCDyN00ltPfCwtXYB8HtgPJ3zyN8R/t/dqz3kev1N4EfGmAU4AfZL1toWnKD6X8aY+cA3gK0x
 A694LSAR0bStIgUh3Cv+l9baz+ZBXl7E6Qy3OOnK3bctBb4PHGOtvSXJuvsCL1prz0m0noh0pXvs
 IoXBXePOtZ8A/0u42d6nl3Ae1/uMh3VvxXmMT0R8UI1dRESkiOgeu4iISBFRYBcRESkiCuwiIiJF
 RIFdRESkiCiwi4iIFJH/D58ISJ9F6+jsAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4335,85 +4214,65 @@ This is not because it is computing a different model; it is because we are usin
 The above versions, with a regular grid of 4000 periods <em>miss these important features</em>, and give the user absolutely no warning that these features are missed!
 Keep this in mind as you choose grid parameters while following the above discussion.</p>
 <p>If you want to make sure you're using a sufficient grid, you can use the <code>periodogram_auto()</code> method of <code>LombScargleFast</code>, which computes a sufficient frequency grid for you using the rules-of-thumb discussed in the previous section:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LombScargleFast</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LombScargleFast</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span><span class="p">)</span>
 
 <span class="n">period</span><span class="p">,</span> <span class="n">power</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">periodogram_auto</span><span class="p">(</span><span class="n">nyquist_factor</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;period range: (</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">period</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of periods: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"period range: (</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">period</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"number of periods: </span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>period range: (0.0764511670428014, 9823.97496499998)
 number of periods: 128500
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The model decided that we needed over 100,000 periods, between about 0.1 days (which was tuned by the <code>nyquist_factor</code> argument) and about 10,000 days (which is derived from the time-span of the data). Plotting the results as above, we see a similar periodogram:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot the results</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># plot the results</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-       <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;period (days)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Lomb-Scargle Power&#39;</span><span class="p">);</span>
+       <span class="n">xlabel</span><span class="o">=</span><span class="s1">'period (days)'</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">'Lomb-Scargle Power'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAAFkCAYAAADSRRn0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcHHWd//HXTC4SEkBhRAVFAfnihSi4IF6A4rW6grrr
 4iq/VfEEXUVd0fWE1eWQ+77vmyRc4Qwk5CIJuQ+Sb+77mswkmclM5u7fH92dVPdUdVV1V/VR834+
@@ -4685,22 +4544,17 @@ YJgxJnvN/hHSg+qyU3TeD5hMPK+SPiHIXgY4FXgy6AYSEU3bKlITMqPif2ut/WIVxDKa9GC4xb4L
 939vPfBj4Bhr7S98ln0LMNpa+8lCy4lILl1jF6kNzhZ3pf0SuIhMt31IY0jfrvf5AMteSPo2PhEJ
 QS12ERGRBNE1dhERkQRRYhcREUkQJXYREZEEUWIXERFJECV2ERGRBPn/+Ou483+wsx8AAAAASUVO
 RK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The <code>LombScargleFast</code> algorithm computes these $10^5$ periodogram steps very quickly; I wouldn't suggest any of the other methods with a grid of this size!</p>
-
 </div>
 </div>
 </div>
@@ -4708,24 +4562,23 @@ RK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Benchmarking-Lomb-Scargle-Implementations">Benchmarking Lomb-Scargle Implementations<a class="anchor-link" href="#Benchmarking-Lomb-Scargle-Implementations">&#182;</a></h2><p>As a final piece of the picture, let's compare the execution speed of the four approaches.
+<h2 id="Benchmarking-Lomb-Scargle-Implementations">Benchmarking Lomb-Scargle Implementations<a class="anchor-link" href="#Benchmarking-Lomb-Scargle-Implementations">¶</a></h2><p>As a final piece of the picture, let's compare the execution speed of the four approaches.
 We can do this with IPython's <code>%timeit</code> magic function using the following script.
 Note that this script will take several minutes to run, as it automatically does multiple passes of each benchmark to minimize system timing variation.
 For efficiency, we cut-off the slower algorithms at high $N$:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">lombscargle</span> <span class="k">as</span> <span class="n">ls_scipy</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">lombscargle</span> <span class="k">as</span> <span class="n">ls_scipy</span>
 <span class="kn">from</span> <span class="nn">astroML.time_series</span> <span class="k">import</span> <span class="n">lomb_scargle</span> <span class="k">as</span> <span class="n">ls_astroML</span>
 
 <span class="k">def</span> <span class="nf">create_data</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">rseed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">0.61</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create noisy data&quot;&quot;&quot;</span>
+    <span class="sd">"""Create noisy data"""</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">rseed</span><span class="p">)</span>
     <span class="n">t</span> <span class="o">=</span> <span class="mi">52000</span> <span class="o">+</span> <span class="mi">2000</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="n">dmag</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
@@ -4733,7 +4586,7 @@ For efficiency, we cut-off the slower algorithms at high $N$:</p>
     <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">dmag</span>
 
 <span class="k">def</span> <span class="nf">compute_frequency_grid</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">oversampling</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the optimal frequency grid (**not** angular frequencies)&quot;&quot;&quot;</span>
+    <span class="sd">"""Compute the optimal frequency grid (**not** angular frequencies)"""</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">oversampling</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span>
@@ -4753,8 +4606,8 @@ For efficiency, we cut-off the slower algorithms at high $N$:</p>
     <span class="n">ang_freqs</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freqs</span>
     <span class="n">f0</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Nf</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span>
     
-    <span class="c1"># Don&#39;t compute the slow algorithms at very high N</span>
-    <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">15</span><span class="p">:</span>
+    <span class="c1"># Don't compute the slow algorithms at very high N</span>
+    <span class="k">if</span> <span class="n">N</span> <span class="o"><</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">15</span><span class="p">:</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -oq ls_scipy(t, mag - mag.mean(), ang_freqs)
         <span class="n">t2</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -oq ls_astroML(t, mag, dmag, ang_freqs)
         <span class="n">t3</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -oq LombScargle().fit(t, mag, dmag).score_frequency_grid(f0, df, Nf)
@@ -4769,53 +4622,41 @@ For efficiency, we cut-off the slower algorithms at high $N$:</p>
     <span class="n">t4</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -oq LombScargleFast().fit(t, mag, dmag).score_frequency_grid(f0, df, Nf)
     <span class="n">t_gatspy2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t4</span><span class="o">.</span><span class="n">best</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>When these timings are finished, we can plot the results to get an idea of how the algorithms compare:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_scipy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;scipy: lombscargle&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_astroML</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;astroML: lomb_scargle&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_gatspy1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;gatspy: LombScargle&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_gatspy2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;gatspy: LombScargleFast&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;time (seconds)&#39;</span><span class="p">,</span>
-       <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Comparison of Lomb-Scargle Implementations&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s1">'log'</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="s1">'log'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_scipy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'scipy: lombscargle'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_astroML</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'astroML: lomb_scargle'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_gatspy1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'gatspy: LombScargle'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Nrange</span><span class="p">,</span> <span class="n">t_gatspy2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'gatspy: LombScargleFast'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">'N'</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">'time (seconds)'</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s1">'Comparison of Lomb-Scargle Implementations'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAf4AAAFyCAYAAAAUHbiGAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd4FMUbwPHvpZBOSKMKJKEMHSIgHQEFG01BigWVKlIt
 YBcs2BUQ5UcRpApItVJEQKTXEOrQIZSEJEB6u7v9/XEHBgxwQBrk/TyPj7myM+/OHffu7M7OmAzD
@@ -5392,15 +5233,11 @@ zltrH621i53HX1prZ2vNBYyn+IGp3iPiobV2svWYvwCFTih+YKrXiHiMiLu1BwGmU/zAPm4j4nL3
 yh84fIofmGwYhreIuI7fV/7AgVP8wF6GYdhExCYi7teeBRjveO0BgK7dRMRzRJyuPQgwjhM/MNXP
 N/i3rvwdIqATR5+ffoUDAFU48QNAIYofAApR/ABQiOIHgEIUPwAUovgBoBDFDwCFKH4AKOQLtDBX
 tdpBW+cAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5409,7 +5246,7 @@ tdpBW+cAAAAASUVORK5CYII=
 <p>Each model has a characteristic performance curve:</p>
 <ul>
 <li>The <strong>scipy</strong> and <strong>astroML</strong> algorithms show similar behavior: fast $O[1]$ scaling at the small-$N$ limit, and clear $O[N^2]$ scaling at the large-$N$ limit. SciPy is slightly faster, primarily due to the fact that it computes the simpler noiseless non-floating-mean model.</li>
-<li>Gatspy's <code>LombScargle</code> also becomes $O[N^2]$ at large $N$, but is dominated at small $N$ by an $O[N]$ contribution which comes from allocating &amp; building the matrices associated with its linear algebraic approach. As $N$ grows larger than $\sim 10^4$, however, gatspy's model begins to beat the performance of the other two $O[N^2]$ algorithms.</li>
+<li>Gatspy's <code>LombScargle</code> also becomes $O[N^2]$ at large $N$, but is dominated at small $N$ by an $O[N]$ contribution which comes from allocating & building the matrices associated with its linear algebraic approach. As $N$ grows larger than $\sim 10^4$, however, gatspy's model begins to beat the performance of the other two $O[N^2]$ algorithms.</li>
 <li>Gatspy's <code>LombScargleFast</code> has an upfront $O[1]$ cost that makes it slower than other approaches at small $N$, but as $N$ grows its $O[N\log N]$ scaling means it dominates the performance of the other approaches by orders of magnitude.</li>
 </ul>
 <p>If you'd like to push the speed of the computation even further, there may be some options available.
@@ -5419,7 +5256,6 @@ The <code>pynfftls</code> installation depends on prior installations of the <a 
 No doubt with a couple hours of tinkering it could be done, but in a <a href="http://www.continuum.io/blog/conda">conda</a> world I've found my threshold of tolerance for such installation headaches has gone <em>way</em> down.
 Package developers take note: in most situations, ease of installation is easily worth a factor of a few in runtime performance.
 If any readers want to tackle the comparison between <code>LombScargleFast</code> and <code>pynfftls</code>, I'd be intrested to learn whether my factor-of-ten intuition is correct!</p>
-
 </div>
 </div>
 </div>
@@ -5427,7 +5263,7 @@ If any readers want to tackle the comparison between <code>LombScargleFast</code
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>If there's anything I want you to take from the above discussion, it's these three points:</p>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>If there's anything I want you to take from the above discussion, it's these three points:</p>
 <ul>
 <li>Naive application of Nyquist-style limits to irregularly-sampled data is 100% wrong. Don't be the next person to make this mistake in the published literature! I've been meaning to write a full rant/post on this subject for a while. Perhaps I will someday.</li>
 <li>Selection of period/frequency grids for Lomb-Scargle analysis should not be taken lightly. It's very easy to inadvertently use too coarse of a grid, and entirely miss important periodogram peaks!</li>
@@ -5437,12 +5273,9 @@ If any readers want to tackle the comparison between <code>LombScargleFast</code
 <a href="http://jakevdp.github.io/downloads/notebooks/LombScarglePython.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/LombScarglePython.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -5472,6 +5305,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Fast Lomb-Scargle Periodograms in Python"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/lomb-scargle-in-python.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>This week <a href="https://www.prontocycleshare.com/">Pronto CycleShare</a>, Seattle's Bicycle Share system, turned one year old.
 To celebrate this, Pronto made available a large cache of data from the first year of operation and announced the <a href="http://www.prontocycleshare.com/datachallenge">Pronto Cycle Share's Data Challenge</a>, which offers prizes for different categories of analysis.</p>
 <p>There are a lot of tools out there that you could use to analyze data like this, but my tool of choice is (obviously) Python.
@@ -1406,10 +1405,8 @@ In this post, I want to show how you can get started analyzing this data and joi
 Here I'll take a look at some of the basic questions you can answer with this data.
 Later I hope to find the time to dig deeper and ask some more interesting and creative questions – stay tuned!</p>
 <!-- PELICAN_END_SUMMARY -->
-
 <p>For those who aren't familiar, this post is composed in the form of a <a href="https://jupyter.org/">Jupyter Notebook</a>, which is an open document format that combines text, code, data, and graphics and is viewable through the web browser – if you have not used it before I encourage you to try it out!
 You can download the notebook containing this post <a href="http://jakevdp.github.io/downloads/notebooks/ProntoData.ipynb">here</a>, open it with Jupyter, and start asking your own questions of the data.</p>
-
 </div>
 </div>
 </div>
@@ -1417,199 +1414,180 @@ You can download the notebook containing this post <a href="http://jakevdp.githu
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Downloading-Pronto's-Data">Downloading Pronto's Data<a class="anchor-link" href="#Downloading-Pronto's-Data">&#182;</a></h2><p>We'll start by downloading the data (available on <a href="http://www.prontocycleshare.com/datachallenge">Pronto's Website</a>) which you can do by uncommenting the following shell commands (the exclamation mark here is a special IPython syntax to run a shell command).
+<h2 id="Downloading-Pronto's-Data">Downloading Pronto's Data<a class="anchor-link" href="#Downloading-Pronto's-Data">¶</a></h2><p>We'll start by downloading the data (available on <a href="http://www.prontocycleshare.com/datachallenge">Pronto's Website</a>) which you can do by uncommenting the following shell commands (the exclamation mark here is a special IPython syntax to run a shell command).
 The total download is about 70MB, and the unzipped files are around 900MB.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># !curl -O https://s3.amazonaws.com/pronto-data/open_data_year_one.zip</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># !curl -O https://s3.amazonaws.com/pronto-data/open_data_year_one.zip</span>
 <span class="c1"># !unzip open_data_year_one.zip</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next we need some standard Python package imports:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And now we load the trip data with Pandas:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">trips</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;2015_trip_data.csv&#39;</span><span class="p">,</span>
-                    <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;starttime&#39;</span><span class="p">,</span> <span class="s1">&#39;stoptime&#39;</span><span class="p">],</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">trips</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'2015_trip_data.csv'</span><span class="p">,</span>
+                    <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'starttime'</span><span class="p">,</span> <span class="s1">'stoptime'</span><span class="p">],</span>
                     <span class="n">infer_datetime_format</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">trips</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>trip_id</th>
-      <th>starttime</th>
-      <th>stoptime</th>
-      <th>bikeid</th>
-      <th>tripduration</th>
-      <th>from_station_name</th>
-      <th>to_station_name</th>
-      <th>from_station_id</th>
-      <th>to_station_id</th>
-      <th>usertype</th>
-      <th>gender</th>
-      <th>birthyear</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>431</td>
-      <td>2014-10-13 10:31:00</td>
-      <td>2014-10-13 10:48:00</td>
-      <td>SEA00298</td>
-      <td>985.935</td>
-      <td>2nd Ave &amp; Spring St</td>
-      <td>Occidental Park / Occidental Ave S &amp; S Washing...</td>
-      <td>CBD-06</td>
-      <td>PS-04</td>
-      <td>Annual Member</td>
-      <td>Male</td>
-      <td>1960</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>432</td>
-      <td>2014-10-13 10:32:00</td>
-      <td>2014-10-13 10:48:00</td>
-      <td>SEA00195</td>
-      <td>926.375</td>
-      <td>2nd Ave &amp; Spring St</td>
-      <td>Occidental Park / Occidental Ave S &amp; S Washing...</td>
-      <td>CBD-06</td>
-      <td>PS-04</td>
-      <td>Annual Member</td>
-      <td>Male</td>
-      <td>1970</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>433</td>
-      <td>2014-10-13 10:33:00</td>
-      <td>2014-10-13 10:48:00</td>
-      <td>SEA00486</td>
-      <td>883.831</td>
-      <td>2nd Ave &amp; Spring St</td>
-      <td>Occidental Park / Occidental Ave S &amp; S Washing...</td>
-      <td>CBD-06</td>
-      <td>PS-04</td>
-      <td>Annual Member</td>
-      <td>Female</td>
-      <td>1988</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>434</td>
-      <td>2014-10-13 10:34:00</td>
-      <td>2014-10-13 10:48:00</td>
-      <td>SEA00333</td>
-      <td>865.937</td>
-      <td>2nd Ave &amp; Spring St</td>
-      <td>Occidental Park / Occidental Ave S &amp; S Washing...</td>
-      <td>CBD-06</td>
-      <td>PS-04</td>
-      <td>Annual Member</td>
-      <td>Female</td>
-      <td>1977</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>435</td>
-      <td>2014-10-13 10:34:00</td>
-      <td>2014-10-13 10:49:00</td>
-      <td>SEA00202</td>
-      <td>923.923</td>
-      <td>2nd Ave &amp; Spring St</td>
-      <td>Occidental Park / Occidental Ave S &amp; S Washing...</td>
-      <td>CBD-06</td>
-      <td>PS-04</td>
-      <td>Annual Member</td>
-      <td>Male</td>
-      <td>1971</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>trip_id</th>
+<th>starttime</th>
+<th>stoptime</th>
+<th>bikeid</th>
+<th>tripduration</th>
+<th>from_station_name</th>
+<th>to_station_name</th>
+<th>from_station_id</th>
+<th>to_station_id</th>
+<th>usertype</th>
+<th>gender</th>
+<th>birthyear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>431</td>
+<td>2014-10-13 10:31:00</td>
+<td>2014-10-13 10:48:00</td>
+<td>SEA00298</td>
+<td>985.935</td>
+<td>2nd Ave & Spring St</td>
+<td>Occidental Park / Occidental Ave S & S Washing...</td>
+<td>CBD-06</td>
+<td>PS-04</td>
+<td>Annual Member</td>
+<td>Male</td>
+<td>1960</td>
+</tr>
+<tr>
+<th>1</th>
+<td>432</td>
+<td>2014-10-13 10:32:00</td>
+<td>2014-10-13 10:48:00</td>
+<td>SEA00195</td>
+<td>926.375</td>
+<td>2nd Ave & Spring St</td>
+<td>Occidental Park / Occidental Ave S & S Washing...</td>
+<td>CBD-06</td>
+<td>PS-04</td>
+<td>Annual Member</td>
+<td>Male</td>
+<td>1970</td>
+</tr>
+<tr>
+<th>2</th>
+<td>433</td>
+<td>2014-10-13 10:33:00</td>
+<td>2014-10-13 10:48:00</td>
+<td>SEA00486</td>
+<td>883.831</td>
+<td>2nd Ave & Spring St</td>
+<td>Occidental Park / Occidental Ave S & S Washing...</td>
+<td>CBD-06</td>
+<td>PS-04</td>
+<td>Annual Member</td>
+<td>Female</td>
+<td>1988</td>
+</tr>
+<tr>
+<th>3</th>
+<td>434</td>
+<td>2014-10-13 10:34:00</td>
+<td>2014-10-13 10:48:00</td>
+<td>SEA00333</td>
+<td>865.937</td>
+<td>2nd Ave & Spring St</td>
+<td>Occidental Park / Occidental Ave S & S Washing...</td>
+<td>CBD-06</td>
+<td>PS-04</td>
+<td>Annual Member</td>
+<td>Female</td>
+<td>1977</td>
+</tr>
+<tr>
+<th>4</th>
+<td>435</td>
+<td>2014-10-13 10:34:00</td>
+<td>2014-10-13 10:49:00</td>
+<td>SEA00202</td>
+<td>923.923</td>
+<td>2nd Ave & Spring St</td>
+<td>Occidental Park / Occidental Ave S & S Washing...</td>
+<td>CBD-06</td>
+<td>PS-04</td>
+<td>Annual Member</td>
+<td>Male</td>
+<td>1971</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Each row of this trip dataset is a single ride by a single person, and the data contains over 140,000 rows!</p>
-
 </div>
 </div>
 </div>
@@ -1617,70 +1595,56 @@ The total download is about 70MB, and the unzipped files are around 900MB.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exploring-Trips-over-Time">Exploring Trips over Time<a class="anchor-link" href="#Exploring-Trips-over-Time">&#182;</a></h2><p>Let's start by looking at the trend in number of daily trips over the course of the year</p>
-
+<h2 id="Exploring-Trips-over-Time">Exploring Trips over Time<a class="anchor-link" href="#Exploring-Trips-over-Time">¶</a></h2><p>Let's start by looking at the trend in number of daily trips over the course of the year</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Find the start date</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># Find the start date</span>
 <span class="n">ind</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">trips</span><span class="o">.</span><span class="n">starttime</span><span class="p">)</span>
-<span class="n">trips</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64&#39;</span><span class="p">)</span>
-<span class="n">trips</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span><span class="o">.</span><span class="n">hour</span>
+<span class="n">trips</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'datetime64'</span><span class="p">)</span>
+<span class="n">trips</span><span class="p">[</span><span class="s1">'hour'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span><span class="o">.</span><span class="n">hour</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Count trips by date</span>
-<span class="n">by_date</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="s1">&#39;trip_id&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
-                            <span class="n">index</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span>
-                            <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;usertype&#39;</span><span class="p">,</span> <span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># Count trips by date</span>
+<span class="n">by_date</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="s1">'trip_id'</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">'count'</span><span class="p">,</span>
+                            <span class="n">index</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="s1">'usertype'</span><span class="p">,</span> <span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-<span class="n">by_date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Annual Members&#39;</span><span class="p">);</span>
-<span class="n">by_date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Day-Pass Users&#39;</span><span class="p">);</span>
+<span class="n">by_date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Annual Members'</span><span class="p">);</span>
+<span class="n">by_date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Day-Pass Users'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA6IAAAIDCAYAAAAez6N4AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXm8XFWZ9/vbNc9nrHMyjwwBQpC0QaEDKqKN/UqLYsQg
 QaG7r/3a+rk23fdDvEGUtKhNN4a+YGvjCzYdNJBuA2gLigxhClPADGQic07OPNWpuWpP94+9165d
@@ -3830,15 +3794,11 @@ n4kTJ5KVlQXA5MmT+d3vfseGDRt44YUXWL16NVVVVXh7e7N27VoXvxshhBCiY0jXXCGEEEIIIYQQ
 HUpKc4UQQgghhBBCdCgJRIUQQgghhBBCdCgJRIUQQgghhBBCdCgJRIUQQgghhBBCdCgJRIUQQggh
 hBBCdCgJRIUQQgghhBBCdCgJRIUQQgghhBBCdCgJRIUQQgghhBBCdKj/DzUjaoJ/3qhMAAAAAElF
 TkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3851,7 +3811,6 @@ A couple observations:</p>
 <li>Day pass users seem to show a steady ebb and flow with the seasons; the usage of annual users has not waned as significantly with the coming of fall.</li>
 <li>Both annual members and day-pass users seem to show a distinct weekly trend.</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -3861,42 +3820,32 @@ A couple observations:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's zoom-in on this weekly trend, by averaging all rides by day of week.
 Becuase of the change in pattern around January 2015, we'll split the data by both year and by day of week:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">by_weekday</span> <span class="o">=</span> <span class="n">by_date</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">by_date</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">by_weekday</span> <span class="o">=</span> <span class="n">by_date</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">by_date</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
                               <span class="n">by_date</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">by_weekday</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># remove label for plot</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">by_weekday</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2014</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Use by Day of Week (2014)&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-<span class="n">by_weekday</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2015</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Use by Day of Week (2015)&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">by_weekday</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2014</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Average Use by Day of Week (2014)'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">by_weekday</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2015</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Average Use by Day of Week (2015)'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 <span class="k">for</span> <span class="n">axi</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
-    <span class="n">axi</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Mon&#39;</span><span class="p">,</span> <span class="s1">&#39;Tues&#39;</span><span class="p">,</span> <span class="s1">&#39;Wed&#39;</span><span class="p">,</span> <span class="s1">&#39;Thurs&#39;</span><span class="p">,</span> <span class="s1">&#39;Fri&#39;</span><span class="p">,</span> <span class="s1">&#39;Sat&#39;</span><span class="p">,</span> <span class="s1">&#39;Sun&#39;</span><span class="p">])</span>
+    <span class="n">axi</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">'Mon'</span><span class="p">,</span> <span class="s1">'Tues'</span><span class="p">,</span> <span class="s1">'Wed'</span><span class="p">,</span> <span class="s1">'Thurs'</span><span class="p">,</span> <span class="s1">'Fri'</span><span class="p">,</span> <span class="s1">'Sat'</span><span class="p">,</span> <span class="s1">'Sun'</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA6oAAAF6CAYAAAAQ3aUYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdgFNXax/HvbHoPhISQEJLQey/SklAFBemIUrxYQARE
 ERUFLxcriHotqFd9LVdUmiACCmIg9N57DRASIISWkF523z+AhVwgoCTZJPw+/ySZmT3z7Nny5JmZ
@@ -4539,15 +4488,11 @@ tLSgoKAA4eHhWLJkCa5duwbA2qvx7LPPora21s2RL7y52kIqld7yPCHm5psxN4sxN09jbr415mbm
 Zjtn5mYfi7eNRSAiIiIiIqK72r3TR09ERERERER3BRaqRERERERE5FFYqBIREREREZFHYaFKRERE
 REREHoWFKhEREREREXkUFqpERERERETkUVioEhERERERkUdhoUpEREREREQe5f+HcegZBF6fkwAA
 AABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4557,70 +4502,57 @@ AABJRU5ErkJggg==
 This pattern didn't fully develop until the start of 2015, however, especially for annual members: it seems that for the first couple months, users had not yet adapted their commute habits to make use of Pronto!</p>
 <p>It's also quite interesting to view the average hourly trips by weekday and weekend.
 This takes a bit of manipulation:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># count trips by date and by hour</span>
-<span class="n">by_hour</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="s1">&#39;trip_id&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
-                            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">],</span>
-                            <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;usertype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s1">&#39;hour&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># count trips by date and by hour</span>
+<span class="n">by_hour</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="s1">'trip_id'</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">'count'</span><span class="p">,</span>
+                            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'hour'</span><span class="p">],</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="s1">'usertype'</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s1">'hour'</span><span class="p">)</span>
 
 <span class="c1"># average these counts by weekend</span>
-<span class="n">by_hour</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_hour</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">by_hour</span> <span class="o">=</span> <span class="n">by_hour</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;weekend&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">by_hour</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_levels</span><span class="p">([[</span><span class="s1">&#39;weekday&#39;</span><span class="p">,</span> <span class="s1">&#39;weekend&#39;</span><span class="p">],</span>
-                          <span class="p">[</span><span class="s2">&quot;{0}:00&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)]],</span>
+<span class="n">by_hour</span><span class="p">[</span><span class="s1">'weekend'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_hour</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">>=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">by_hour</span> <span class="o">=</span> <span class="n">by_hour</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'weekend'</span><span class="p">,</span> <span class="s1">'hour'</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">by_hour</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_levels</span><span class="p">([[</span><span class="s1">'weekday'</span><span class="p">,</span> <span class="s1">'weekend'</span><span class="p">],</span>
+                          <span class="p">[</span><span class="s2">"{0}:00"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)]],</span>
                          <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">);</span>
 <span class="n">by_hour</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can plot the results to see the hourly trends:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">by_hour</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;weekday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Hourly Use (Mon-Fri)&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">by_hour</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Hourly Use (Sat-Sun)&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Average Trips per Hour&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">by_hour</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'weekday'</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Average Hourly Use (Mon-Fri)'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">by_hour</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'weekend'</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Average Hourly Use (Sat-Sun)'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Average Trips per Hour'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA6sAAAGJCAYAAABsGaWRAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8VFX6x/HPnZn03iGUBCkCotgAUYSlqLCKFBEVwV2x
 oAK2nysoKCuIYm/YRVFAsCFgWVcFFBTL2hBBpUiAhJBeJ3Uy8/sjzJhISYBMpuT7fr18mdyZ3Pvk
@@ -5457,15 +5389,11 @@ K8FgkNLSUr73ve8B8K1vfYu7776b9PR0ysvL8Xg889FsIYQQIm7J2CzE3FHUo69ZEEIIIYQQQggh
 ooBcBiyEEEIIIYQQIupIsSqEEEIIIYQQIupIsSqEEEIIIYQQIupIsSqEEEIIIYQQIupIsSqEEEII
 IYQQIupIsSqEEEIIIYQQIupIsSqEEEIIIYQQIupIsSqEEEIIIYQQIur8P9vmQnUrytoEAAAAAElF
 TkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5474,7 +5402,6 @@ TkSuQmCC
 <p>We see a clear difference between a "commute" pattern, which sharply peaks in the morning and evening (e.g. annual members during weekdays) and a "recreational" pattern, which has a broad peak in the early afternoon (e.g. annual members on weekends, and short-term users all the time).
 Interestingly, the average behavior of annual pass holders on weekends seems to be almost identical to the average behavior of day-pass users on weekdays!</p>
 <p>For those who have read my previous posts, you might recognize this as very similar to the patterns I <a href="https://jakevdp.github.io/blog/2015/07/23/learning-seattles-work-habits-from-bicycle-counts/">found in the Fremont Bridge bicycle counts</a>.</p>
-
 </div>
 </div>
 </div>
@@ -5482,46 +5409,36 @@ Interestingly, the average behavior of annual pass holders on weekends seems to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Trip-Durations">Trip Durations<a class="anchor-link" href="#Trip-Durations">&#182;</a></h2><p>Next let's take a look at the durations of trips.
+<h2 id="Trip-Durations">Trip Durations<a class="anchor-link" href="#Trip-Durations">¶</a></h2><p>Next let's take a look at the durations of trips.
 Pronto rides are designed to be up to 30 minutes; any single use that is longer than this <a href="https://www.prontocycleshare.com/pricing">incurs a usage fee</a> of a couple dollars for the first half hour, and about ten dollars per hour thereafter.</p>
 <p>Let's look at the distribution of trip durations for Annual members and short-term pass holders:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">trips</span><span class="p">[</span><span class="s1">&#39;minutes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">tripduration</span> <span class="o">/</span> <span class="mi">60</span>
-<span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;usertype&#39;</span><span class="p">)[</span><span class="s1">&#39;minutes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">61</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Duration (minutes)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;relative frequency&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Trip Durations&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="s2">&quot;Free Trips</span><span class="se">\n\n</span><span class="s2">Additional Fee&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
-         <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Annual Members&#39;</span><span class="p">,</span> <span class="s1">&#39;Short-term Pass&#39;</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">trips</span><span class="p">[</span><span class="s1">'minutes'</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">tripduration</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'usertype'</span><span class="p">)[</span><span class="s1">'minutes'</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">61</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Duration (minutes)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'relative frequency'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Trip Durations'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="s2">"Free Trips</span><span class="se">\n\n</span><span class="s2">Additional Fee"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span>
+         <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Annual Members'</span><span class="p">,</span> <span class="s1">'Short-term Pass'</span><span class="p">])</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfoAAAFtCAYAAADvdqiyAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8VOXZ//HPmSXLZLIQCCooEJRNRCoUUREVBIWqFQUR
 qtYqrdalbo+0qJWtIqi19ScSpVr1gceWVnEDq1UWRcFSFILsqyyyQ9bJJJnlzO+PSCBmJpNtZpLJ
@@ -5870,15 +5787,11 @@ QIDSNnHiRPbt24ezs7PS75CQEJqbm9mzZw9OTk4kJCRgNBpRq9U4OjqSlJQEwIcPHzCbzQwfPvyX
 70sIWyPT1AohOm3Hjh34+fkxderUv92Vnzpx4gT29vZERkb+7a4I8X8nQ/dCiE6Li4tThv67KovF
 QmFhYaf/vy9Edydn9EIIIYQNkzN6IYQQwoZJohdCCCFsmCR6IYQQwoZJohdCCCFsmCR6IYQQwoZJ
 ohdCCCFs2P8A7rd8g3dSohAAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5887,7 +5800,6 @@ ohdCCCFs2P8A7rd8g3dSohAAAAAASUVORK5CYII=
 <p>Here I have added a red dashed line separating the free rides (left) from the rides which incur a usage fee (right). It seems that annual users are much more savvy to the system rules: only a small tail of the trip distribution lies beyond 30 minutes.
 Around one in four Day Pass Rides, on the other hand, are longer than the half hour limit and incur additional fees.
 My hunch is that these day pass users aren't fully aware of this pricing structure ("I paid for the day, right?") and likely walk away unhappy with the experience.</p>
-
 </div>
 </div>
 </div>
@@ -5895,30 +5807,27 @@ My hunch is that these day pass users aren't fully aware of this pricing structu
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Estimating-Trip-Distances">Estimating Trip Distances<a class="anchor-link" href="#Estimating-Trip-Distances">&#182;</a></h2><p>It's also interesting to look at the distance of the trips.
+<h2 id="Estimating-Trip-Distances">Estimating Trip Distances<a class="anchor-link" href="#Estimating-Trip-Distances">¶</a></h2><p>It's also interesting to look at the distance of the trips.
 Distances between stations are not included in Pronto's data release, so we need to find them via another source.
 Let's start by loading the station data – and because some of the trips start and end at Pronto's shop, we'll add this as another "station":</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;2015_station_data.csv&#39;</span><span class="p">)</span>
-<span class="n">pronto_shop</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">54</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Pronto shop&quot;</span><span class="p">,</span>
-                   <span class="n">terminal</span><span class="o">=</span><span class="s2">&quot;Pronto shop&quot;</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'2015_station_data.csv'</span><span class="p">)</span>
+<span class="n">pronto_shop</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">54</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Pronto shop"</span><span class="p">,</span>
+                   <span class="n">terminal</span><span class="o">=</span><span class="s2">"Pronto shop"</span><span class="p">,</span>
                    <span class="n">lat</span><span class="o">=</span><span class="mf">47.6173156</span><span class="p">,</span> <span class="nb">long</span><span class="o">=-</span><span class="mf">122.3414776</span><span class="p">,</span>
-                   <span class="n">dockcount</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">online</span><span class="o">=</span><span class="s1">&#39;10/13/2014&#39;</span><span class="p">)</span>
+                   <span class="n">dockcount</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">online</span><span class="o">=</span><span class="s1">'10/13/2014'</span><span class="p">)</span>
 <span class="n">stations</span> <span class="o">=</span> <span class="n">stations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pronto_shop</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5929,238 +5838,210 @@ Fortunately, Google Maps has a <a href="https://developers.google.com/maps/docum
 <p>Reading the fine print, free use is limited to 2500 distances per day, and 100 distances per 10 seconds.
 With 55 stations we have $55 \times 54 / 2 = 1485$ unique nonzero distances, so we can just query all of them within a few minutes on a single day for free (if we do it carefully).</p>
 <p>To do this, we'll query one (partial) row at a time, waiting 10+ seconds between queries (Note: we might also use the <a href="https://github.com/googlemaps/google-maps-services-python">googlemaps Python package</a> instead, but it requires obtaining an API key).</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 
 <span class="k">def</span> <span class="nf">query_distances</span><span class="p">(</span><span class="n">stations</span><span class="o">=</span><span class="n">stations</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Query the Google API for bicycling distances&quot;&quot;&quot;</span>
-    <span class="n">latlon_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;{0},{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">)</span>
+    <span class="sd">"""Query the Google API for bicycling distances"""</span>
+    <span class="n">latlon_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'{0},{1}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">)</span>
                    <span class="k">for</span> <span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">stations</span><span class="o">.</span><span class="n">long</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">create_url</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-        <span class="n">URL</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://maps.googleapis.com/maps/api/distancematrix/json?&#39;</span>
-               <span class="s1">&#39;origins={origins}&amp;destinations={destinations}&amp;mode=bicycling&#39;</span><span class="p">)</span>
+        <span class="n">URL</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'https://maps.googleapis.com/maps/api/distancematrix/json?'</span>
+               <span class="s1">'origins={origins}&destinations={destinations}&mode=bicycling'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">origins</span><span class="o">=</span><span class="n">latlon_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                          <span class="n">destinations</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">latlon_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]))</span>
+                          <span class="n">destinations</span><span class="o">=</span><span class="s1">'|'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">latlon_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]))</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">latlon_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">create_url</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;distances_{0}.json&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s2">"distances_{0}.json"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="o">!</span>curl <span class="s2">&quot;{url}&quot;</span> -o <span class="o">{</span>filename<span class="o">}</span>
+        <span class="o">!</span>curl <span class="s2">"{url}"</span> -o <span class="o">{</span>filename<span class="o">}</span>
         <span class="n">sleep</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="c1"># only one query per 10 seconds!</span>
 
 
 <span class="k">def</span> <span class="nf">build_distance_matrix</span><span class="p">(</span><span class="n">stations</span><span class="o">=</span><span class="n">stations</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Build a matrix from the Google API results&quot;&quot;&quot;</span>
+    <span class="sd">"""Build a matrix from the Google API results"""</span>
     <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">stations</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">stations</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">term</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">terminal</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;queried_distances/distances_{0}.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s1">'queried_distances/distances_{0}.json'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
-        <span class="n">dist</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">el</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rows&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;elements&#39;</span><span class="p">]]</span>
+        <span class="n">dist</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">el</span><span class="p">[</span><span class="s1">'distance'</span><span class="p">][</span><span class="s1">'value'</span><span class="p">]</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">'rows'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'elements'</span><span class="p">]]</span>
     <span class="n">dist</span> <span class="o">+=</span> <span class="n">dist</span><span class="o">.</span><span class="n">T</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stations</span><span class="o">.</span><span class="n">terminal</span><span class="p">,</span>
                              <span class="n">columns</span><span class="o">=</span><span class="n">stations</span><span class="o">.</span><span class="n">terminal</span><span class="p">)</span>
-    <span class="n">distances</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;station_distances.csv&#39;</span><span class="p">)</span>
+    <span class="n">distances</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'station_distances.csv'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">distances</span>
 
 <span class="c1"># only call this the first time</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;station_distances.csv&#39;</span><span class="p">):</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">'station_distances.csv'</span><span class="p">):</span>
     <span class="c1"># Note: you can call this function at most ~twice per day!</span>
     <span class="n">query_distances</span><span class="p">()</span>
 
     <span class="c1"># Move all the queried files into a directory</span>
-    <span class="c1"># so we don&#39;t accidentally overwrite them</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;queried_distances&#39;</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;queried_distances&#39;</span><span class="p">)</span>
+    <span class="c1"># so we don't accidentally overwrite them</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">'queried_distances'</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">'queried_distances'</span><span class="p">)</span>
     <span class="o">!</span>mv distances_*.json queried_distances
 
     <span class="c1"># Build distance matrix and save to CSV</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">build_distance_matrix</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here's what the first 5x5 section of the distance matrix looks like:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">distances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;station_distances.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;terminal&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">distances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'station_distances.csv'</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'terminal'</span><span class="p">)</span>
 <span class="n">distances</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[13]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>BT-01</th>
-      <th>BT-03</th>
-      <th>BT-04</th>
-      <th>BT-05</th>
-      <th>CBD-13</th>
-    </tr>
-    <tr>
-      <th>terminal</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>BT-01</th>
-      <td>0</td>
-      <td>422</td>
-      <td>1067</td>
-      <td>867</td>
-      <td>1342</td>
-    </tr>
-    <tr>
-      <th>BT-03</th>
-      <td>422</td>
-      <td>0</td>
-      <td>838</td>
-      <td>445</td>
-      <td>920</td>
-    </tr>
-    <tr>
-      <th>BT-04</th>
-      <td>1067</td>
-      <td>838</td>
-      <td>0</td>
-      <td>1094</td>
-      <td>1121</td>
-    </tr>
-    <tr>
-      <th>BT-05</th>
-      <td>867</td>
-      <td>445</td>
-      <td>1094</td>
-      <td>0</td>
-      <td>475</td>
-    </tr>
-    <tr>
-      <th>CBD-13</th>
-      <td>1342</td>
-      <td>920</td>
-      <td>1121</td>
-      <td>475</td>
-      <td>0</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>BT-01</th>
+<th>BT-03</th>
+<th>BT-04</th>
+<th>BT-05</th>
+<th>CBD-13</th>
+</tr>
+<tr>
+<th>terminal</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>BT-01</th>
+<td>0</td>
+<td>422</td>
+<td>1067</td>
+<td>867</td>
+<td>1342</td>
+</tr>
+<tr>
+<th>BT-03</th>
+<td>422</td>
+<td>0</td>
+<td>838</td>
+<td>445</td>
+<td>920</td>
+</tr>
+<tr>
+<th>BT-04</th>
+<td>1067</td>
+<td>838</td>
+<td>0</td>
+<td>1094</td>
+<td>1121</td>
+</tr>
+<tr>
+<th>BT-05</th>
+<td>867</td>
+<td>445</td>
+<td>1094</td>
+<td>0</td>
+<td>475</td>
+</tr>
+<tr>
+<th>CBD-13</th>
+<td>1342</td>
+<td>920</td>
+<td>1121</td>
+<td>475</td>
+<td>0</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's convert these distances to miles and join them to our trips data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">stacked</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span> <span class="o">/</span> <span class="mf">1609.34</span>  <span class="c1"># convert meters to miles</span>
-<span class="n">stacked</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;distance&#39;</span>
-<span class="n">trips</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stacked</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;from_station_id&#39;</span><span class="p">,</span> <span class="s1">&#39;to_station_id&#39;</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">stacked</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span> <span class="o">/</span> <span class="mf">1609.34</span>  <span class="c1"># convert meters to miles</span>
+<span class="n">stacked</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'distance'</span>
+<span class="n">trips</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stacked</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">'from_station_id'</span><span class="p">,</span> <span class="s1">'to_station_id'</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can plot the distribution of trip distances:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;usertype&#39;</span><span class="p">)[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">6.99</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'usertype'</span><span class="p">)[</span><span class="s1">'distance'</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">6.99</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
                                            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Distance between start &amp; end (miles)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;relative frequency&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Minimum Distance of Trip&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Annual Members&#39;</span><span class="p">,</span> <span class="s1">&#39;Short-term Pass&#39;</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Distance between start & end (miles)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'relative frequency'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Minimum Distance of Trip'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Annual Members'</span><span class="p">,</span> <span class="s1">'Short-term Pass'</span><span class="p">]);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAt4AAAEZCAYAAACgkSLOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3X+czOX+//HHzOzvmdllWZU4mxy/KvqeDdFBSKKjLHEK
 4VQn/UJxOEiSH5XqOAqFSjmWQ8rvUgl9zhYOlTgUKkUri/09OzO7O7sz8/3DsacNzb7X7gy7z/vt
@@ -6495,15 +6376,11 @@ Z7uMw81vQRn/fnN9JpOJNWvW0NnZSVJSEqOjoyQnJxMeHs7ChQvJz8+nrq4ONzc3Y/wAjh8/7rL0
 RCn112CSW00XKKWUUne43bt34+bmRnp6+pTV2d7ezkcffeTyEKSU+mvQpSZKKaX+stLS0mhqavqX
 /4HO/0JVVRVFRUVTVp9S6v+HzngrpZRSSik1BXTGWymllFJKqSmggbdSSimllFJTQANvpZRSSiml
 poAG3koppZRSSk0BDbyVUkoppZSaAhp4K6WUUkopNQX+BjXBUQ7SCmEJAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6512,7 +6389,6 @@ poAG3koppZRSSk0BDbyVUkoppZSaAhp4K6WUUkopNQX+BjXBUQ7SCmEJAAAAAElFTkSuQmCC
 <p>Keep in mind that this shows the shortest possible distance between stations, and thus is a <strong>lower bound</strong> on the actual distance ridden on each trip.
 Many trips (especially for day pass users) begin and end within a few blocks.
 Beyond this, trips peak at around 1 mile, though some extreme users are pushing their trips out to four or more miles.</p>
-
 </div>
 </div>
 </div>
@@ -6520,41 +6396,31 @@ Beyond this, trips peak at around 1 mile, though some extreme users are pushing 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Estimating-Rider-Speed">Estimating Rider Speed<a class="anchor-link" href="#Estimating-Rider-Speed">&#182;</a></h2><p>Given these distances, we can also compute a lower bound on the estimated riding speed.
+<h2 id="Estimating-Rider-Speed">Estimating Rider Speed<a class="anchor-link" href="#Estimating-Rider-Speed">¶</a></h2><p>Given these distances, we can also compute a lower bound on the estimated riding speed.
 Let's do this, and then take a look at the distribution of speeds for Annual and Short-term users:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">trips</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">distance</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">trips</span><span class="o">.</span><span class="n">minutes</span>
-<span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;usertype&#39;</span><span class="p">)[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;lower bound riding speed (MPH)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;relative frequency&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rider Speed Lower Bound (MPH)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Annual Members&#39;</span><span class="p">,</span> <span class="s1">&#39;Short-term Pass&#39;</span><span class="p">]);</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">trips</span><span class="p">[</span><span class="s1">'speed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">distance</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">trips</span><span class="o">.</span><span class="n">minutes</span>
+<span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'usertype'</span><span class="p">)[</span><span class="s1">'speed'</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'lower bound riding speed (MPH)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'relative frequency'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Rider Speed Lower Bound (MPH)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Annual Members'</span><span class="p">,</span> <span class="s1">'Short-term Pass'</span><span class="p">]);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAFtCAYAAADxv5gBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd0VNXexvHvzKSRTOjBRhWkKNdIpCqRovHClRIVMSrI
 vfZrAQsgiARQISBiAQFFBQXR0BUiKCIBAZUiRYI0AWlSEtIzkZSZ9w/ezCWkTIBMkjl5PmuxFjPn
@@ -6869,15 +6735,11 @@ zWaDer3+ZRui/4m/TyWiH3EcB8vlEp1OBz6fD8PhELFYDLVa7eW7tm1DFEU0Go039PS+GJjNZphO
 p2+LN5/PMZlM3hKPCOAOnYh+KBQK4Xg8QtM0+P1+JJNJt/jvO955v6woCiKRCHa7nfst+m9aLBbo
 dru/HofoT9yhExEReQCL4oiIiDyACZ2IiMgDmNCJiIg8gAmdiIjIA5jQiYiIPIAJnYiIyAM+AMP6
 J8qevCZiAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6887,7 +6749,6 @@ J8qevCZiAAAAAElFTkSuQmCC
 You might be tempted to conclude here that annual members ride faster than day-pass users, but the data alone aren't sufficient to support this conclusion.
 This data could also be explained if annual users tend to go from point A to point B by the most direct route, while day pass users tend to meander around and get to their destination indirectly.
 I suspect that the reality is some mix of these two effects.</p>
-
 </div>
 </div>
 </div>
@@ -6896,45 +6757,35 @@ I suspect that the reality is some mix of these two effects.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It is also informative to take a look at the relationship between distance and speed:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">trips</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;usertype&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;usertype&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">,</span> <span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">trips</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"usertype"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'usertype'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">,</span> <span class="s2">"distance"</span><span class="p">,</span> <span class="s2">"speed"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
 <span class="c1"># Add lines and labels</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Lower Bound Speed&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Lower Bound Speed'</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Lower Bound Distance&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">9.8</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="s2">&quot;Free Trips</span><span class="se">\n\n</span><span class="s2">Additional Fee&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">39</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Lower Bound Distance'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'--r'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">9.8</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="s2">"Free Trips</span><span class="se">\n\n</span><span class="s2">Additional Fee"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">39</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA1QAAAGqCAYAAAAMZgUdAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8XNV98P/PvXNnRou1WIstyZZlYxuveMXGxgvYAWx2
 koZSCpSWPk9SniRPSUmeUJYS2ictWZ6mjRuS1y9pSqBkawGzE8IONsasNsY23mXZWqzF2mXN3HvO
@@ -9430,15 +9281,11 @@ Ly8v58Ybb6S1tZXKysox10JRFBYuXMgdd9zBbbfdhm3bfPGLX+Taa6+lpqaGxx57jC9/+cvYts0P
 f/hDPB7PpH/HQggx1STWnHosEmvEpUixJ/pYQgghhBBCCCHEKUnJnxBCCCGEEEJkSBIqIYQQQggh
 hMiQJFRCCCGEEEIIkSFJqIQQQgghhBAiQ5JQCSGEEEIIIUSGJKESQgghhBBCiAxJQiWEEEIIIYQQ
 GZKESgghhBBCCCEy9P8BbhoPP/aettkAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -9447,7 +9294,6 @@ GZKESgghhBBCCCEy9P8BbhoPP/aettkAAAAASUVORK5CYII=
 <p>Overall, we see that longer rides tend to be faster – though this is subject to the same lower-bound caveats as above.
 As above, for reference I have plotted the line separating free trips (above the red line) from trips requiring an additional fee (below the red line).
 Again we see that the annual members are much more savvy about not going over the half hour limit than are day pass users – the sharp cutoff in the distribution of points points to users keeping close track of their time to avoid an extra charge!</p>
-
 </div>
 </div>
 </div>
@@ -9455,229 +9301,200 @@ Again we see that the annual members are much more savvy about not going over th
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Trend-with-Elevation">Trend with Elevation<a class="anchor-link" href="#Trend-with-Elevation">&#182;</a></h2><p>One oft-mentioned concern with the feasibility of bike share in Seattle is that it is a very hilly city – before the launch, armchair analysts predicted that there would be a steady flow of bikes from uphill to downhill, and that this would add up with other challenges to spell the demise of the system ("Sure, bikeshare works other places, but it can't work here: Seattle is <em>special</em>! We're just <em>so special</em>!")</p>
+<h2 id="Trend-with-Elevation">Trend with Elevation<a class="anchor-link" href="#Trend-with-Elevation">¶</a></h2><p>One oft-mentioned concern with the feasibility of bike share in Seattle is that it is a very hilly city – before the launch, armchair analysts predicted that there would be a steady flow of bikes from uphill to downhill, and that this would add up with other challenges to spell the demise of the system ("Sure, bikeshare works other places, but it can't work here: Seattle is <em>special</em>! We're just <em>so special</em>!")</p>
 <p>Elevation data is not included in the data release, but again we can turn to the Google Maps API to get what we need; see <a href="https://developers.google.com/maps/documentation/elevation/intro">this site</a> for a description of the elevation API.</p>
-<p>In this case the free-use limit is 2500 requests per day &amp; 512 elevations per request.
+<p>In this case the free-use limit is 2500 requests per day & 512 elevations per request.
 Since we need just 55 elevations, we can do it in a single query:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_station_elevations</span><span class="p">(</span><span class="n">stations</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get station elevations via Google Maps API&quot;&quot;&quot;</span>
-    <span class="n">URL</span> <span class="o">=</span> <span class="s2">&quot;https://maps.googleapis.com/maps/api/elevation/json?locations=&quot;</span>
-    <span class="n">locs</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;{0},{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_station_elevations</span><span class="p">(</span><span class="n">stations</span><span class="p">):</span>
+    <span class="sd">"""Get station elevations via Google Maps API"""</span>
+    <span class="n">URL</span> <span class="o">=</span> <span class="s2">"https://maps.googleapis.com/maps/api/elevation/json?locations="</span>
+    <span class="n">locs</span> <span class="o">=</span> <span class="s1">'|'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'{0},{1}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">)</span>
                      <span class="k">for</span> <span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">stations</span><span class="o">.</span><span class="n">long</span><span class="p">)])</span>
     <span class="n">URL</span> <span class="o">+=</span> <span class="n">locs</span>
-    <span class="o">!</span>curl <span class="s2">&quot;{URL}&quot;</span> -o elevations.json
+    <span class="o">!</span>curl <span class="s2">"{URL}"</span> -o elevations.json
 
 
 <span class="k">def</span> <span class="nf">process_station_elevations</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Convert Elevations JSON output to CSV&quot;&quot;&quot;</span>
+    <span class="sd">"""Convert Elevations JSON output to CSV"""</span>
     <span class="kn">import</span> <span class="nn">json</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;elevations.json&#39;</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">'elevations.json'</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">unnest</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
-        <span class="n">loc</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'location'</span><span class="p">)</span>
         <span class="n">loc</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">loc</span>
-    <span class="n">elevs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">unnest</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]])</span>
-    <span class="n">elevs</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;station_elevations.csv&#39;</span><span class="p">)</span>
+    <span class="n">elevs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">unnest</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">D</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]])</span>
+    <span class="n">elevs</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'station_elevations.csv'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">elevs</span>
 
 <span class="c1"># only run this the first time:</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;station_elevations.csv&#39;</span><span class="p">):</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">'station_elevations.csv'</span><span class="p">):</span>
     <span class="n">get_station_elevations</span><span class="p">(</span><span class="n">stations</span><span class="p">)</span>
     <span class="n">process_station_elevations</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now let's read-in the elevation data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">elevs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;station_elevations.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">elevs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'station_elevations.csv'</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">elevs</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[19]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>elevation</th>
-      <th>lat</th>
-      <th>lng</th>
-      <th>resolution</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>37.351780</td>
-      <td>47.618418</td>
-      <td>-122.350964</td>
-      <td>76.351616</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>33.815830</td>
-      <td>47.615829</td>
-      <td>-122.348564</td>
-      <td>76.351616</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>34.274055</td>
-      <td>47.616094</td>
-      <td>-122.341102</td>
-      <td>76.351616</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>44.283257</td>
-      <td>47.613110</td>
-      <td>-122.344208</td>
-      <td>76.351616</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>42.460381</td>
-      <td>47.610185</td>
-      <td>-122.339641</td>
-      <td>76.351616</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>elevation</th>
+<th>lat</th>
+<th>lng</th>
+<th>resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>37.351780</td>
+<td>47.618418</td>
+<td>-122.350964</td>
+<td>76.351616</td>
+</tr>
+<tr>
+<th>1</th>
+<td>33.815830</td>
+<td>47.615829</td>
+<td>-122.348564</td>
+<td>76.351616</td>
+</tr>
+<tr>
+<th>2</th>
+<td>34.274055</td>
+<td>47.616094</td>
+<td>-122.341102</td>
+<td>76.351616</td>
+</tr>
+<tr>
+<th>3</th>
+<td>44.283257</td>
+<td>47.613110</td>
+<td>-122.344208</td>
+<td>76.351616</td>
+</tr>
+<tr>
+<th>4</th>
+<td>42.460381</td>
+<td>47.610185</td>
+<td>-122.339641</td>
+<td>76.351616</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Just to make ourselves feel better, we'll double check that the latitudes and longitudes match:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># double check that locations match</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># double check that locations match</span>
 <span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">long</span><span class="p">,</span> <span class="n">elevs</span><span class="o">.</span><span class="n">lng</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">elevs</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>True
 True
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can join the elevations to with the trip data by way of the station data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">stations</span><span class="p">[</span><span class="s1">&#39;elevation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elevs</span><span class="p">[</span><span class="s1">&#39;elevation&#39;</span><span class="p">]</span>
-<span class="n">elevs</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="s1">&#39;terminal&#39;</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">stations</span><span class="p">[</span><span class="s1">'elevation'</span><span class="p">]</span> <span class="o">=</span> <span class="n">elevs</span><span class="p">[</span><span class="s1">'elevation'</span><span class="p">]</span>
+<span class="n">elevs</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="s1">'terminal'</span><span class="p">]</span>
 
-<span class="n">trips</span><span class="p">[</span><span class="s1">&#39;elevation_start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elevs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;from_station_id&#39;</span><span class="p">)[</span><span class="s1">&#39;elevation&#39;</span><span class="p">]</span>
-<span class="n">trips</span><span class="p">[</span><span class="s1">&#39;elevation_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elevs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;to_station_id&#39;</span><span class="p">)[</span><span class="s1">&#39;elevation&#39;</span><span class="p">]</span>
-<span class="n">trips</span><span class="p">[</span><span class="s1">&#39;elevation_gain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="p">[</span><span class="s1">&#39;elevation_end&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">trips</span><span class="p">[</span><span class="s1">&#39;elevation_start&#39;</span><span class="p">]</span>
+<span class="n">trips</span><span class="p">[</span><span class="s1">'elevation_start'</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elevs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'from_station_id'</span><span class="p">)[</span><span class="s1">'elevation'</span><span class="p">]</span>
+<span class="n">trips</span><span class="p">[</span><span class="s1">'elevation_end'</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elevs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'to_station_id'</span><span class="p">)[</span><span class="s1">'elevation'</span><span class="p">]</span>
+<span class="n">trips</span><span class="p">[</span><span class="s1">'elevation_gain'</span><span class="p">]</span> <span class="o">=</span> <span class="n">trips</span><span class="p">[</span><span class="s1">'elevation_end'</span><span class="p">]</span> <span class="o">-</span> <span class="n">trips</span><span class="p">[</span><span class="s1">'elevation_start'</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's take a look at the distribution of elevation gain by rider type:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">trips</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;usertype&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;usertype&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">&quot;elevation_gain&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">145</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">trips</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"usertype"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'usertype'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">"elevation_gain"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">145</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figheight</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
 
@@ -9686,25 +9503,16 @@ True
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">lim</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
-                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABA4AAAFqCAYAAACagxirAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3WmcHFWhv/FfdWZ69oQAk0s2gxeERLgTCYRLWALkI4jK
 pgjcSQwoaJCPQVllCTFGRFFBRKKoqBeMyCYhouDyR5ZwE5AruSyyySKYZSAhEcz0VtXL/0VRM5kk
@@ -10131,15 +9939,11 @@ QmJiIqZOnYq+ffsiOjoajY2NaGhocNyXaP+PiIiIPMNagrUEUVdQCEZxRNSNJEnC1q1bsXjxYgQF
 BeGrr75CbW0tVqxYIffQiIiI6AnAWoJIflxxQERdIi0tDX/99VeLx1NSUtCrVy/MnDkTGo0GAwYM
 cGxoRERERGTHWoLId3HFARERERERERG5xM0RiYiIiIiIiMglBgdERERERERE5BKDAyIiIiIiIiJy
 icEBEREREREREbnE4ICIiIiIiIiIXPp/wldSt7TRCvQAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -10148,42 +9952,32 @@ icEBEREREREREbnE4ICIiIiIiIiIXPp/wldSt7TRCvQAAAAASUVORK5CYII=
 <p>We have plotted some shading in the background to help guide the eye.
 Again, there is a big difference between Annual Members and Short-term users: annual users definitely show a preference for downhill trips (left of the distribution), while daily users dont show this as strongly, but rather show a preference for rides which start and end at the same elevation (i.e. the same station).</p>
 <p>To make the effect of elevation change more quantitative, let's compute the numbers:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;total downhill trips:&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">trips</span><span class="o">.</span><span class="n">elevation_gain</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;total uphill trips:  &quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">trips</span><span class="o">.</span><span class="n">elevation_gain</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"total downhill trips:"</span><span class="p">,</span> <span class="p">(</span><span class="n">trips</span><span class="o">.</span><span class="n">elevation_gain</span> <span class="o"><</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"total uphill trips:  "</span><span class="p">,</span> <span class="p">(</span><span class="n">trips</span><span class="o">.</span><span class="n">elevation_gain</span> <span class="o">></span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>total downhill trips: 80532
 total uphill trips:   50493
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -10191,7 +9985,6 @@ total uphill trips:   50493
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that the first year had 30,000 more downhill trips than uphill trips – that's about 60% more.
 Given current usage levels, that means that Pronto staff must be shuttling an average of about 100 bikes per day from low-lying stations to higher-up stations.</p>
-
 </div>
 </div>
 </div>
@@ -10199,143 +9992,117 @@ Given current usage levels, that means that Pronto staff must be shuttling an av
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Weather">Weather<a class="anchor-link" href="#Weather">&#182;</a></h2><p>The other common "Seattle is special" argument against the feasibility of cycle share is the weather.
+<h2 id="Weather">Weather<a class="anchor-link" href="#Weather">¶</a></h2><p>The other common "Seattle is special" argument against the feasibility of cycle share is the weather.
 Let's take a look at how the number of rides changes with temperature and precipitation.</p>
 <p>Fortunately, the data release includes a wide range of weather data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">weather</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;2015_weather_data.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">weather</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'2015_weather_data.csv'</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'Date'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">weather</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[24]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>Index([&#39;Max_Temperature_F&#39;, &#39;Mean_Temperature_F&#39;, &#39;Min_TemperatureF&#39;,
-       &#39;Max_Dew_Point_F&#39;, &#39;MeanDew_Point_F&#39;, &#39;Min_Dewpoint_F&#39;, &#39;Max_Humidity&#39;,
-       &#39;Mean_Humidity &#39;, &#39;Min_Humidity &#39;, &#39;Max_Sea_Level_Pressure_In &#39;,
-       &#39;Mean_Sea_Level_Pressure_In &#39;, &#39;Min_Sea_Level_Pressure_In &#39;,
-       &#39;Max_Visibility_Miles &#39;, &#39;Mean_Visibility_Miles &#39;,
-       &#39;Min_Visibility_Miles &#39;, &#39;Max_Wind_Speed_MPH &#39;, &#39;Mean_Wind_Speed_MPH &#39;,
-       &#39;Max_Gust_Speed_MPH&#39;, &#39;Precipitation_In &#39;, &#39;Events&#39;],
-      dtype=&#39;object&#39;)</pre>
-</div>
-
-</div>
-
+<pre>Index(['Max_Temperature_F', 'Mean_Temperature_F', 'Min_TemperatureF',
+       'Max_Dew_Point_F', 'MeanDew_Point_F', 'Min_Dewpoint_F', 'Max_Humidity',
+       'Mean_Humidity ', 'Min_Humidity ', 'Max_Sea_Level_Pressure_In ',
+       'Mean_Sea_Level_Pressure_In ', 'Min_Sea_Level_Pressure_In ',
+       'Max_Visibility_Miles ', 'Mean_Visibility_Miles ',
+       'Min_Visibility_Miles ', 'Max_Wind_Speed_MPH ', 'Mean_Wind_Speed_MPH ',
+       'Max_Gust_Speed_MPH', 'Precipitation_In ', 'Events'],
+      dtype='object')</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's join this weather data with the trip data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">by_date</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;usertype&#39;</span><span class="p">])[</span><span class="s1">&#39;trip_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="n">by_date</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;count&#39;</span>
-<span class="n">by_date</span> <span class="o">=</span> <span class="n">by_date</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s1">&#39;usertype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">weather</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">by_date</span> <span class="o">=</span> <span class="n">trips</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'usertype'</span><span class="p">])[</span><span class="s1">'trip_id'</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">by_date</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'count'</span>
+<span class="n">by_date</span> <span class="o">=</span> <span class="n">by_date</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s1">'usertype'</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">weather</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can take a look at how the number of rides scales with both Temperature and Precipitation, splitting the data by weekday and weekend:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># add a flag indicating weekend</span>
-<span class="n">by_date</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_date</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># add a flag indicating weekend</span>
+<span class="n">by_date</span><span class="p">[</span><span class="s1">'weekend'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_date</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">>=</span> <span class="mi">5</span><span class="p">)</span>
 
 <span class="c1">#----------------------------------------------------------------</span>
 <span class="c1"># Plot Temperature Trend</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">by_date</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;weekend&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;usertype&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">,</span> <span class="s2">&quot;Mean_Temperature_F&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">by_date</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"weekend"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'usertype'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">,</span> <span class="s2">"Mean_Temperature_F"</span><span class="p">,</span> <span class="s2">"count"</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">add_legend</span><span class="p">();</span>
 
 <span class="c1"># do some formatting</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;Monday - Friday&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">'Monday - Friday'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
                   <span class="n">transform</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;Saturday - Sunday&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">'Saturday - Sunday'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
                   <span class="n">transform</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Trend With Temperature&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">);</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"Trend With Temperature"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">);</span>
 
 <span class="c1">#----------------------------------------------------------------</span>
 <span class="c1"># Plot Precipitation</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">by_date</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;weekend&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;usertype&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">,</span> <span class="s2">&quot;Precipitation_In &quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">by_date</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"weekend"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'usertype'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">,</span> <span class="s2">"Precipitation_In "</span><span class="p">,</span> <span class="s2">"count"</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">add_legend</span><span class="p">();</span>
 
 <span class="c1"># do some formatting</span>
 <span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;Monday - Friday&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">'Monday - Friday'</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
                   <span class="n">transform</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;Saturday - Sunday&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+<span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">'Saturday - Sunday'</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
                   <span class="n">transform</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Trend With Precipitation&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">);</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"Trend With Precipitation"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+UAAAG0CAYAAABUjobxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8FHX+P/DXbEmy6QkJoSYBDAmEkEAKJBCICR0bSjxB
 wRPwFFBUVA49MXp3ntjOgspxX7kfgnqKipwV1IBUaaG3UEOHJKRuLzO/P5YMLIT03U15PR8PHo/s
@@ -11611,20 +11378,12 @@ qamsXr2aoaEh1q5dy/nz56mvr+fAgQM4HA6ys7NZtWpV8H+PBoNhyrl8L+ZMr4WIyJ9GdUV1RUTk
 +MTff2psbMRisfyfMxIR+bOorkyluiIis4F2ykVERERERETCRA96ExEREREREQkTDeUiIiIiIiIi
 YaKhXERERERERCRMNJSLiIiIiIiIhImGchEREREREZEw0VAuIiIiIiIiEiZ/Aa/2qQiyS+cYAAAA
 AElFTkSuQmCC
-"
->
+">
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA98AAAG0CAYAAAArX5QAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8VFX+//HXnZmUSU9IBKkRxERaAiGhKMUgTeyAigI2
 dFFcVrGBPxH5upYVFV1UxC7YQGWxV0BQmoBUgVBDLwlJSJuUyczvj5iBkAABMplMeD8fD3Zzz71z
@@ -13030,15 +12789,11 @@ UWwUT25PCpFXjY2NNDc35zsMIYQQk5D0MUIIUThkzbcQeVYod/hPnz7NX//1Xw/52GOPPcbSpUsn
 OCIhhBBXS/oYIYQoHDLyLYQQQgghhBBC5Jis+RZCCCGEEEIIIXJMkm8hhBBCCCGEECLHJPkWQggh
 hBBCCCFyTJJvIYQQQgghhBAixyT5FkIIIYQQQgghckySbyGEEEIIIYQQIsf+f/nbYdffl+eRAAAA
 AElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -13048,7 +12803,6 @@ AElFTkSuQmCC
 But there are some interesting details: <em>during the work week</em>, Annual and Short-term users are equally affected by the weather.
 On the weekend, however, annual members appear <strong>less</strong> influenced by weather, while short-term users appear <strong>more</strong> influenced.
 I don't have any good theories for why this would be the trend – please let me know if you have any ideas!</p>
-
 </div>
 </div>
 </div>
@@ -13056,11 +12810,11 @@ I don't have any good theories for why this would be the trend – please let me
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h2><p>There is a lot to glean from the above discussion, but I think there are several main takeaway points that we can learn from this look at the data:</p>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>There is a lot to glean from the above discussion, but I think there are several main takeaway points that we can learn from this look at the data:</p>
 <ul>
 <li>Annual Members and Day Pass users show markedly different behavior in aggregate: annual members seem to use Pronto mostly for commuting from point A to point B on Monday-Friday, while short-term users use Pronto primarily on weekends to explore particular areas of town.</li>
 <li>While annual members seem savvy to the pricing structure, <strong>one out of four short-term-pass rides exceeds the half hour limit</strong> and incurs an additional usage fee. For the sake of the customer, Pronto should probably make effort to better inform short-term users of this pricing structure.</li>
-<li>Elevation and weather affect use just as you would expect: there are 60% more downhill trips than uphill trips, and cold &amp; rain significantly decrease the number of rides on a given day.</li>
+<li>Elevation and weather affect use just as you would expect: there are 60% more downhill trips than uphill trips, and cold & rain significantly decrease the number of rides on a given day.</li>
 </ul>
 <p>There is much more we could do with this data, and I'm hoping to dig more into it over the next couple weeks to seek some more detailed insights, but I think this is a good start!
 If you're interested in entering the Pronto Data Challenge, feel free to use these scripts as a jumping-off point to answer your own questions about the data.</p>
@@ -13069,12 +12823,9 @@ If you're interested in entering the Pronto Data Challenge, feel free to use the
 <a href="http://jakevdp.github.io/downloads/notebooks/ProntoData.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/ProntoData.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -13104,6 +12855,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Analyzing Pronto CycleShare Data with Python and Pandas"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/analyzing-pronto-cycleshare-data-with-python-and-pandas.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

@@ -1404,82 +1404,56 @@ where I followed in the footsteps of others to write a little hack for xkcd-styl
 in matplotlib.  In it, I mentioned the <a href="https://github.com/matplotlib/matplotlib/pull/1329">Sketch Path Filter</a>
 pull request that would eventually supersede my ugly little hack.</p>
 <p>Well, "eventually" has finally come.  Observe:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 Welcome to pylab, a matplotlib-based Python environment [backend: module://IPython.kernel.zmq.pylab.backend_inline].
-For more information, type &#39;help(pylab)&#39;.
+For more information, type 'help(pylab)'.
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">xkcd</span><span class="p">()</span>  <span class="c1"># Yes...</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">xkcd</span><span class="p">()</span>  <span class="c1"># Yes...</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Whoo Hoo!!!&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Whoo Hoo!!!'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x2fade10&gt;</pre>
+<pre><matplotlib.text.Text at 0x2fade10></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAAELCAYAAADQsFGkAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXl4U1X6x79pkqZJ2qRNWkpBZFMEURAYRhRBlF0BBwEF
 AUVUFJQZl5lxmZ9SdwF1ABdAAQHZlwER2RSKbLIjiCIim1hoaZM2zd4kPb8/DuemoXuW3pvkfJ6n
@@ -1870,15 +1844,11 @@ QEpPTye9Xv9/610yG8Ecna6uLhgMBkilUoeZ/P5v7t69i/b2dkilUkxNTaGjowMXLlyAj48P29I4
 lgi3b99GWloavn379kcfH/9Pqa+vR3JyMgAgJCQEAwMDCAwMREdHx7+aB+MCAAcHxx/Dly9f0NPT
 A5lMxrYUm2I2m9HW1oYXL16gpaUFAQEBKCsr+9e7nrkAwMHBweGgsL4MlIODg4ODHbgAwMHBweGg
 cAGAg4ODw0HhAgAHBweHg8IFAA4ODg4HhQsAHBwcHA7KX60VJk94SH9vAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1889,16 +1859,13 @@ cAGAg4ODw0HhAgAHBweHg8IFAA4ODg4HhQsAHBwcHA7KX60VJk94SH9vAAAAAElFTkSuQmCC
 <a href="http://matplotlib.org/xkcd/gallery.html">here</a> for inspiration, or read on where I'll
 show off some of my favorite of the possibilities.</p>
 <!-- PELICAN_END_SUMMARY -->
-
 <p><em>By the way, this new functionality requires matplotlib version 1.3, which can currently
 be downloaded and installed from <a href="http://github.com/matplotlib/matplotlib">github</a>.
 Also, if you want to have the font match above, be sure to download and install the
 <a href="http://xkcdsucks.blogspot.com/2009/03/xkcdsucks-is-proud-to-present-humor.html">Humor Sans</a>
 font on your system.  For matplotlib to recognize it, you may have to remove the font cache,
 found on your system at</em></p>
-
 <pre><code>$HOME/.matplotlib/fontList.cache</code></pre>
-
 </div>
 </div>
 </div>
@@ -1907,54 +1874,37 @@ found on your system at</em></p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Even simple plots can be made much more interesting:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">y1</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x axis yo!&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;I don&#39;t even know&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s1">'red'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x axis yo!'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"I don't even know"</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x31e3190&gt;</pre>
+<pre><matplotlib.text.Text at 0x31e3190></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYcAAAERCAYAAACQIWsgAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXd4W/W5+D/ae8t2Ejt7Q4BACDNhj0Iu0AG3vd2lT7nQ
 ++uivYUWuKTcDgpcoECBAmW1jDSFAKFhBRKygOxJljMcb8va8xxJ5/z+kCVinGErtiU55/M8ehJZ
@@ -2626,97 +2576,72 @@ gkajwejRo7Fz507MnDmzw4vM/N2C7+vWrUNoaChSU1Mxd+5cjBs3Dj4+Pn9bfvXq1cjMzERsbGyH
 vo/DeRp8ym5Oj0ar1UIqlf7jRaRKSkrwzTffYNWqVXBycvrX9hQUFGD79u3Ys2cP5HL5vz4eh/NP
 4eLA4XA4nFbw3kocDofDaQUXBw6Hw+G0gosDh8PhcFrBxYHD4XA4reDiwOFwOJxWcHHgcDgcTiv+
 D9HPQ5oNeb8TAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>3D plots work as well:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="k">import</span> <span class="n">PolyCollection</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 <span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">edges</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yi</span><span class="p">))</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
 
 <span class="n">poly</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">zdir</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_collection3d</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">zdir</span><span class="o">=</span><span class="s1">'y'</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'X'</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim3d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Y'</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim3d</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim3d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/home/vanderplas/PythonEnv/pydev/local/lib/python2.7/site-packages/matplotlib-1.3.x-py2.7-linux-x86_64.egg/matplotlib/axis.py:695: MatplotlibDeprecationWarning: This function has been made private and movedto `_set_scale`. This wrapper function will be removed in 1.4
-  &#34;removed in 1.4&#34;, mplDeprecation)
+  "removed in 1.4", mplDeprecation)
 </pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(0, 1)</pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAADtCAYAAAAcNaZ2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmQHOd53/95+5prLwCLixQJEuAFHrpssixLpAjZpu24
 bEkuR5Ll0I5lyw6rFMtxnEqpHEVSxSoplkLZkV2hi7IlSyKjX2yFpmhRkUTq5oUbIAASBLD3gdnZ
@@ -3562,31 +3487,26 @@ jBjRHcsN0McJiG6AAJ3AYrG4vl+/fj0ffvgh6enpft2HTqfz6/YC9A0CohsgwHkye/Zs7rvvPn78
 8UfS09PJy8vj888/9zrIsjO89tpr1NTUMHXqVL9sL0DfIiC6AQKcByqViueff57IyEjWrl3LLbfc
 wquvvupXf+zo0aP9tq0AfY9AyliAAD6we/duzGYz8+bNcwXLhBCBFooBzpuA6AYIECBADxIoAw4Q
 IECAHuT/A8fZkjWaRZ90AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use the new package to quickly reproduce a <a href="http://xkcd.com/1235/">recent XKCD comic</a>:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
 
 <span class="n">years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1975</span><span class="p">,</span> <span class="mi">2013</span><span class="p">)</span>
@@ -3595,49 +3515,33 @@ IECAHuT/A8fZkjWaRZ90AAAAAElFTkSuQmCC
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1976</span><span class="p">,</span> <span class="mi">2013</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%i%%</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">'</span><span class="si">%i%%</span><span class="s1">'</span><span class="p">))</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1977</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span>
-        <span class="p">(</span><span class="s2">&quot;Percentage of the US Population</span><span class="se">\n</span><span class="s2">&quot;</span>
-         <span class="s2">&quot;carrying cameras everywhere they go,</span><span class="se">\n</span><span class="s2">&quot;</span>
-         <span class="s2">&quot;every waking moment of their lives:&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"Percentage of the US Population</span><span class="se">\n</span><span class="s2">"</span>
+         <span class="s2">"carrying cameras everywhere they go,</span><span class="se">\n</span><span class="s2">"</span>
+         <span class="s2">"every waking moment of their lives:"</span><span class="p">),</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">((</span><span class="s2">&quot;In the last few years, with very little fanfare,</span><span class="se">\n</span><span class="s2">&quot;</span>
-               <span class="s2">&quot;We&#39;ve conclusively settled the questions of</span><span class="se">\n</span><span class="s2">&quot;</span>
-               <span class="s2">&quot;flying saucers, lake monsters, ghosts, and bigfoot.&quot;</span><span class="p">),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">((</span><span class="s2">"In the last few years, with very little fanfare,</span><span class="se">\n</span><span class="s2">"</span>
+               <span class="s2">"We've conclusively settled the questions of</span><span class="se">\n</span><span class="s2">"</span>
+               <span class="s2">"flying saucers, lake monsters, ghosts, and bigfoot."</span><span class="p">),</span>
               <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x35adc90&gt;</pre>
+<pre><matplotlib.text.Text at 0x35adc90></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAADpCAYAAADrjnQgAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXl8zFf3xz+TmUkyk2WSmSEiCFlEyILgsVWstYSKfa+i
 VeUp9ShKtahqa6eKVm1t2lK7amnRUh5LF9QeO7GE7PsySebz+2N+3yuTmSQTpTztvF+veZHver/3
@@ -4631,15 +4535,11 @@ GJ7/iqKA53ndMsf3+DGB+jNFIhF4vd68rjU3NzdYWFjQ1qROTk60Ws9ykM1mDaWW4vE4/H4/Wlpa
 U+FLXq/X0BKO2qbZbrejuroatbW1CAQCX/JZqmV972kt/C/6sadn/Q2KopgYhvnuYRCii+Yn+QxP
 T08ms9lsslgsJf9uf3/fdH19bXK73SaWZU11dXWmysrKvzTK/xsFakIIIaSMlX6EIoQQQsi3okBN
 CCGElDEK1IQQQkgZo0BNCCGElDEK1IQQQkgZ+wWuFAoZRKyHvwAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4650,43 +4550,31 @@ shown in this blog, making them xkcd-style with a simple <code>plt.xkcd()</code>
 annotation.  Below you can see the double-pendulum animation from
 <a href="http://jakevdp.github.io/blog/2012/08/18/matplotlib-animation-tutorial/">this post</a>,
 rendered using the XKCD sketch path:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://jakevdp.github.io/downloads/videos/double_pendulum_xkcd.mp4&#39;</span>
-<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;video controls alt=&quot;animation&quot; src=&quot;</span><span class="si">{0}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">'http://jakevdp.github.io/downloads/videos/double_pendulum_xkcd.mp4'</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'<video controls alt="animation" src="</span><span class="si">{0}</span><span class="s1">">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-<video controls alt="animation" src="http://jakevdp.github.io/downloads/videos/double_pendulum_xkcd.mp4">
-</div>
-
-</div>
-
+<video alt="animation" controls="" src="http://jakevdp.github.io/downloads/videos/double_pendulum_xkcd.mp4">
+</video></div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4694,7 +4582,6 @@ rendered using the XKCD sketch path:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The code used to create this movie can be downloaded
 <a href="http://jakevdp.github.io/downloads/code/double_pendulum_xkcd.py">here</a></p>
-
 </div>
 </div>
 </div>
@@ -4705,7 +4592,6 @@ rendered using the XKCD sketch path:</p>
 <p>This addition to matplotlib is much more flexible than the little hack I wrote last fall;
 I hope you have fun playing with it.  And as someone quipped at the Scipy conference in June,
 "First one to get an XKCD plot in a Nature paper wins!"</p>
-
 </div>
 </div>
 </div>
@@ -4717,12 +4603,9 @@ I hope you have fun playing with it.  And as someone quipped at the Scipy confer
 <a href="http://jakevdp.github.io/downloads/notebooks/XKCD_sketch_path.ipynb"><em>here</em></a>,
 <em>or viewed statically on</em>
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/XKCD_sketch_path.ipynb"><em>nbviewer</em></a></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -4752,6 +4635,18 @@ I hope you have fun playing with it.  And as someone quipped at the Scipy confer
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "XKCD Plots have Landed in Matplotlib!"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/XKCD-plots-in-matplotlib.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

@@ -1400,7 +1400,6 @@ h6:hover .anchor-link {
 <p><!-- PELICAN_BEGIN_SUMMARY -->
 <em>Edit: based on suggestions from readers, the best solution is down to 162 characters!
 Read to the end to see how</em></p>
-
 </div>
 </div>
 </div>
@@ -1415,24 +1414,21 @@ being rewarded with a branded mug or T-shirt!)
 This year, several of the challenges involved what's become known as
 <a href="http://codegolf.com/">code golf</a>: writing a solution with minimal keystrokes.</p>
 <p>By way of example, take a look at this function definition:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
 <span class="nb">set</span><span class="p">(</span><span class="err">`</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="err">`</span><span class="p">)</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i/9^j/9)*(i/27^j/27|i%9/3^j%9/3)or
-<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o"><</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1443,7 +1439,6 @@ particular task.  I'll give more information on the workings of this
 script later on, but for now I'll leave it to the reader to ponder
 over what it might do.</p>
 <!-- PELICAN_END_SUMMARY -->
-
 <p>Given the level of obfuscation involved, you might wonder what the point
 is: you'd never want to write "real" code in this style, so why spend the
 time doing it? I'd argue that it's useful for more than just upping your
@@ -1455,7 +1450,6 @@ short programs, but the problem is there are so many of them (and there
 are other pages out there which do this adequately enough).  Instead,
 I decided to simply work through a step-by-step example of creating
 a code golf solution to a fun little problem: solving Sudoku.</p>
-
 </div>
 </div>
 </div>
@@ -1463,8 +1457,7 @@ a code golf solution to a fun little problem: solving Sudoku.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="http://jakevdp.github.com/images/sudoku.png" alt="Sudoku Grid"></p>
-
+<p><img alt="Sudoku Grid" src="http://jakevdp.github.com/images/sudoku.png"></p>
 </div>
 </div>
 </div>
@@ -1492,7 +1485,6 @@ which is the shortest solver I've seen, and from which I borrowed a few
 of the tricks used below.</p>
 <p>Here we'll pose the problem in a slightly different way, which will give
 us the chance to develop a brand new short algorithm.</p>
-
 </div>
 </div>
 </div>
@@ -1500,7 +1492,7 @@ us the chance to develop a brand new short algorithm.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Problem">The Problem<a class="anchor-link" href="#The-Problem">&#182;</a></h2>
+<h2 id="The-Problem">The Problem<a class="anchor-link" href="#The-Problem">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1518,19 +1510,17 @@ returns an iterator over all solutions of the puzzle.</em></li>
 <code>'0'</code> denoting an empty grid space.  The solved puzzles should also
 be length-81 strings, with the zeros replaced by solved values.</p>
 <p>For example, a valid <code>S(p)</code> may produce the following results:</p>
-<div class="highlight"><pre><span></span><span class="n">puz</span><span class="o">=</span><span class="s2">&quot;027800061000030008910005420500016030000970200070000096700000080006027000030480007&quot;</span>
+<div class="highlight"><pre><span></span><span class="n">puz</span><span class="o">=</span><span class="s2">"027800061000030008910005420500016030000970200070000096700000080006027000030480007"</span>
 <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">puz</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
-
 <pre><code>327894561645132978918765423589216734463978215172543896794651382856327149231489657
 327894561645132978918765423589216734463978215271543896794651382856327149132489657
 327894561465132978918765423589216734643978215172543896794651382856327149231489657
 327894561465132978918765423589216734643978215271543896794651382856327149132489657</code></pre>
-<div class="highlight"><pre><span></span><span class="n">puz</span> <span class="o">=</span> <span class="mi">81</span><span class="o">*</span><span class="s1">&#39;0&#39;</span>  <span class="c1"># empty puzzle</span>
+<div class="highlight"><pre><span></span><span class="n">puz</span> <span class="o">=</span> <span class="mi">81</span><span class="o">*</span><span class="s1">'0'</span>  <span class="c1"># empty puzzle</span>
 <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="n">puz</span><span class="p">)))</span>
 </pre></div>
-
 <pre><code>132598476598476132476132985319825764825764319764913258981257643647389521253641897</code></pre>
 <p>Notice that the function <code>S()</code> cannot simply return a list of valid solutions:
 if it did, then the empty puzzle example would need to produce all ~$10^{22}$
@@ -1542,24 +1532,21 @@ stop reading this right now and go learn about them: they're one of
 the most unique and powerful features of the Python language.</p>
 <p>As you'll see below, my best solution is <strike>176</strike> 162 characters, and is the
 code snippet I showed above:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
 <span class="nb">set</span><span class="p">(</span><span class="err">`</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="err">`</span><span class="p">)</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i/9^j/9)*(i/27^j/27|i%9/3^j%9/3)or
-<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o"><</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1570,7 +1557,6 @@ I took to arrive at it, in hopes that you can learn from my
 thought process.  Though this is the best solution I was able to come
 up with, I don't know whether or not a better one might be out there.
 If you can beat it, please post your solution in the blog comment thread!</p>
-
 </div>
 </div>
 </div>
@@ -1578,7 +1564,7 @@ If you can beat it, please post your solution in the blog comment thread!</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-1:-Focus-on-Correct-Code">Step 1: Focus on Correct Code<a class="anchor-link" href="#Step-1:-Focus-on-Correct-Code">&#182;</a></h2>
+<h2 id="Step-1:-Focus-on-Correct-Code">Step 1: Focus on Correct Code<a class="anchor-link" href="#Step-1:-Focus-on-Correct-Code">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1603,38 +1589,35 @@ based solver.</p>
 <p>Here's a first attempt, focusing on the algorithm rather than on brevity.
 We'll start by defining a test puzzle with four solutions, and write a
 small function that can test our solver:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">puz</span> <span class="o">=</span> <span class="s2">&quot;027800061000030008910005420500016030000970200070000096700000080006027000030480007&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">puz</span> <span class="o">=</span> <span class="s2">"027800061000030008910005420500016030000970200070000096700000080006027000030480007"</span>
 
 <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
     <span class="c1"># solve an empty puzzle</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="mi">81</span><span class="o">*</span><span class="s1">&#39;0&#39;</span><span class="p">)))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="mi">81</span><span class="o">*</span><span class="s1">'0'</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
 
     <span class="c1"># find all four solutions of puz</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">puz</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Write functions that, given an index 0 &lt;= i &lt; 81,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Write functions that, given an index 0 <= i < 81,</span>
 <span class="c1"># return the indices of grid spaces in the same row,</span>
 <span class="c1"># column, and box as entry i</span>
 <span class="k">def</span> <span class="nf">row_indices</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
@@ -1656,21 +1639,21 @@ small function that can test our solver:</p>
               <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">i</span><span class="p">]))</span>
              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)]</span>
 
-<span class="c1"># S(p) will recursively find solutions and &quot;yield&quot; them</span>
+<span class="c1"># S(p) will recursively find solutions and "yield" them</span>
 <span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="c1"># First, find the number of empty squares and the number of</span>
     <span class="c1"># possible values within each square</span>
     <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'0'</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="n">i</span><span class="p">,</span> <span class="n">vals</span><span class="p">))</span>
     
     <span class="c1"># if all squares are solved, then yield the current solution</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="s1">&#39;0&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="s1">'0'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">p</span>
         
     <span class="c1"># otherwise, take the index with the smallest number of possibilities,</span>
@@ -1683,20 +1666,13 @@ small function that can test our solver:</p>
 
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985351249768789361254624857319943785621817624593265913847
 
@@ -1707,10 +1683,8 @@ small function that can test our solver:</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1720,7 +1694,6 @@ small function that can test our solver:</p>
 of the test puzzle, but a solution derived from a completely empty puzzle.  This
 is by no means a complete test suite, but it gives us good reason to believe
 that the code is correct.</p>
-
 </div>
 </div>
 </div>
@@ -1728,7 +1701,7 @@ that the code is correct.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-2:-Simplify-the-Algorithm">Step 2: Simplify the Algorithm<a class="anchor-link" href="#Step-2:-Simplify-the-Algorithm">&#182;</a></h2>
+<h2 id="Step-2:-Simplify-the-Algorithm">Step 2: Simplify the Algorithm<a class="anchor-link" href="#Step-2:-Simplify-the-Algorithm">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1757,50 +1730,42 @@ grid space.  This can be much less efficient, but saves a lot of typing.</p>
 </li>
 </ul>
 <p>Applying these two ideas leads to the following:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># store the full set of connected indices for each i</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># store the full set of connected indices for each i</span>
 <span class="n">connected</span> <span class="o">=</span> <span class="p">[</span><span class="nb">set</span><span class="p">([</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)</span>
               <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="k">9</span>==j%9) or (i//9==j//9)
                  <span class="ow">or</span> <span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="mi">27</span><span class="o">==</span><span class="n">j</span><span class="o">//</span><span class="mi">27</span> <span class="ow">and</span> <span class="n">i</span><span class="o">%</span><span class="k">9</span>//3==j%9//3)])
              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)]</span>
 <span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="c1"># find any grid space without a known value</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
     
     <span class="c1"># if no entry is zero, then yield the current solution</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">p</span>
         
     <span class="c1"># otherwise, take this index and recursively call S()</span>
     <span class="c1"># for each possible value.</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]):</span>
                 <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -1811,10 +1776,8 @@ grid space.  This can be much less efficient, but saves a lot of typing.</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1823,41 +1786,33 @@ grid space.  This can be much less efficient, but saves a lot of typing.</p>
 <p>This is good, but we can go further by moving the <code>connected</code> list
 definition into the <code>S()</code> function.  Again, this is less efficient
 than computing the sets once beforehand, but it saves some typing:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">p</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">)</span><span class="o">-</span><span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">)</span><span class="o">-</span><span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)</span>
                                       <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="k">9</span>==j%9) or (i//9==j//9)
                                       <span class="ow">or</span> <span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="mi">27</span><span class="o">==</span><span class="n">j</span><span class="o">//</span><span class="mi">27</span> <span class="ow">and</span> <span class="n">i</span><span class="o">%</span><span class="k">9</span>//3==j%9//3)):
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]):</span>
                 <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -1868,10 +1823,8 @@ than computing the sets once beforehand, but it saves some typing:</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1882,7 +1835,6 @@ the loop over possible values.  Set comprehensions are like list comprehensions
 or generator expressions, but are denoted with curly brackets: <code>{}</code>.</p>
 <p>We'll also use a trick here based on the way Python implements boolean logic.
     When you execute something like</p>
-
 <pre><code>(A or B)
 
 </code></pre>
@@ -1893,41 +1845,33 @@ naturally, evaluates to <code>False</code>).  If the result is True, it returns 
 remove the <code>if</code> statement completely from the set comprehension.  We'll end
 up with some extra values within the second set, but the set difference conveniently
 removes these.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">p</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">)</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">%</span><span class="k">9</span>!=j%9)and(i//9!=j//9)
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">)</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">%</span><span class="k">9</span>!=j%9)and(i//9!=j//9)
                                    <span class="ow">and</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="mi">27</span><span class="o">!=</span><span class="n">j</span><span class="o">//</span><span class="mi">27</span><span class="ow">or</span> <span class="n">i</span><span class="o">%</span><span class="k">9</span>//3!=j%9//3)
                                    <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}:</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]):</span>
                 <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -1938,16 +1882,14 @@ removes these.</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-3:-Combining-Expressions">Step 3: Combining Expressions<a class="anchor-link" href="#Step-3:-Combining-Expressions">&#182;</a></h2>
+<h2 id="Step-3:-Combining-Expressions">Step 3: Combining Expressions<a class="anchor-link" href="#Step-3:-Combining-Expressions">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1964,21 +1906,20 @@ be computed in order to return a single one!</p>
 <p>For clarity, we'll create a temporary explicit container for the
 generator, which we can remove later.
 The result of combining the loops looks like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o"><</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">p</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">)</span>
              <span class="o">-</span> <span class="p">{(</span><span class="n">i</span><span class="o">%</span><span class="k">9</span>!=j%9)and(i//9!=j//9)
                 <span class="ow">and</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="mi">27</span><span class="o">!=</span><span class="n">j</span><span class="o">//</span><span class="mi">27</span><span class="ow">or</span> <span class="n">i</span><span class="o">%</span><span class="k">9</span>//3!=j%9//3)
                 <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span>
@@ -1987,20 +1928,13 @@ The result of combining the loops looks like this:</p>
             <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -2011,10 +1945,8 @@ The result of combining the loops looks like this:</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2023,38 +1955,30 @@ The result of combining the loops looks like this:</p>
 <p>We can further combine the <code>if-else</code> statement into the generator expression
 to save some more room: if there are no zeros in <code>p</code>, we'll just loop over
 <code>[p]</code> instead of looping over the generator.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">)</span>
          <span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">%</span><span class="k">9</span>!=j%9)and(i//9!=j//9)and(i//27!=j//27or i%9//3!=j%9//3)
          <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]))</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="n">g</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span><span class="p">[</span><span class="n">p</span><span class="p">]):</span>  <span class="c1"># parentheses here for clarity</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="n">g</span> <span class="k">if</span> <span class="n">i</span><span class="o">>=</span><span class="mi">0</span> <span class="k">else</span><span class="p">[</span><span class="n">p</span><span class="p">]):</span>  <span class="c1"># parentheses here for clarity</span>
         <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -2065,16 +1989,14 @@ to save some more room: if there are no zeros in <code>p</code>, we'll just loop
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-4:-Sweating-the-Details">Step 4: Sweating the Details<a class="anchor-link" href="#Step-4:-Sweating-the-Details">&#182;</a></h2>
+<h2 id="Step-4:-Sweating-the-Details">Step 4: Sweating the Details<a class="anchor-link" href="#Step-4:-Sweating-the-Details">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2092,42 +2014,32 @@ across
 so I don't think I can call myself a pro just yet!</p>
 <p>First of all, we can shorten the definition of the full set of nine digits.
 Observe:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="s1">&#39;123456789&#39;</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">)))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>set([&#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;5&#39;, &#39;4&#39;, &#39;7&#39;, &#39;6&#39;, &#39;9&#39;, &#39;8&#39;])
-set([&#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;5&#39;, &#39;4&#39;, &#39;7&#39;, &#39;6&#39;, &#39;9&#39;, &#39;8&#39;])
+<pre>set(['1', '3', '2', '5', '4', '7', '6', '9', '8'])
+set(['1', '3', '2', '5', '4', '7', '6', '9', '8'])
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2137,10 +2049,8 @@ set([&#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;5&#39;, &#39;4&#39;, &#39;7&#39
 <p>Next, we can use compact bitwise operators to test whether
 square <code>i</code> and square <code>j</code> are related.  Our previous
 expression was</p>
-
 <pre><code>(i%9!=j%9)and(i//9!=j//9)and(i//27!=j//27or i%9//3!=j%9//3)</code></pre>
 <p>we can equivalently write</p>
-
 <pre><code>(i-j)%9*(i//9^j//9)*(i//27^j//27|i%9//3^j%9//3)</code></pre>
 <p>which saves about 12 more characters.</p>
 <p>Further, observe that the variable <code>i</code>, which denotes the index
@@ -2148,17 +2058,16 @@ of the first zero in the puzzle string, will be <code>-1</code> if the
 string has no zeros.  The bitwise inverse of <code>-1</code> is zero,
 so <code>~i</code> will evaluate to False only if there are no zeros in
 the puzzle.  This saves a couple more characters.  The result is:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
     <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span>
          <span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i//9^j//9)*(i//27^j//27|i%9//3^j%9//3)
          <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]))</span>
@@ -2166,20 +2075,13 @@ the puzzle.  This saves a couple more characters.  The result is:</p>
         <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -2190,10 +2092,8 @@ the puzzle.  This saves a couple more characters.  The result is:</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2207,36 +2107,28 @@ it's used.  To make things easier to parse, we'll replace a required
 white-space with a line break (between <code>or</code> and <code>p</code>).
 Because this break falls
 between two parentheses, the lack of indentation is still parseable.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
- <span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+ <span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">)</span>
  <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i//9^j//9)*(i//27^j//27|i%9//3^j%9//3)or
 <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]))</span><span class="k">if</span><span class="o">~</span><span class="n">i</span> <span class="k">else</span><span class="p">[</span><span class="n">p</span><span class="p">]:</span>
   <span class="k">yield</span> <span class="n">s</span>
 <span class="n">test</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>132598476598476132476132985319825764825764319764913258981257643253641897647389521
 
@@ -2247,10 +2139,8 @@ between two parentheses, the lack of indentation is still parseable.</p>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2262,12 +2152,10 @@ in Python versions less than 3.2. Python 3.3,
 however, added the "<code>yield from</code>" statement, which
 can help us further shorten this.  In a generator
 definition, writing</p>
-
 <pre><code>yield from G
 
 </code></pre>
 <p>is (for our purposes, anyway) essentially equivalent to writing</p>
-
 <pre><code>for g in G:
     yield g
 
@@ -2275,24 +2163,21 @@ definition, writing</p>
 <p>so it fits the bill exactly.  As a bonus, the removal of nested
 indentation allows us to write things on a single line, using
 the <code>;</code> character in place of a new line:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="k">yield from</span><span class="p">(</span><span class="n">s</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="k">yield from</span><span class="p">(</span><span class="n">s</span>
 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i//9^j//9)*(i//27^j//27|i%9//3^j%9//3)or
 <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]))</span><span class="k">if</span><span class="o">~</span><span class="n">i</span> <span class="k">else</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2302,7 +2187,6 @@ the <code>;</code> character in place of a new line:</p>
 We're down to 176 characters: not yet tweetable, but I think it's
 pretty good!  Once again, if you see any further abbreviations that
 can be made, please let me know in the blog comments.</p>
-
 </div>
 </div>
 </div>
@@ -2310,7 +2194,7 @@ can be made, please let me know in the blog comments.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Another-Approach">Another Approach<a class="anchor-link" href="#Another-Approach">&#182;</a></h2>
+<h2 id="Another-Approach">Another Approach<a class="anchor-link" href="#Another-Approach">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2323,25 +2207,22 @@ years or so and coming in at 185 characters (see the
 <a href="http://www.scottkirkwood.com/2006/07/shortest-sudoku-solver-in-python.html">source</a>,
 and note that due to the change in integer division syntax, the python 3 version,
 here, is six characters longer than the python 2 version):</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">a</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="o">~</span><span class="n">i</span> <span class="ow">or</span> <span class="n">exit</span><span class="p">(</span><span class="n">a</span><span class="p">);[</span><span class="n">m</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">a</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="o">~</span><span class="n">i</span> <span class="ow">or</span> <span class="n">exit</span><span class="p">(</span><span class="n">a</span><span class="p">);[</span><span class="n">m</span>
 <span class="ow">in</span><span class="p">[(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i//9^j//9)*(i//27^j//27|i%9//3^j%9//3)or a[j]for
-<span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)]</span><span class="ow">or</span> <span class="n">r</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">m</span><span class="o">+</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">5</span>**18]
+<span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)]</span><span class="ow">or</span> <span class="n">r</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">m</span><span class="o">+</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="o">%</span><span class="k">5</span>**18]
 <span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span><span class="o">*</span><span class="p">;</span><span class="n">r</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2362,7 +2243,6 @@ golf, I hope you agree with me that this is a valuable exercise.
 To me, the end goal of code golf is not simply a concise program: it's
 the pursuit of a deeper knowledge of the ins and outs of the
 Python language itself.</p>
-
 </div>
 </div>
 </div>
@@ -2370,7 +2250,7 @@ Python language itself.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Update">Update<a class="anchor-link" href="#Update">&#182;</a></h2>
+<h2 id="Update">Update<a class="anchor-link" href="#Update">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2380,37 +2260,32 @@ Python language itself.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Several commenters on the blog and on reddit have suggested improvements to the algorithm.
 First of all, the conditional of the form</p>
-
 <pre><code>(genexp if~i else[p])
 
 </code></pre>
 <p>can be made one character shorter by using the fact that boolean variables are interpreted
 as either 1 or zero:</p>
-
-<pre><code>([p],genexp)[i&lt;0]
+<pre><code>([p],genexp)[i<0]
 
 </code></pre>
 <p>Also, it was pointed out that the <code>yield from</code> can be replaced by a simple <code>return</code> in
 this case, because <code>yield</code> is not used anywhere in the function.  So the shortest version
 of the function becomes this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
 <span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i//9^j//9)*(i//27^j//27|i%9//3^j%9//3)or
-<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o"><</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2420,24 +2295,21 @@ of the function becomes this:</p>
 <p>But there's more.  Now that the <code>yield from</code> is unnecessary, we can move to python 2.x and
 change all the Python 3-style integer division operators (<code>//</code>) to Python 2-style (<code>/</code>).
 This saves six more characters:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
 <span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i/9^j/9)*(i/27^j/27|i%9/3^j%9/3)or
-<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o"><</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2447,42 +2319,32 @@ This saves six more characters:</p>
 <p>There's one more thing we can add, as noted by a commenter below.
 In Python 2.x, back-ticks can be used as a shorthand for
 string representation (this is a feature removed in Python 3.x).  Thus:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="err">`</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="err">`</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>3814697265625
 3814697265625
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2492,24 +2354,21 @@ string representation (this is a feature removed in Python 3.x).  Thus:</p>
 the string representation is <code>'3814697265625L'</code> (note the <code>L</code> appended at the end).
 This would lead to incorrect solutions.  But as long as we're assured that we're on a 64-bit
 platform, we can use this to save three more characters:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">p</span><span class="p">):</span><span class="n">i</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'0'</span><span class="p">);</span><span class="k">return</span><span class="p">[(</span><span class="n">s</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>
 <span class="nb">set</span><span class="p">(</span><span class="err">`</span><span class="mi">5</span><span class="o">**</span><span class="mi">18</span><span class="err">`</span><span class="p">)</span><span class="o">-</span><span class="p">{(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span><span class="o">%</span><span class="k">9</span>*(i/9^j/9)*(i/27^j/27|i%9/3^j%9/3)or
-<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">81</span><span class="p">)}</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">v</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])),[</span><span class="n">p</span><span class="p">]][</span><span class="n">i</span><span class="o"><</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2517,7 +2376,6 @@ platform, we can use this to save three more characters:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That brings our best to 162 characters, though it requires Python 2.7 and
 a 64-bit system.  Thanks to all commenters who suggested these improvements!</p>
-
 </div>
 </div>
 </div>
@@ -2529,12 +2387,9 @@ a 64-bit system.  Thanks to all commenters who suggested these improvements!</p>
 downloaded <a href="http://jakevdp.github.com/downloads/notebooks/SudokuCodeGolf.ipynb">here</a>.
 See also <a href="http://nbviewer.ipython.org/url/jakevdp.github.com/downloads/notebooks/SudokuCodeGolf.ipynb">nbviewer</a>
 for an online static view.</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2564,6 +2419,18 @@ for an online static view.</p>
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Code Golf in Python: Sudoku"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/code-golf-in-python-sudoku.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

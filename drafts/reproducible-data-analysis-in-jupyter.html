@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>Jupyter notebooks provide a useful environment for interactive exploration of data. A common question I get, though, is how you can progress from this nonlinear, interactive, trial-and-error style of exploration to a more linear and reproducible analysis based on organized, packaged, and tested code. This series of videos presents a case study in how I personally approach reproducible data analysis within the Jupyter notebook.</p>
 <p>Each video is approximately 5-8 minutes; the videos are
 available in a <a href="https://www.youtube.com/playlist?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ">YouTube Playlist</a>.
@@ -1409,68 +1408,46 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quick utility to embed the videos below</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Quick utility to embed the videos below</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
-<span class="k">def</span> <span class="nf">embed_video</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">playlist</span><span class="o">=</span><span class="s1">&#39;PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">list</span><span class="o">=</span><span class="n">playlist</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">350</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">embed_video</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">playlist</span><span class="o">=</span><span class="s1">'PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ'</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">list</span><span class="o">=</span><span class="n">playlist</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">350</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-1:-Loading-and-Visualizing-Data">Part 1: Loading and Visualizing Data<a class="anchor-link" href="#Part-1:-Loading-and-Visualizing-Data">&#182;</a></h2><p><em>In this video, I introduce the dataset, and use the Jupyter notebook to download and visualize it.</em></p>
-
+<h2 id="Part-1:-Loading-and-Visualizing-Data">Part 1: Loading and Visualizing Data<a class="anchor-link" href="#Part-1:-Loading-and-Visualizing-Data">¶</a></h2><p><em>In this video, I introduce the dataset, and use the Jupyter notebook to download and visualize it.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=0"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=0" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1485,7 +1462,6 @@ Alternatively, below you can find the videos with some description and links to 
 <li><p><a href="https://github.com/jakevdp/PythonDataScienceHandbook">Python Data Science Handbook</a>: my book introducing Python's data science tools, including an introduction to the IPython, Pandas, and Matplotlib tools used here.</p>
 </li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1493,50 +1469,30 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-2:-Further-Data-Exploration">Part 2: Further Data Exploration<a class="anchor-link" href="#Part-2:-Further-Data-Exploration">&#182;</a></h2><p><em>In this video, I do some slightly more sophisticated visualization with the data, using matplotlib and pandas.</em></p>
-
+<h2 id="Part-2:-Further-Data-Exploration">Part 2: Further Data Exploration<a class="anchor-link" href="#Part-2:-Further-Data-Exploration">¶</a></h2><p><em>In this video, I do some slightly more sophisticated visualization with the data, using matplotlib and pandas.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=1"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=1" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1546,7 +1502,6 @@ Alternatively, below you can find the videos with some description and links to 
 <ul>
 <li><a href="https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.09-Pivot-Tables.ipynb">Pivot Tables Section</a> from the Python Data Science Handbook</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1554,50 +1509,30 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-3:-Version-Control-with-Git-&amp;-GitHub">Part 3: Version Control with Git &amp; GitHub<a class="anchor-link" href="#Part-3:-Version-Control-with-Git-&amp;-GitHub">&#182;</a></h2><p><em>In this video, I set up a repository on GitHub and commit the notebook into version control.</em></p>
-
+<h2 id="Part-3:-Version-Control-with-Git-&-GitHub">Part 3: Version Control with Git & GitHub<a class="anchor-link" href="#Part-3:-Version-Control-with-Git-&-GitHub">¶</a></h2><p><em>In this video, I set up a repository on GitHub and commit the notebook into version control.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=2"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=2" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1609,7 +1544,6 @@ Alternatively, below you can find the videos with some description and links to 
 <li><a href="https://guides.github.com/">Github Guides</a>: set of tutorials on using GitHub</li>
 <li><a href="http://www.astrobetter.com/blog/2014/03/10/the-whys-and-hows-of-licensing-scientific-code/">The Whys and Hows of Licensing Scientific Code</a>: my 2014 blog post on AstroBetter</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1617,99 +1551,59 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-4:-Working-with-Data-and-GitHub">Part 4: Working with Data and GitHub<a class="anchor-link" href="#Part-4:-Working-with-Data-and-GitHub">&#182;</a></h2><p><em>In this video, I refactor the data download script so that it only downloads the data when needed</em></p>
-
+<h2 id="Part-4:-Working-with-Data-and-GitHub">Part 4: Working with Data and GitHub<a class="anchor-link" href="#Part-4:-Working-with-Data-and-GitHub">¶</a></h2><p><em>In this video, I refactor the data download script so that it only downloads the data when needed</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=3"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=3" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-5:-Creating-a-Python-Package">Part 5: Creating a Python Package<a class="anchor-link" href="#Part-5:-Creating-a-Python-Package">&#182;</a></h2><p><em>In this video, I move the data download utility into its own separate package</em></p>
-
+<h2 id="Part-5:-Creating-a-Python-Package">Part 5: Creating a Python Package<a class="anchor-link" href="#Part-5:-Creating-a-Python-Package">¶</a></h2><p><em>In this video, I move the data download utility into its own separate package</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=4"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=4" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1719,7 +1613,6 @@ Alternatively, below you can find the videos with some description and links to 
 <ul>
 <li><a href="https://python-packaging.readthedocs.io/">How To Package Your Python Code</a>: broad tutorial on Python packaging.</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1727,50 +1620,30 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-6:-Unit-Testing-with-PyTest">Part 6: Unit Testing with PyTest<a class="anchor-link" href="#Part-6:-Unit-Testing-with-PyTest">&#182;</a></h2><p><em>In this video, I add unit tests for the data download utility</em></p>
-
+<h2 id="Part-6:-Unit-Testing-with-PyTest">Part 6: Unit Testing with PyTest<a class="anchor-link" href="#Part-6:-Unit-Testing-with-PyTest">¶</a></h2><p><em>In this video, I add unit tests for the data download utility</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=5"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=5" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1781,7 +1654,6 @@ Alternatively, below you can find the videos with some description and links to 
 <li><a href="http://doc.pytest.org/">Pytest Documentation</a></li>
 <li><a href="https://jacobian.org/writing/getting-started-with-pytest/">Getting Started with Pytest</a>: a nice tutorial by Jacob Kaplan-Moss</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1789,50 +1661,30 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-7:-Refactoring-for-Speed">Part 7: Refactoring for Speed<a class="anchor-link" href="#Part-7:-Refactoring-for-Speed">&#182;</a></h2><p><em>In this video, I refactor the data download function to be a bit faster</em></p>
-
+<h2 id="Part-7:-Refactoring-for-Speed">Part 7: Refactoring for Speed<a class="anchor-link" href="#Part-7:-Refactoring-for-Speed">¶</a></h2><p><em>In this video, I refactor the data download function to be a bit faster</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=6"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=6" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1843,7 +1695,6 @@ Alternatively, below you can find the videos with some description and links to 
 <li><a href="http://strftime.org/">Python <code>strftime</code> reference</a></li>
 <li><a href="https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.11-Working-with-Time-Series.ipynb">Pandas Datetime Section</a> from the Python Data Science Handbook</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1851,148 +1702,88 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-8:-Debugging-a-Broken-Function">Part 8: Debugging a Broken Function<a class="anchor-link" href="#Part-8:-Debugging-a-Broken-Function">&#182;</a></h2><p><em>In this video, I discover that my refactoring has caused a bug. I debug it and fix it.</em></p>
-
+<h2 id="Part-8:-Debugging-a-Broken-Function">Part 8: Debugging a Broken Function<a class="anchor-link" href="#Part-8:-Debugging-a-Broken-Function">¶</a></h2><p><em>In this video, I discover that my refactoring has caused a bug. I debug it and fix it.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[9]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=7"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=7" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-8.5:-Finding-and-Fixing-a-scikit-learn-bug">Part 8.5: Finding and Fixing a scikit-learn bug<a class="anchor-link" href="#Part-8.5:-Finding-and-Fixing-a-scikit-learn-bug">&#182;</a></h2><p><em>In this video, I discover a bug in the scikit-learn codebase, and go through the process of submitting a GitHub Pull Request fixing the bug</em></p>
-
+<h2 id="Part-8.5:-Finding-and-Fixing-a-scikit-learn-bug">Part 8.5: Finding and Fixing a scikit-learn bug<a class="anchor-link" href="#Part-8.5:-Finding-and-Fixing-a-scikit-learn-bug">¶</a></h2><p><em>In this video, I discover a bug in the scikit-learn codebase, and go through the process of submitting a GitHub Pull Request fixing the bug</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=8"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=8" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-9:-Further-Data-Exploration:-PCA-and-GMM">Part 9: Further Data Exploration: PCA and GMM<a class="anchor-link" href="#Part-9:-Further-Data-Exploration:-PCA-and-GMM">&#182;</a></h2><p><em>In this video, I apply unsupervised learning techniques to the data to explore what we can learn from it</em></p>
-
+<h2 id="Part-9:-Further-Data-Exploration:-PCA-and-GMM">Part 9: Further Data Exploration: PCA and GMM<a class="anchor-link" href="#Part-9:-Further-Data-Exploration:-PCA-and-GMM">¶</a></h2><p><em>In this video, I apply unsupervised learning techniques to the data to explore what we can learn from it</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=9"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=9" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2003,7 +1794,6 @@ Alternatively, below you can find the videos with some description and links to 
 <li><a href="https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/05.09-Principal-Component-Analysis.ipynb">Principal Component Analysis In-Depth</a> from the Python Data Science Handbook</li>
 <li><a href="https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/05.12-Gaussian-Mixtures.ipynb">Gaussian Mixture Models In-Depth</a> from the Python Data Science Handbook</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -2011,50 +1801,30 @@ Alternatively, below you can find the videos with some description and links to 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Part-10:-Cleaning-up-the-Notebook">Part 10: Cleaning-up the Notebook<a class="anchor-link" href="#Part-10:-Cleaning-up-the-Notebook">&#182;</a></h2><p><em>In this video, I clean-up the unsupervised learning analysis to make it more reproducible and presentable.</em></p>
-
+<h2 id="Part-10:-Cleaning-up-the-Notebook">Part 10: Cleaning-up the Notebook<a class="anchor-link" href="#Part-10:-Cleaning-up-the-Notebook">¶</a></h2><p><em>In this video, I clean-up the unsupervised learning analysis to make it more reproducible and presentable.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">embed_video</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[12]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="600"
-            height="350"
-            src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=10"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
+<iframe allowfullscreen="" frameborder="0" height="350" src="https://www.youtube.com/embed/?list=PLYCpMb24GpOC704uO9svUrihl-HY1tTJJ&index=10" width="600"></iframe>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2064,7 +1834,6 @@ Alternatively, below you can find the videos with some description and links to 
 <ul>
 <li><a href="https://jakevdp.github.io/blog/2015/07/23/learning-seattles-work-habits-from-bicycle-counts/">Learning Seattle's Work Habits from Bicycle Counts</a>: My 2015 blog post using Fremont Bridge data</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -2073,12 +1842,9 @@ Alternatively, below you can find the videos with some description and links to 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was composed within an IPython notebook; you can view a static version <a href="http://nbviewer.ipython.org/url/jakevdp.github.com/downloads/notebooks/JupyterWorkflow.ipynb">here</a> or download the full source <a href="http://jakevdp.github.com/downloads/notebooks/JupyterWorkflow.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2108,6 +1874,18 @@ Alternatively, below you can find the videos with some description and links to 
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Reproducible Data Analysis in Jupyter"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/reproducible-data-analysis-in-jupyter.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

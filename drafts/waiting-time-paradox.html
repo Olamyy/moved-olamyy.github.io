@@ -1398,8 +1398,7 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
-<p><img src="http://jakevdp.github.io/images/rapid-ride.jpg" alt="Rapid Ride Bus">
+<p><img alt="Rapid Ride Bus" src="http://jakevdp.github.io/images/rapid-ride.jpg">
 <em>Image Source: <a href="https://en.wikipedia.org/wiki/RapidRide#/media/File:King_County_Metro_Rapid_Ride_New_Flyer_DE60LFR_6060.JPG">Wikipedia</a> License CC-BY-SA 3.0</em></p>
 <p>If you, like me, frequently commute via public transit, you may be familiar with the following situation:</p>
 <blockquote><p><em>You arrive at the bus stop, ready to catch your bus: a line that advertises arrivals every 10 minutes. You glance at your watch and note the time... and when the bus finally comes 11 minutes later, you wonder why you always seem to be so unlucky.</em></p>
@@ -1419,7 +1418,7 @@ This post will explore the waiting time paradox from the standpoint of both simu
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Inspection-Paradox">The Inspection Paradox<a class="anchor-link" href="#The-Inspection-Paradox">&#182;</a></h2>
+<h2 id="The-Inspection-Paradox">The Inspection Paradox<a class="anchor-link" href="#The-Inspection-Paradox">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1435,7 +1434,6 @@ Allen gives one example of surveying university students about the average size 
 <p>In the case of a nominally 10-minute bus line, sometimes the span between arrivals will be longer than 10 minutes, and sometimes shorter, and if you arrive at a random time, you have more opportunities to encounter a longer interval than to encounter a shorter interval. And so it makes sense that the average span of time <em>experienced by riders</em> will be longer than the average span of time between buses, because the longer spans are over-sampled.</p>
 <p>But the waiting time paradox makes a stronger claim than this: when the average span between arrivals is $N$ minutes, the average span <em>experienced by riders</em> is $2N$ minutes.
 Could this possibly be true?</p>
-
 </div>
 </div>
 </div>
@@ -1443,7 +1441,7 @@ Could this possibly be true?</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Simulating-Wait-Times">Simulating Wait Times<a class="anchor-link" href="#Simulating-Wait-Times">&#182;</a></h2>
+<h2 id="Simulating-Wait-Times">Simulating Wait Times<a class="anchor-link" href="#Simulating-Wait-Times">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1453,16 +1451,15 @@ Could this possibly be true?</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To convince ourselves that the waiting time paradox is making a reasonable claim, let's start by simulating a stream of buses that arrive at an average of 10 minutes.
 For the sake of numerical accuracy, we will simulate a large number of bus arrivals: one million buses (or approximately 19 years of round-the-clock 10-minute headways):</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">1000000</span>  <span class="c1"># number of buses</span>
 <span class="n">tau</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># average minutes between arrivals</span>
@@ -1470,54 +1467,39 @@ For the sake of numerical accuracy, we will simulate a large number of bus arriv
 <span class="n">rand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># universal random seed</span>
 <span class="n">bus_arrival_times</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">rand</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Just to confirm we've done things correctly, let's check that the mean interval is close to $\tau = 10$:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">intervals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bus_arrival_times</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">intervals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bus_arrival_times</span><span class="p">)</span>
 <span class="n">intervals</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>9.9999879601518398</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1525,17 +1507,16 @@ For the sake of numerical accuracy, we will simulate a large number of bus arriv
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With these bus arrivals simulated, we can now simulate the arrival of a large number of passengers to the bus stop during this span, and compute the wait time that each of them experiences.
 Let's encapsulate this in a function for later use:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">simulate_wait_times</span><span class="p">(</span><span class="n">arrival_times</span><span class="p">,</span>
-                        <span class="n">rseed</span><span class="o">=</span><span class="mi">8675309</span><span class="p">,</span>  <span class="c1"># Jenny&#39;s random seed</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">simulate_wait_times</span><span class="p">(</span><span class="n">arrival_times</span><span class="p">,</span>
+                        <span class="n">rseed</span><span class="o">=</span><span class="mi">8675309</span><span class="p">,</span>  <span class="c1"># Jenny's random seed</span>
                         <span class="n">n_passengers</span><span class="o">=</span><span class="mi">1000000</span><span class="p">):</span>
     <span class="n">rand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">rseed</span><span class="p">)</span>
     
@@ -1543,65 +1524,49 @@ Let's encapsulate this in a function for later use:</p>
     <span class="n">passenger_times</span> <span class="o">=</span> <span class="n">arrival_times</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="n">rand</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_passengers</span><span class="p">)</span>
 
     <span class="c1"># find the index of the next bus for each simulated passenger</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">arrival_times</span><span class="p">,</span> <span class="n">passenger_times</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">arrival_times</span><span class="p">,</span> <span class="n">passenger_times</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">arrival_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">passenger_times</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can then simulate some wait times and compute the average:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">wait_times</span> <span class="o">=</span> <span class="n">simulate_wait_times</span><span class="p">(</span><span class="n">bus_arrival_times</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">wait_times</span> <span class="o">=</span> <span class="n">simulate_wait_times</span><span class="p">(</span><span class="n">bus_arrival_times</span><span class="p">)</span>
 <span class="n">wait_times</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>10.001584206227317</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The average wait time is also close to 10 minutes, just as the waiting time paradox predicted.</p>
-
 </div>
 </div>
 </div>
@@ -1609,7 +1574,7 @@ Let's encapsulate this in a function for later use:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Digging-Deeper:-Probabilities-&amp;-Poisson-Processes">Digging Deeper: Probabilities &amp; Poisson Processes<a class="anchor-link" href="#Digging-Deeper:-Probabilities-&amp;-Poisson-Processes">&#182;</a></h2>
+<h2 id="Digging-Deeper:-Probabilities-&-Poisson-Processes">Digging Deeper: Probabilities & Poisson Processes<a class="anchor-link" href="#Digging-Deeper:-Probabilities-&-Poisson-Processes">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1624,7 +1589,6 @@ $$
 E[T] = \int_0^\infty T~p(T)~dT
 $$
 In the above simulation, we had chosen $E[T] = \tau = 10$ minutes.</p>
-
 </div>
 </div>
 </div>
@@ -1654,7 +1618,6 @@ $$
 E[W] = \frac{E[T^2]}{2E[T]}
 $$
 and now all that remains is for us to choose a form for $p(T)$ and compute the integrals.</p>
-
 </div>
 </div>
 </div>
@@ -1662,43 +1625,33 @@ and now all that remains is for us to choose a form for $p(T)$ and compute the i
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Choosing--p(T)">Choosing  <em>p(T)</em><a class="anchor-link" href="#Choosing--p(T)">&#182;</a></h3><p>With this formalism worked out, what is a reasonable distribution to use for $p(T)$?
+<h3 id="Choosing--p(T)">Choosing  <em>p(T)</em><a class="anchor-link" href="#Choosing--p(T)">¶</a></h3><p>With this formalism worked out, what is a reasonable distribution to use for $p(T)$?
 We can get a picture of the $p(T)$ distribution within our simulated arrivals by plotting a histogram of the intervals between arrivals:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">density</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">intervals</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Interval between arrivals (minutes)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability density&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">intervals</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'dotted'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Interval between arrivals (minutes)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Probability density'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfUAAAFaCAYAAAAHAsQqAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XtYVNX+BvB3hmEAGRQ0zaP+MEXx
@@ -1935,15 +1888,11 @@ LF/dpk+fjokTJ+KRRx5Bhw4dTKdBfH19MXfuXCxatOi+x8ve3h5TpkzB2LFj4eDggHr16pmWfP3x
 xx/RrFmzMqd2iB4WV2kjIkWKiIjAlClT4OnpKXeUCiUkJODpp59Gz5495Y5CCsDhdyJSpFmzZiEp
 KUnuGBW6cOECLl++zIJO1YY9dSIiIoVgT52IiEghWNSJiIgUgkWdiIhIIVjUiYiIFIJFnYiISCFY
 1ImIiBTi/wGwAUuc9Yh8nAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1956,16 +1905,15 @@ See, e.g. <a href="https://math.stackexchange.com/questions/68749/difference-of-
 <p>An exponential distribution of intervals implies that the arrival times follow a Poisson process.
 To double-check this reasoning, we can confirm that it matches another property of a Poisson process: the number of arrivals within a fixed span of time will be Poisson-distributed.
 Let's check this by binning our simulated arrivals into hourly blocks:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">poisson</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">poisson</span>
 
 <span class="c1"># count the number of arrivals in 1-hour bins</span>
 <span class="n">binsize</span> <span class="o">=</span> <span class="mi">60</span>
@@ -1973,29 +1921,20 @@ Let's check this by binning our simulated arrivals into hourly blocks:</p>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
 <span class="c1"># plot the results</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">binned_arrivals</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;simulation&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">poisson</span><span class="p">(</span><span class="n">binsize</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Poisson prediction&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of arrivals per hour&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">binned_arrivals</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'simulation'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">poisson</span><span class="p">(</span><span class="n">binsize</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">'ok'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Poisson prediction'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Number of arrivals per hour'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'frequency'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfUAAAFXCAYAAAC7nNf0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XlYVGX/P/A3MAzhgImJoSmmJlqZ
@@ -2251,22 +2190,17 @@ srJC3759K3zQCQsLw7Rp07B9+3bY2NgY/AEiABw7dgzp6emwt7cXH5fyPn7wwQewtbXFsmXLan0L
 zcoer5EjR2LKlCkYOnQoevXqZdG3UCXiXdqIyOINGDAAH330kd4taYmoIp5+JyIikgkeqRMREckE
 j9SJiIhkgqFOREQkEwx1IiIimWCoExERyQRDnYiISCYY6kRERDLx/wDxsEhj7Bf/IgAAAABJRU5E
 rkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The close match between the empirical and theoretical values gives confidence that our interpretation is correct: for large $N$, the arrival times we simulated above are well-described by a Poisson process, which implies exponentially-distributed arrival intervals.</p>
-
 </div>
 </div>
 </div>
@@ -2283,7 +2217,6 @@ $$
 E[W] = \frac{\int_0^\infty T^2~e^{-T/\tau}}{2\int_0^\infty T~e^{-T/\tau}} = \frac{2\tau^3}{2(\tau^2)} = \tau
 $$
 For bus arrivals consistent with a Poisson process, the expected wait time for a passenger is identical to the average interval between arrivals.</p>
-
 </div>
 </div>
 </div>
@@ -2294,7 +2227,6 @@ For bus arrivals consistent with a Poisson process, the expected wait time for a
 <p>A complementary way to reason about this is this: a Poisson process is a <em>memoryless</em> process, meaning that the history of events has no bearing on the expected time to the next event.
 So when you arrive at the bus stop, the average waiting time until the next bus is always the same: in our case, it is 10 minutes, and this is regardless of how long it has been since the previous bus!
 Along the same lines, it does not matter how long you have been waiting already: the expected time to the next arrival is always exactly 10 minutes: for a Poisson process, you get no "credit" for time spent waiting.</p>
-
 </div>
 </div>
 </div>
@@ -2302,43 +2234,34 @@ Along the same lines, it does not matter how long you have been waiting already:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Waiting-Times-In-Reality">Waiting Times In Reality<a class="anchor-link" href="#Waiting-Times-In-Reality">&#182;</a></h2><p>The above is well and good if real-world bus arrivals are actually described by a Poisson process, but are they?</p>
-<p><a href="https://seattletransitmap.com/"><img src="http://jakevdp.github.io/images/seattle-transit-map.png" alt="Seattle Transit Map"></a>
+<h2 id="Waiting-Times-In-Reality">Waiting Times In Reality<a class="anchor-link" href="#Waiting-Times-In-Reality">¶</a></h2><p>The above is well and good if real-world bus arrivals are actually described by a Poisson process, but are they?</p>
+<p><a href="https://seattletransitmap.com/"><img alt="Seattle Transit Map" src="http://jakevdp.github.io/images/seattle-transit-map.png"></a>
 <em>Image Source: <a href="https://seattletransitmap.com/">https://seattletransitmap.com/</a></em></p>
 <p>To determine whether the waiting time paradox describes reality, we can dig into some data, available for download here: <a href="https://gist.githubusercontent.com/jakevdp/82409002fcc5142a2add0168c274a869/raw/1bbabf78333306dbc45b9f33662500957b2b6dc3/arrival_times.csv">arrival_times.csv</a> (3MB CSV file).
-The dataset contains scheduled and actual arrival times for Seattle's <a href="https://kingcounty.gov/depts/transportation/metro/travel-options/bus/rapidride.aspx">Rapid Ride</a> lines C, D, and E at the 3rd &amp; Pike bus stop in downtown Seattle, recorded during the second quarter of 2016 (huge thanks to Mark Hallenbeck of the Washington State Transportation Center for providing this data!).</p>
-
+The dataset contains scheduled and actual arrival times for Seattle's <a href="https://kingcounty.gov/depts/transportation/metro/travel-options/bus/rapidride.aspx">Rapid Ride</a> lines C, D, and E at the 3rd & Pike bus stop in downtown Seattle, recorded during the second quarter of 2016 (huge thanks to Mark Hallenbeck of the Washington State Transportation Center for providing this data!).</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;arrival_times.csv&#39;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'arrival_times.csv'</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'any'</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -2352,98 +2275,94 @@ The dataset contains scheduled and actual arrival times for Seattle's <a href="h
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>OPD_DATE</th>
-      <th>VEHICLE_ID</th>
-      <th>RTE</th>
-      <th>DIR</th>
-      <th>TRIP_ID</th>
-      <th>STOP_ID</th>
-      <th>STOP_NAME</th>
-      <th>SCH_STOP_TM</th>
-      <th>ACT_STOP_TM</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2016-03-26</td>
-      <td>6201</td>
-      <td>673</td>
-      <td>S</td>
-      <td>30908177</td>
-      <td>431</td>
-      <td>3RD AVE &amp; PIKE ST (431)</td>
-      <td>01:11:57</td>
-      <td>01:13:19</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2016-03-26</td>
-      <td>6201</td>
-      <td>673</td>
-      <td>S</td>
-      <td>30908033</td>
-      <td>431</td>
-      <td>3RD AVE &amp; PIKE ST (431)</td>
-      <td>23:19:57</td>
-      <td>23:16:13</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2016-03-26</td>
-      <td>6201</td>
-      <td>673</td>
-      <td>S</td>
-      <td>30908028</td>
-      <td>431</td>
-      <td>3RD AVE &amp; PIKE ST (431)</td>
-      <td>21:19:57</td>
-      <td>21:18:46</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2016-03-26</td>
-      <td>6201</td>
-      <td>673</td>
-      <td>S</td>
-      <td>30908019</td>
-      <td>431</td>
-      <td>3RD AVE &amp; PIKE ST (431)</td>
-      <td>19:04:57</td>
-      <td>19:01:49</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2016-03-26</td>
-      <td>6201</td>
-      <td>673</td>
-      <td>S</td>
-      <td>30908252</td>
-      <td>431</td>
-      <td>3RD AVE &amp; PIKE ST (431)</td>
-      <td>16:42:57</td>
-      <td>16:42:39</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>OPD_DATE</th>
+<th>VEHICLE_ID</th>
+<th>RTE</th>
+<th>DIR</th>
+<th>TRIP_ID</th>
+<th>STOP_ID</th>
+<th>STOP_NAME</th>
+<th>SCH_STOP_TM</th>
+<th>ACT_STOP_TM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>2016-03-26</td>
+<td>6201</td>
+<td>673</td>
+<td>S</td>
+<td>30908177</td>
+<td>431</td>
+<td>3RD AVE & PIKE ST (431)</td>
+<td>01:11:57</td>
+<td>01:13:19</td>
+</tr>
+<tr>
+<th>1</th>
+<td>2016-03-26</td>
+<td>6201</td>
+<td>673</td>
+<td>S</td>
+<td>30908033</td>
+<td>431</td>
+<td>3RD AVE & PIKE ST (431)</td>
+<td>23:19:57</td>
+<td>23:16:13</td>
+</tr>
+<tr>
+<th>2</th>
+<td>2016-03-26</td>
+<td>6201</td>
+<td>673</td>
+<td>S</td>
+<td>30908028</td>
+<td>431</td>
+<td>3RD AVE & PIKE ST (431)</td>
+<td>21:19:57</td>
+<td>21:18:46</td>
+</tr>
+<tr>
+<th>3</th>
+<td>2016-03-26</td>
+<td>6201</td>
+<td>673</td>
+<td>S</td>
+<td>30908019</td>
+<td>431</td>
+<td>3RD AVE & PIKE ST (431)</td>
+<td>19:04:57</td>
+<td>19:01:49</td>
+</tr>
+<tr>
+<th>4</th>
+<td>2016-03-26</td>
+<td>6201</td>
+<td>673</td>
+<td>S</td>
+<td>30908252</td>
+<td>431</td>
+<td>3RD AVE & PIKE ST (431)</td>
+<td>16:42:57</td>
+<td>16:42:39</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The reason I sought data from Rapid Ride routes in particular is that for much of the day, the buses are scheduled at regular intervals of between 10 and 15 minutes — not to mention the fact that I'm a frequent passenger on the C-line.</p>
-
 </div>
 </div>
 </div>
@@ -2451,55 +2370,46 @@ The dataset contains scheduled and actual arrival times for Seattle's <a href="h
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Data-Cleanup">Data Cleanup<a class="anchor-link" href="#Data-Cleanup">&#182;</a></h3><p>To start with, let's do a little bit of data cleanup to get it into a form that's easier to work with:</p>
-
+<h3 id="Data-Cleanup">Data Cleanup<a class="anchor-link" href="#Data-Cleanup">¶</a></h3><p>To start with, let's do a little bit of data cleanup to get it into a form that's easier to work with:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># combine date and time into a single timestamp</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;scheduled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;OPD_DATE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SCH_STOP_TM&#39;</span><span class="p">])</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;OPD_DATE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ACT_STOP_TM&#39;</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># combine date and time into a single timestamp</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'scheduled'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'OPD_DATE'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">'SCH_STOP_TM'</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'OPD_DATE'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">'ACT_STOP_TM'</span><span class="p">])</span>
 
-<span class="c1"># if scheduled &amp; actual span midnight, then the actual day needs to be adjusted</span>
-<span class="n">minute</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+<span class="c1"># if scheduled & actual span midnight, then the actual day needs to be adjusted</span>
+<span class="n">minute</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">)</span>
 <span class="n">hour</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">minute</span>
-<span class="n">diff_hrs</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;scheduled&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">hour</span>
-<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">diff_hrs</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;actual&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">hour</span>
-<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">diff_hrs</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;actual&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">hour</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;minutes_late&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;scheduled&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">minute</span>
+<span class="n">diff_hrs</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'scheduled'</span><span class="p">])</span> <span class="o">/</span> <span class="n">hour</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">diff_hrs</span> <span class="o">></span> <span class="mi">20</span><span class="p">,</span> <span class="s1">'actual'</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">hour</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">diff_hrs</span> <span class="o"><</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="s1">'actual'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">hour</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'minutes_late'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'scheduled'</span><span class="p">])</span> <span class="o">/</span> <span class="n">minute</span>
 
 <span class="c1"># map internal route codes to external route letters</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;route&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RTE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">673</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="mi">674</span><span class="p">:</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="mi">675</span><span class="p">:</span> <span class="s1">&#39;E&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;DIR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;northbound&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;southbound&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'route'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'RTE'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">673</span><span class="p">:</span> <span class="s1">'C'</span><span class="p">,</span> <span class="mi">674</span><span class="p">:</span> <span class="s1">'D'</span><span class="p">,</span> <span class="mi">675</span><span class="p">:</span> <span class="s1">'E'</span><span class="p">})</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'category'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'direction'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'DIR'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">'N'</span><span class="p">:</span> <span class="s1">'northbound'</span><span class="p">,</span> <span class="s1">'S'</span><span class="p">:</span> <span class="s1">'southbound'</span><span class="p">})</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'category'</span><span class="p">)</span>
 
 <span class="c1"># extract useful columns</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;scheduled&#39;</span><span class="p">,</span> <span class="s1">&#39;actual&#39;</span><span class="p">,</span> <span class="s1">&#39;minutes_late&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'route'</span><span class="p">,</span> <span class="s1">'direction'</span><span class="p">,</span> <span class="s1">'scheduled'</span><span class="p">,</span> <span class="s1">'actual'</span><span class="p">,</span> <span class="s1">'minutes_late'</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -2513,73 +2423,70 @@ The dataset contains scheduled and actual arrival times for Seattle's <a href="h
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>route</th>
-      <th>direction</th>
-      <th>scheduled</th>
-      <th>actual</th>
-      <th>minutes_late</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>C</td>
-      <td>southbound</td>
-      <td>2016-03-26 01:11:57</td>
-      <td>2016-03-26 01:13:19</td>
-      <td>1.366667</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>C</td>
-      <td>southbound</td>
-      <td>2016-03-26 23:19:57</td>
-      <td>2016-03-26 23:16:13</td>
-      <td>-3.733333</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>C</td>
-      <td>southbound</td>
-      <td>2016-03-26 21:19:57</td>
-      <td>2016-03-26 21:18:46</td>
-      <td>-1.183333</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>C</td>
-      <td>southbound</td>
-      <td>2016-03-26 19:04:57</td>
-      <td>2016-03-26 19:01:49</td>
-      <td>-3.133333</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>C</td>
-      <td>southbound</td>
-      <td>2016-03-26 16:42:57</td>
-      <td>2016-03-26 16:42:39</td>
-      <td>-0.300000</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>route</th>
+<th>direction</th>
+<th>scheduled</th>
+<th>actual</th>
+<th>minutes_late</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>C</td>
+<td>southbound</td>
+<td>2016-03-26 01:11:57</td>
+<td>2016-03-26 01:13:19</td>
+<td>1.366667</td>
+</tr>
+<tr>
+<th>1</th>
+<td>C</td>
+<td>southbound</td>
+<td>2016-03-26 23:19:57</td>
+<td>2016-03-26 23:16:13</td>
+<td>-3.733333</td>
+</tr>
+<tr>
+<th>2</th>
+<td>C</td>
+<td>southbound</td>
+<td>2016-03-26 21:19:57</td>
+<td>2016-03-26 21:18:46</td>
+<td>-1.183333</td>
+</tr>
+<tr>
+<th>3</th>
+<td>C</td>
+<td>southbound</td>
+<td>2016-03-26 19:04:57</td>
+<td>2016-03-26 19:01:49</td>
+<td>-3.133333</td>
+</tr>
+<tr>
+<th>4</th>
+<td>C</td>
+<td>southbound</td>
+<td>2016-03-26 16:42:57</td>
+<td>2016-03-26 16:42:39</td>
+<td>-0.300000</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="How-Late-Are-Buses?">How Late Are Buses?<a class="anchor-link" href="#How-Late-Are-Buses?">&#182;</a></h3>
+<h3 id="How-Late-Are-Buses?">How Late Are Buses?<a class="anchor-link" href="#How-Late-Are-Buses?">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2589,38 +2496,28 @@ The dataset contains scheduled and actual arrival times for Seattle's <a href="h
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There are essentially six different datasets within this table: the northbound and southbound directions for each of the C, D, and E lines.
 To get a feeling for their characteristics, let's plot a histogram of the actual minus scheduled arrival times for each of these six:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;route&quot;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">&quot;minutes_late&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">&#39;{col_name} {row_name}&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;minutes late&#39;</span><span class="p">,</span> <span class="s1">&#39;number of buses&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">"direction"</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"route"</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">"minutes_late"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">'{col_name} {row_name}'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">'minutes late'</span><span class="p">,</span> <span class="s1">'number of buses'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAAGoCAYAAADIE2RWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzs3XlclPXe//HXAOIGJCJWCJprJm4/
@@ -2970,22 +2867,17 @@ PPGEsrKyFBgYqOPHj+vVV1/VpEmTtHz5cs2dO/ee80lOTlZubq5SUlIkSQsWLNC1a9ckSQkJCcrK
 ytKnn36qjz/+WO+//77++usvhYeH68MPP3TPBwGMgqwA5pAV6wgwuDYdAAAAJnCoGgAAAKbQOAIA
 AMAUGkcAAACYQuMIAAAAU2gcAQAAYAqNIwAAAEyhcQQAAIAp/wX2+/JWraWCGAAAAABJRU5ErkJg
 gg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You might expect that the buses stick closer to their schedule near the beginning of each one-way trip and show more spread near the end, and this is borne out in the data: the southbound C-line and northbound D and E lines are near the beginning of their respective routes, and in the opposite direction they are near the end.</p>
-
 </div>
 </div>
 </div>
@@ -2993,7 +2885,7 @@ gg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Scheduled-and-Observed-Arrival-Intervals">Scheduled and Observed Arrival Intervals<a class="anchor-link" href="#Scheduled-and-Observed-Arrival-Intervals">&#182;</a></h3>
+<h3 id="Scheduled-and-Observed-Arrival-Intervals">Scheduled and Observed Arrival Intervals<a class="anchor-link" href="#Scheduled-and-Observed-Arrival-Intervals">¶</a></h3>
 </div>
 </div>
 </div>
@@ -3003,56 +2895,44 @@ gg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's next take a look at the observed and scheduled intervals between arrivals for these six routes.
 We'll start by using Pandas <code>groupby</code> functionality to compute these intervals:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">compute_headway</span><span class="p">(</span><span class="n">scheduled</span><span class="p">):</span>
-    <span class="n">minute</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">compute_headway</span><span class="p">(</span><span class="n">scheduled</span><span class="p">):</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">scheduled</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">/</span> <span class="n">minute</span>
 
-<span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">])</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;actual_interval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">compute_headway</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;scheduled_interval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">&#39;scheduled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">compute_headway</span><span class="p">)</span>
+<span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'route'</span><span class="p">,</span> <span class="s1">'direction'</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'actual_interval'</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">compute_headway</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'scheduled_interval'</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">'scheduled'</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">compute_headway</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;route&quot;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">&quot;actual_interval&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">&#39;{col_name} {row_name}&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;actual interval (minutes)&#39;</span><span class="p">,</span> <span class="s1">&#39;number of buses&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">row</span><span class="o">=</span><span class="s2">"direction"</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"route"</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">"actual_interval"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">'{col_name} {row_name}'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">'actual interval (minutes)'</span><span class="p">,</span> <span class="s1">'number of buses'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAAGoCAYAAADIE2RWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzs3X1cVHX+///nMCMaV4GK7Y28WPAi
@@ -3410,15 +3290,11 @@ WJ2iYZIZyYywneRF8qIHBmXrOWkh/qXCwkJWr17NypUrtS6lSdeuXSMqKoodO3ZoXYr4j5PMCGE7
 yUvzkEvVotn07duXTp062fwfe1pZu3at3V/sKoQjSWaEsJ3kpXnIGUchhBBCCGETOeMohBBCCCFs
 Io2jEEIIIYSwiTSOQgghhBDCJtI4CiGEEEIIm0jjKIQQQgghbPJ/KLfmemrVs0QAAAAASUVORK5C
 YII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3426,37 +3302,27 @@ YII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's already clear that these don't look much like the exponential distribution of our model, but that is not telling us much yet: the distributions may be affected by non-constant scheduled arrival intervals.</p>
 <p>Let's repeat the above chart, examining the scheduled rather than observed arrival intervals:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;route&quot;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">&quot;scheduled_interval&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">&#39;{col_name} {row_name}&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;scheduled interval (minutes)&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">row</span><span class="o">=</span><span class="s2">"direction"</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"route"</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">"scheduled_interval"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">'{col_name} {row_name}'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">'scheduled interval (minutes)'</span><span class="p">,</span> <span class="s1">'frequency'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAAGoCAYAAADIE2RWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzs3XlYlXX+//HXAQSVJVCxhlS+mFtq
@@ -3752,22 +3618,17 @@ E7ndbvV6PfX7fWWzWUn3xd3lcqndbqvb7cowDDmdTg2HQ0n3Hf7xeHyL64R3QFbIClmxh6yQlZ+S
 FcftXT7TAb5hmqYikYiSyeSrp/Kt+XwuwzBUrVZfPRX8UmQFsIesPIeravwIjUZDy+XybX5H8Mjp
 dNJ6vVa5XH71VPCLkRXAHrLyHE4cAQAAYAsnjgAAALCFwhEAAAC2UDgCAADAFgpHAAAA2ELhCAAA
 AFs+Aa81eSDWCb29AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This shows that the buses come at variety of arrival intervals thorughout the week, so we cannot evaluate the accuracy of the waiting time paradox from the distributions of raw arrival times.</p>
-
 </div>
 </div>
 </div>
@@ -3775,7 +3636,7 @@ AFs+Aa81eSDWCb29AAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Constructing-Uniform-Schedules">Constructing Uniform Schedules<a class="anchor-link" href="#Constructing-Uniform-Schedules">&#182;</a></h3>
+<h3 id="Constructing-Uniform-Schedules">Constructing Uniform Schedules<a class="anchor-link" href="#Constructing-Uniform-Schedules">¶</a></h3>
 </div>
 </div>
 </div>
@@ -3786,48 +3647,39 @@ AFs+Aa81eSDWCb29AAAAAElFTkSuQmCC
 <p>Even though the scheduled arrival intervals are not uniform, there are a few particular intervals that have a large number of arrivals: for example, there are nearly 2000 northbound E-line buses with a scheduled interval of 10 minutes.
 In order to explore whether the waiting time paradox applies, let's group the data by line, direction, and scheduled interval, then re-stack these similar arrivals together as if they had happened in sequence.
 This should maintain all the relevant characteristics of the raw data, while making it easier to directly compare with the predictions of the waiting time paradox.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">stack_sequence</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">stack_sequence</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="c1"># first, sort by scheduled time</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;scheduled&#39;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'scheduled'</span><span class="p">)</span>
     
-    <span class="c1"># re-stack data &amp; recompute relevant quantities</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;scheduled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;scheduled_interval&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;scheduled&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;minutes_late&#39;</span><span class="p">]</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;actual_interval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+    <span class="c1"># re-stack data & recompute relevant quantities</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">'scheduled'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'scheduled_interval'</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'scheduled'</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="s1">'minutes_late'</span><span class="p">]</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">'actual_interval'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">data</span>
 
 <span class="n">subset</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">scheduled_interval</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">])]</span>
-<span class="n">grouped</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;scheduled_interval&#39;</span><span class="p">])</span>
+<span class="n">grouped</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'route'</span><span class="p">,</span> <span class="s1">'direction'</span><span class="p">,</span> <span class="s1">'scheduled_interval'</span><span class="p">])</span>
 <span class="n">sequenced</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">stack_sequence</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">sequenced</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[13]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -3841,120 +3693,107 @@ This should maintain all the relevant characteristics of the raw data, while mak
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>route</th>
-      <th>direction</th>
-      <th>scheduled</th>
-      <th>actual</th>
-      <th>minutes_late</th>
-      <th>actual_interval</th>
-      <th>scheduled_interval</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>C</td>
-      <td>northbound</td>
-      <td>10.0</td>
-      <td>12.400000</td>
-      <td>2.400000</td>
-      <td>NaN</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>C</td>
-      <td>northbound</td>
-      <td>20.0</td>
-      <td>27.150000</td>
-      <td>7.150000</td>
-      <td>0.183333</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>C</td>
-      <td>northbound</td>
-      <td>30.0</td>
-      <td>26.966667</td>
-      <td>-3.033333</td>
-      <td>14.566667</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>C</td>
-      <td>northbound</td>
-      <td>40.0</td>
-      <td>35.516667</td>
-      <td>-4.483333</td>
-      <td>8.366667</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>C</td>
-      <td>northbound</td>
-      <td>50.0</td>
-      <td>53.583333</td>
-      <td>3.583333</td>
-      <td>18.066667</td>
-      <td>10.0</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>route</th>
+<th>direction</th>
+<th>scheduled</th>
+<th>actual</th>
+<th>minutes_late</th>
+<th>actual_interval</th>
+<th>scheduled_interval</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>C</td>
+<td>northbound</td>
+<td>10.0</td>
+<td>12.400000</td>
+<td>2.400000</td>
+<td>NaN</td>
+<td>10.0</td>
+</tr>
+<tr>
+<th>1</th>
+<td>C</td>
+<td>northbound</td>
+<td>20.0</td>
+<td>27.150000</td>
+<td>7.150000</td>
+<td>0.183333</td>
+<td>10.0</td>
+</tr>
+<tr>
+<th>2</th>
+<td>C</td>
+<td>northbound</td>
+<td>30.0</td>
+<td>26.966667</td>
+<td>-3.033333</td>
+<td>14.566667</td>
+<td>10.0</td>
+</tr>
+<tr>
+<th>3</th>
+<td>C</td>
+<td>northbound</td>
+<td>40.0</td>
+<td>35.516667</td>
+<td>-4.483333</td>
+<td>8.366667</td>
+<td>10.0</td>
+</tr>
+<tr>
+<th>4</th>
+<td>C</td>
+<td>northbound</td>
+<td>50.0</td>
+<td>53.583333</td>
+<td>3.583333</td>
+<td>18.066667</td>
+<td>10.0</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using this cleaned data, we can plot the distribution of "actual" arrival intervals for each route, direction, and arrival frequency:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">]:</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">sequenced</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;route == &#39;{route}&#39;&quot;</span><span class="p">),</span>
-                      <span class="n">row</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;scheduled_interval&quot;</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">&quot;actual_interval&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">&#39;{row_name} ({col_name:.0f} min)&#39;</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;actual interval (min)&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'C'</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">,</span> <span class="s1">'E'</span><span class="p">]:</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">sequenced</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">f</span><span class="s2">"route == '{route}'"</span><span class="p">),</span>
+                      <span class="n">row</span><span class="o">=</span><span class="s2">"direction"</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"scheduled_interval"</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s2">"actual_interval"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="s1">'{row_name} ({col_name:.0f} min)'</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">'actual interval (min)'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">)</span>
     <span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{route} line&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">f</span><span class="s1">'{route} line'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAiUAAAE/CAYAAACZyLOLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XlYVHX///HXsKWGChSaaJo72e2S
@@ -4187,20 +4026,12 @@ YtfZsWNH9ejRQ6tWrdLrr7+uqKgoWa1WVa1aVdOmTctzm2rVqikwMFD33nuvLa2OGDFCAwYM0C23
 Dh3S3LlzNXPmTIeO279/f82ePVu33XabQ8cFSoqeh6dxpZ53+8M3KFhoaKjuuOMOuz9Vbo+vv/5a
 4eHhvDjDlOh5eBpX6nn2lAAAAFNgTwkAADAFQgkAADAFQgkAADAFQgkAADAFQgkAADAFQgkAADCF
 /wef/Pn0bLK5GgAAAABJRU5ErkJggg==
-"
->
+">
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAiUAAAE/CAYAAACZyLOLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3X9YFPW+B/D3sgv+WhFI/IEeDREh
@@ -4446,20 +4277,12 @@ xbXXJzs7G+PGjTPpPsk47Hn2vKVhz8un53mXYAt34cIFJCQkYPPmzSbd7+zZsxEfH48HHnjApPsl
 ai32PFkac+p52Z++oca5u7ujV69eRr+r3BiHDh2Cn58fX5xJktjzZGnMqec5U0JERESSwJkSIiIi
 kgSGEiIiIpIEhhIiIiKSBIYSIiIikgSGEiIiIpIEhhIiIiKShP8D1a8uFZkU4jQAAAAASUVORK5C
 YII=
-"
->
+">
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAiUAAAE/CAYAAACZyLOLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XtUVPXeBvBnmAEVEYHEy9ireUHJ
@@ -4703,15 +4526,11 @@ sMHn9fb2xv/8z/9g9OjRLa69PtnZ2Rg3bpxJ90nGYc+z5y0Ne14+Pc+7BFu48+fPY+PGjVi/fr1J
 9zt79mwkJibigQceMOl+iVqLPU+Wxpx6XvaHb6hxrq6u6Nmzp9FnlRvj4MGD8PX15ZszSRJ7niyN
 OfU8Z0qIiIhIEjhTQkRERJLAUEJERESSwFBCREREksBQQkRERJLAUEJERESSwFBCREREkvB/02Id
 NrKbAQcAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4720,35 +4539,25 @@ NrKbAQcAAAAASUVORK5CYII=
 <p>We see that for each line and schedule, the distribution of observed arrival intervals is nearly Gaussian, is peaked near the scheduled arrival interval, and has a standard deviation that is smaller near the beginning of the route (southbound for C, northbound for D/E) and larger near the end.
 Even without a statistical test, it's clear by eye that the actual arrival intervals are definitely <strong>not</strong> exponentially distributed, which is the basic assumption on which the waiting time paradox rests.</p>
 <p>We can make use of the wait time simulation function we used above in order to find the average wait time for each bus line, direction, and schedule:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">sequenced</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;scheduled_interval&#39;</span><span class="p">])</span>
-<span class="n">sims</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">simulate_wait_times</span><span class="p">)</span>
-<span class="n">sims</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">times</span><span class="p">:</span> <span class="s2">&quot;{0:.1f} +/- {1:.1f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">times</span><span class="o">.</span><span class="n">std</span><span class="p">()))</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">sequenced</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'route'</span><span class="p">,</span> <span class="s1">'direction'</span><span class="p">,</span> <span class="s1">'scheduled_interval'</span><span class="p">])</span>
+<span class="n">sims</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">'actual'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">simulate_wait_times</span><span class="p">)</span>
+<span class="n">sims</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">times</span><span class="p">:</span> <span class="s2">"{0:.1f} +/- {1:.1f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">times</span><span class="o">.</span><span class="n">std</span><span class="p">()))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>route  direction   scheduled_interval
 C      northbound  10.0                  7.8 +/- 12.5
@@ -4771,19 +4580,7 @@ E      northbound  10.0                   5.5 +/- 3.7
                    15.0                   8.7 +/- 6.0
 Name: actual, dtype: object</pre>
 </div>
-
 </div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The average waiting times are are perhaps a minute or two longer than half the scheduled interval, but not equal to the scheduled interval as the waiting time paradox implied. In other words, the inspection paradox is confirmed, but the waiting time paradox does not appear to match reality.</p>
-
 </div>
 </div>
 </div>
@@ -4791,7 +4588,15 @@ Name: actual, dtype: object</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Final-Thoughts">Final Thoughts<a class="anchor-link" href="#Final-Thoughts">&#182;</a></h2><p>The waiting time paradox has been an interesting launching-point for a discussion that covered simulation, probability, and comparison of statistical assumptions with reality.
+<p>The average waiting times are are perhaps a minute or two longer than half the scheduled interval, but not equal to the scheduled interval as the waiting time paradox implied. In other words, the inspection paradox is confirmed, but the waiting time paradox does not appear to match reality.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Final-Thoughts">Final Thoughts<a class="anchor-link" href="#Final-Thoughts">¶</a></h2><p>The waiting time paradox has been an interesting launching-point for a discussion that covered simulation, probability, and comparison of statistical assumptions with reality.
 Although we confirmed that real-world bus lines do follow some version of the inspection paradox, the above analysis shows pretty definitively that the core assumption behind the waiting time paradox — that the arrival of buses follows the statistics of a Poisson process — is not well-founded.</p>
 <p>In retrospect, this is perhaps not all that surprising: a Poisson process is a memoryless process that assumes the  probability of an arrival is entirely independent of the time since the previous arrival.
 In reality, a well-run bus system will have schedules deliberately structured to avoid this kind of behavior: buses don't begin their routes at random times throughout the day, but rather begin their routes on a schedule chosen to best serve the transit-riding public.</p>
@@ -4799,7 +4604,6 @@ In reality, a well-run bus system will have schedules deliberately structured to
 A Poisson process is a good description for arrival time data — sometimes.
 But just because one type of data sounds like another type of data, it does not mean that assumptions valid for one are necessarily valid for the other.
 Often assumptions that seem correct on their face can lead to conclusions that don't match reality.</p>
-
 </div>
 </div>
 </div>
@@ -4811,12 +4615,9 @@ Often assumptions that seem correct on their face can lead to conclusions that d
 <a href="http://jakevdp.github.io/downloads/notebooks/WaitingTimeParadox.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.jupyter.org/url/jakevdp.github.io/downloads/notebooks/WaitingTimeParadox.ipynb">on nbviewer</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -4846,6 +4647,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "The Waiting Time Paradox, or, Why Is My Bus Always Late?"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/waiting-time-paradox.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>Update, July 25, 2015: I included some new plots suggested by my colleague Ariel Rokem. Scroll to the end!</em></p>
-
 </div>
 </div>
 </div>
@@ -1407,7 +1406,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>Last year I wrote a <a href="https://jakevdp.github.io/blog/2014/06/10/is-seattle-really-seeing-an-uptick-in-cycling/">blog post</a> examining trends in Seattle bicycling and how they relate to weather, daylight, day of the week, and other factors.</p>
 <p>Here I want to revisit the same data from a different perspective: rather than making assumptions in order to build models that might describe the data, I'll instead wipe the slate clean and ask what information we can extract from the data themselves, without reliance on any model assumptions.
 In other words, where the previous post examined the data using a <em>supervised machine learning</em> approach for <em>data modeling</em>, this post will examine the data using an <em>unsupervised learning approach</em> for <em>data exploration</em>.</p>
@@ -1422,176 +1420,148 @@ We will also see some real-world examples of the use of unsupervised machine lea
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Data">The Data<a class="anchor-link" href="#The-Data">&#182;</a></h2><p>The data we will use here are the hourly bicycle counts on Seattle's <a href="http://www.openstreetmap.org/#map=17/47.64813/-122.34965">Fremont Bridge</a>.
+<h2 id="The-Data">The Data<a class="anchor-link" href="#The-Data">¶</a></h2><p>The data we will use here are the hourly bicycle counts on Seattle's <a href="http://www.openstreetmap.org/#map=17/47.64813/-122.34965">Fremont Bridge</a>.
 These data come from an <a href="http://www.seattle.gov/transportation/bikecounter_fremont.htm">automated bicycle counter</a>, installed in late 2012, which has inductive sensors under the sidewalks on either side of the bridge.
 The daily or hourly bicycle counts can be downloaded from <a href="http://data.seattle.gov/">http://data.seattle.gov/</a>; here is the <a href="https://data.seattle.gov/Transportation/Fremont-Bridge-Hourly-Bicycle-Counts-by-Month-Octo/65db-xm6k">direct link to the hourly dataset</a>.
 To download the data directly, you can uncomment the following <code>curl</code> command:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !curl -o FremontBridge.csv https://data.seattle.gov/api/views/65db-xm6k/rows.csv?accessType=DOWNLOAD</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># !curl -o FremontBridge.csv https://data.seattle.gov/api/views/65db-xm6k/rows.csv?accessType=DOWNLOAD</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Once this is downloaded, we can use the <a href="http://pandas.pydata.org">pandas</a> library to load the data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;FremontBridge.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'FremontBridge.csv'</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'Date'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Fremont Bridge West Sidewalk</th>
-      <th>Fremont Bridge East Sidewalk</th>
-    </tr>
-    <tr>
-      <th>Date</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2012-10-03 00:00:00</th>
-      <td> 4</td>
-      <td> 9</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 01:00:00</th>
-      <td> 4</td>
-      <td> 6</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 02:00:00</th>
-      <td> 1</td>
-      <td> 1</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 03:00:00</th>
-      <td> 2</td>
-      <td> 3</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 04:00:00</th>
-      <td> 6</td>
-      <td> 1</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Fremont Bridge West Sidewalk</th>
+<th>Fremont Bridge East Sidewalk</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2012-10-03 00:00:00</th>
+<td> 4</td>
+<td> 9</td>
+</tr>
+<tr>
+<th>2012-10-03 01:00:00</th>
+<td> 4</td>
+<td> 6</td>
+</tr>
+<tr>
+<th>2012-10-03 02:00:00</th>
+<td> 1</td>
+<td> 1</td>
+</tr>
+<tr>
+<th>2012-10-03 03:00:00</th>
+<td> 2</td>
+<td> 3</td>
+</tr>
+<tr>
+<th>2012-10-03 04:00:00</th>
+<td> 6</td>
+<td> 1</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We'll do some quick data cleaning: we'll rename the columns to the shorter "West" and "East", set any missing values to zero, and add a "Total" column:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;West&#39;</span><span class="p">,</span> <span class="s1">&#39;East&#39;</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'West'</span><span class="p">,</span> <span class="s1">'East'</span><span class="p">]</span>
 <span class="n">data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">&#39;East + West&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">'Total'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">'East + West'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can get a better idea of the dataset as a whole through a simple visualization; for example, we can resample the data to see the weekly trend in trips over the nearly three-year period:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first some standard imports</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># first some standard imports</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span><span class="p">;</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>  <span class="c1"># plot styling</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">data</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;weekly trips&#39;</span><span class="p">);</span>
+<span class="n">data</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'W'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'sum'</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'weekly trips'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgMAAAFvCAYAAADXBcjrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmYI3d1r/9WaVfv2+wznvEyX+8Y7zZmS3ztmEBykxu2
 EAI3CTvECT+S3JhgDJglJlwMBkOC4xgDSS4QCIkBQ0gc29h4w+MxM9hlj8eefeme7p5Wa1dV/f6o
@@ -2546,22 +2516,17 @@ qqqMEf/fh2EM/EjTtO8AvRgJhUpu14yqqgrwHHC9qqprcts/Ri6nQCAQLA3CMyAQCOZCjaqqh3I/
 KxjhgbcBdcD3VVV9PdADPAo05/Z7FHgRuBZ4N/CjnHFwAXjHIo5dIBBMQLQwFggEAoFghSPCBAKB
 QCAQrHCEMSAQCAQCwQpHGAMCgUAgEKxwhDEgEAgEAsEKRxgDAoFAIBCscIQxIBAIBALBCkcYAwKB
 QCAQrHCEMSAQCAQCwQrn/wP5kYKrUcPBXQAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The counts show both a strong seasonal variation, as well as a local structure that can be <a href="https://jakevdp.github.io/blog/2014/06/10/is-seattle-really-seeing-an-uptick-in-cycling/">partially accounted for</a> by temperature, time of year, precipitation, and other factors.</p>
-
 </div>
 </div>
 </div>
@@ -2569,13 +2534,12 @@ QCAQrHCEMSAQCAQCwQrn/wP5kYKrUcPBXQAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Extracting-Knowledge-from-the-Data">Extracting Knowledge from the Data<a class="anchor-link" href="#Extracting-Knowledge-from-the-Data">&#182;</a></h2><p>From here, we could do a variety of other visualizations based on our intuition about what might affect bicycle counts.
+<h2 id="Extracting-Knowledge-from-the-Data">Extracting Knowledge from the Data<a class="anchor-link" href="#Extracting-Knowledge-from-the-Data">¶</a></h2><p>From here, we could do a variety of other visualizations based on our intuition about what might affect bicycle counts.
 For example, we could look at the effect of the days of the week, the effect of the weather, and other factors <a href="https://jakevdp.github.io/blog/2014/06/10/is-seattle-really-seeing-an-uptick-in-cycling/">that I explored previously</a>.
 But we could also proceed by letting the dataset speak for itself, and use <em>unsupervised machine learning</em> techniques (that is, machine learning without reference to data labels) to learn what the data have to tell us.</p>
 <p>We will consider each day in the dataset as its own separate entity (or <em>sample</em>, in usual machine learning parlance).
 For each day, we have 48 observations: two observations (east and west sidewalk sensors) for each of the 24 hour-long periods.
 By examining the days in light of these observations and doing some careful analysis, we should be able to extract meaningful quantitative statements from the data themselves, without the need to lean on any other assumptions.</p>
-
 </div>
 </div>
 </div>
@@ -2583,257 +2547,231 @@ By examining the days in light of these observations and doing some careful anal
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Transforming-the-Data">Transforming the Data<a class="anchor-link" href="#Transforming-the-Data">&#182;</a></h2><p>The first step in this approach is to transform our data; essentially we will want a two-dimensional matrix, where each row of the matrix corresponds to a day, and each column of the matrix corresponds to one of the 48 observations.
+<h2 id="Transforming-the-Data">Transforming the Data<a class="anchor-link" href="#Transforming-the-Data">¶</a></h2><p>The first step in this approach is to transform our data; essentially we will want a two-dimensional matrix, where each row of the matrix corresponds to a day, and each column of the matrix corresponds to one of the 48 observations.
 We can arrange the data this way using the <code>pivot_table()</code> function in Pandas.
 We want the "East" and "West" column values, indexed by date, and separated by hour of the day.
 Any missing values we will fill with zero:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pivoted</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">([</span><span class="s1">&#39;East&#39;</span><span class="p">,</span> <span class="s1">&#39;West&#39;</span><span class="p">],</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pivoted</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">([</span><span class="s1">'East'</span><span class="p">,</span> <span class="s1">'West'</span><span class="p">],</span>
                            <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">,</span>
                            <span class="n">columns</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
                            <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">pivoted</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
 <table border="1" class="dataframe">
-  <thead>
-    <tr>
-      <th></th>
-      <th colspan="10" halign="left">East</th>
-      <th>...</th>
-      <th colspan="10" halign="left">West</th>
-    </tr>
-    <tr>
-      <th></th>
-      <th>0 </th>
-      <th>1 </th>
-      <th>2 </th>
-      <th>3 </th>
-      <th>4 </th>
-      <th>5 </th>
-      <th>6 </th>
-      <th>7 </th>
-      <th>8 </th>
-      <th>9 </th>
-      <th>...</th>
-      <th>14</th>
-      <th>15</th>
-      <th>16</th>
-      <th>17</th>
-      <th>18</th>
-      <th>19</th>
-      <th>20</th>
-      <th>21</th>
-      <th>22</th>
-      <th>23</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2012-10-03</th>
-      <td>  9</td>
-      <td> 6</td>
-      <td> 1</td>
-      <td> 3</td>
-      <td> 1</td>
-      <td> 10</td>
-      <td> 50</td>
-      <td>  95</td>
-      <td> 146</td>
-      <td> 104</td>
-      <td>...</td>
-      <td>  77</td>
-      <td>  72</td>
-      <td> 133</td>
-      <td> 192</td>
-      <td> 122</td>
-      <td> 59</td>
-      <td> 29</td>
-      <td> 25</td>
-      <td> 24</td>
-      <td>  5</td>
-    </tr>
-    <tr>
-      <th>2012-10-04</th>
-      <td> 11</td>
-      <td> 0</td>
-      <td> 6</td>
-      <td> 3</td>
-      <td> 1</td>
-      <td> 11</td>
-      <td> 51</td>
-      <td>  89</td>
-      <td> 134</td>
-      <td>  94</td>
-      <td>...</td>
-      <td>  63</td>
-      <td>  73</td>
-      <td> 114</td>
-      <td> 154</td>
-      <td> 137</td>
-      <td> 57</td>
-      <td> 27</td>
-      <td> 31</td>
-      <td> 25</td>
-      <td> 11</td>
-    </tr>
-    <tr>
-      <th>2012-10-05</th>
-      <td>  7</td>
-      <td> 4</td>
-      <td> 3</td>
-      <td> 2</td>
-      <td> 2</td>
-      <td>  7</td>
-      <td> 37</td>
-      <td> 101</td>
-      <td> 119</td>
-      <td>  81</td>
-      <td>...</td>
-      <td>  63</td>
-      <td>  80</td>
-      <td> 120</td>
-      <td> 144</td>
-      <td> 107</td>
-      <td> 42</td>
-      <td> 27</td>
-      <td> 11</td>
-      <td> 10</td>
-      <td> 16</td>
-    </tr>
-    <tr>
-      <th>2012-10-06</th>
-      <td>  7</td>
-      <td> 5</td>
-      <td> 2</td>
-      <td> 2</td>
-      <td> 1</td>
-      <td>  2</td>
-      <td> 15</td>
-      <td>  16</td>
-      <td>  47</td>
-      <td>  55</td>
-      <td>...</td>
-      <td>  89</td>
-      <td> 115</td>
-      <td> 107</td>
-      <td> 107</td>
-      <td>  41</td>
-      <td> 40</td>
-      <td> 25</td>
-      <td> 18</td>
-      <td> 14</td>
-      <td> 15</td>
-    </tr>
-    <tr>
-      <th>2012-10-07</th>
-      <td>  5</td>
-      <td> 5</td>
-      <td> 1</td>
-      <td> 2</td>
-      <td> 2</td>
-      <td>  3</td>
-      <td>  8</td>
-      <td>  12</td>
-      <td>  26</td>
-      <td>  36</td>
-      <td>...</td>
-      <td> 126</td>
-      <td> 122</td>
-      <td> 132</td>
-      <td> 118</td>
-      <td>  68</td>
-      <td> 26</td>
-      <td> 19</td>
-      <td> 12</td>
-      <td>  9</td>
-      <td>  5</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th></th>
+<th colspan="10" halign="left">East</th>
+<th>...</th>
+<th colspan="10" halign="left">West</th>
+</tr>
+<tr>
+<th></th>
+<th>0 </th>
+<th>1 </th>
+<th>2 </th>
+<th>3 </th>
+<th>4 </th>
+<th>5 </th>
+<th>6 </th>
+<th>7 </th>
+<th>8 </th>
+<th>9 </th>
+<th>...</th>
+<th>14</th>
+<th>15</th>
+<th>16</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+<th>20</th>
+<th>21</th>
+<th>22</th>
+<th>23</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2012-10-03</th>
+<td>  9</td>
+<td> 6</td>
+<td> 1</td>
+<td> 3</td>
+<td> 1</td>
+<td> 10</td>
+<td> 50</td>
+<td>  95</td>
+<td> 146</td>
+<td> 104</td>
+<td>...</td>
+<td>  77</td>
+<td>  72</td>
+<td> 133</td>
+<td> 192</td>
+<td> 122</td>
+<td> 59</td>
+<td> 29</td>
+<td> 25</td>
+<td> 24</td>
+<td>  5</td>
+</tr>
+<tr>
+<th>2012-10-04</th>
+<td> 11</td>
+<td> 0</td>
+<td> 6</td>
+<td> 3</td>
+<td> 1</td>
+<td> 11</td>
+<td> 51</td>
+<td>  89</td>
+<td> 134</td>
+<td>  94</td>
+<td>...</td>
+<td>  63</td>
+<td>  73</td>
+<td> 114</td>
+<td> 154</td>
+<td> 137</td>
+<td> 57</td>
+<td> 27</td>
+<td> 31</td>
+<td> 25</td>
+<td> 11</td>
+</tr>
+<tr>
+<th>2012-10-05</th>
+<td>  7</td>
+<td> 4</td>
+<td> 3</td>
+<td> 2</td>
+<td> 2</td>
+<td>  7</td>
+<td> 37</td>
+<td> 101</td>
+<td> 119</td>
+<td>  81</td>
+<td>...</td>
+<td>  63</td>
+<td>  80</td>
+<td> 120</td>
+<td> 144</td>
+<td> 107</td>
+<td> 42</td>
+<td> 27</td>
+<td> 11</td>
+<td> 10</td>
+<td> 16</td>
+</tr>
+<tr>
+<th>2012-10-06</th>
+<td>  7</td>
+<td> 5</td>
+<td> 2</td>
+<td> 2</td>
+<td> 1</td>
+<td>  2</td>
+<td> 15</td>
+<td>  16</td>
+<td>  47</td>
+<td>  55</td>
+<td>...</td>
+<td>  89</td>
+<td> 115</td>
+<td> 107</td>
+<td> 107</td>
+<td>  41</td>
+<td> 40</td>
+<td> 25</td>
+<td> 18</td>
+<td> 14</td>
+<td> 15</td>
+</tr>
+<tr>
+<th>2012-10-07</th>
+<td>  5</td>
+<td> 5</td>
+<td> 1</td>
+<td> 2</td>
+<td> 2</td>
+<td>  3</td>
+<td>  8</td>
+<td>  12</td>
+<td>  26</td>
+<td>  36</td>
+<td>...</td>
+<td> 126</td>
+<td> 122</td>
+<td> 132</td>
+<td> 118</td>
+<td>  68</td>
+<td> 26</td>
+<td> 19</td>
+<td> 12</td>
+<td>  9</td>
+<td>  5</td>
+</tr>
+</tbody>
 </table>
 <p>5 rows × 48 columns</p>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next we extract the raw values and put them in a matrix:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">pivoted</span><span class="o">.</span><span class="n">values</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">pivoted</span><span class="o">.</span><span class="n">values</span>
 <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(1001, 48)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our data consists of just over 1000 days, each with the aforementioned 48 measurements.</p>
-
 </div>
 </div>
 </div>
@@ -2841,48 +2779,35 @@ Any missing values we will fill with zero:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Visualizing-the-Data">Visualizing the Data<a class="anchor-link" href="#Visualizing-the-Data">&#182;</a></h2><p>We can think of this data now as representing 1001 distinct objects which live in a <em>48-dimensional</em> space: the value of each dimension is the number of bicycle trips measured on a particular side of the bridge at a particular hour.
+<h2 id="Visualizing-the-Data">Visualizing the Data<a class="anchor-link" href="#Visualizing-the-Data">¶</a></h2><p>We can think of this data now as representing 1001 distinct objects which live in a <em>48-dimensional</em> space: the value of each dimension is the number of bicycle trips measured on a particular side of the bridge at a particular hour.
 Visualizing 48-dimensional data is quite difficult, so instead we will use a standard <em>dimensionality reduction</em> technique to project this to a more manageable size.</p>
 <p>The technique we'll use is <a href="http://scikit-learn.org/stable/modules/decomposition.html">Principal Component Analysis (PCA)</a>, a fast linear projection which rotates the data such that the projection preserves the maximum variance.
 We can ask for components preserving 90% of the variance as follows:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
 <span class="n">Xpca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="mf">0.9</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">Xpca</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(1001, 2)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2890,37 +2815,27 @@ We can ask for components preserving 90% of the variance as follows:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The output has two dimensions, which means that these two projected components describe at least 90% of the total variance in the dataset.
 While 48-dimensional data is difficult to plot, we certainly know how to plot two-dimensional data: we'll do a simple scatter plot, and for reference we'll color each point according to the total number of trips taken that day:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">total_trips</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">total_trips</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">total_trips</span><span class="p">,</span>
-            <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;total trips&#39;</span><span class="p">);</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="s1">'cubehelix'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'total trips'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeEAAAFVCAYAAADYEVdtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8VNXZwPHfncnMZLInkIR9h8NO2BW0oKgIxbWva1W0
 1l20ra1WrW21blVrLbZqlSrWWq3iDoIoyi6yyB44EBbZQvZ9ksxy7/vHDYEAQkxIhgnPt5/5mDl3
@@ -3942,15 +3857,11 @@ GWmpmNt6PfX3gZNUVZ0ffX1ZSwazg9swuzwnq6q6/dnw9ZjX2gasAGZFR+4+AczDvK63aZoWbJGI
 GzOAGzHvG60yXk3TPlVV9VhVVX+l/jO5sTXHfDgRtaMFQRAEoYW0eHe0IAiCIPxViSQsCIIgCC1E
 JGFBEARBaCEiCQuCIAhCCxFJWBAEQRBaiEjCgiAIgtBCRBIWBEEQhBby/7UaMQYZwKunAAAAAElF
 TkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3960,7 +3871,6 @@ TkSuQmCC
 Further, the two groups begin to be less distinguishable when the number of trips during the day is very small.</p>
 <p>I find this extremely interesting: from the raw data, we can determine that there are basically <em>two primary types of days</em> for Seattle bicyclists.
 Let's model these clusters and try to figure out what these types-of-day are.</p>
-
 </div>
 </div>
 </div>
@@ -3968,41 +3878,31 @@ Let's model these clusters and try to figure out what these types-of-day are.</p
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Unsupervised-Clustering">Unsupervised Clustering<a class="anchor-link" href="#Unsupervised-Clustering">&#182;</a></h2><p>When you have groups of data you'd like to automatically separate, but no previously-determined labels for the groups, the type of algorithm you are looking at is a <em>clustering</em> algorithm.
+<h2 id="Unsupervised-Clustering">Unsupervised Clustering<a class="anchor-link" href="#Unsupervised-Clustering">¶</a></h2><p>When you have groups of data you'd like to automatically separate, but no previously-determined labels for the groups, the type of algorithm you are looking at is a <em>clustering</em> algorithm.
 There are a number of clustering algorithms out there, but for nicely-defined oval-shaped blobs like we see above, <a href="http://scikit-learn.org/stable/modules/mixture.html">Gaussian Mixture Models</a> are a very good choice.
 We can compute the Gaussian Mixture Model of the data using, again, scikit-learn, and quickly plot the predicted labels for the points:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="k">import</span> <span class="n">GMM</span>
-<span class="n">gmm</span> <span class="o">=</span> <span class="n">GMM</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">covariance_type</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="k">import</span> <span class="n">GMM</span>
+<span class="n">gmm</span> <span class="o">=</span> <span class="n">GMM</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">covariance_type</span><span class="o">=</span><span class="s1">'full'</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">gmm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xpca</span><span class="p">)</span>
 <span class="n">cluster_label</span> <span class="o">=</span> <span class="n">gmm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xpca</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">cluster_label</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfEAAAFVCAYAAAD/v9aFAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xdc1fX+wPHXYR02iAzBhQp+E1HcOFIcuXNfTW1qWTa0
 ecu0buNX3dstKyurq2aWuc29FfdeqAj4FVRUHIiy94Fzfn8cPXkEHAzx4Pv5ePTI735/4HDe3+/n
@@ -4999,15 +4899,11 @@ lVIvof8/P2dtby455r8E/q6U2mN9PPuqv5vD+GrU9efUEcZ2P9U/WA7EKKV2Wx8/3ZiduUNvo0+t
 vqOUqlkb/zX6++gKpABLrTuc/xvYif6eva1pWkWj9Lj+LMBr6J+hDj82TdPWKKVGKKX2c+X3KI0G
 GJ/kThdCCCEcVKNPpwshhBCifiSICyGEEA5KgrgQQgjhoCSICyGEEA5KgrgQQgjhoCSICyGEEA5K
 grgQQgjhoP4XEUb9ZH6eBFcAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5015,233 +4911,199 @@ grgQQgjhoP4XEUb9ZH6eBFcAAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This clustering seems to have done the job, and separated the two groups we are interested in.
 Let's join these inferred cluster labels to the initial dataset:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pivoted</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster_label</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pivoted</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">],</span> <span class="n">on</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pivoted</span><span class="p">[</span><span class="s1">'Cluster'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster_label</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pivoted</span><span class="p">[</span><span class="s1">'Cluster'</span><span class="p">],</span> <span class="n">on</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>West</th>
-      <th>East</th>
-      <th>Total</th>
-      <th>Cluster</th>
-    </tr>
-    <tr>
-      <th>Date</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2012-10-03 00:00:00</th>
-      <td> 4</td>
-      <td> 9</td>
-      <td> 13</td>
-      <td> 0</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 01:00:00</th>
-      <td> 4</td>
-      <td> 6</td>
-      <td> 10</td>
-      <td> 0</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 02:00:00</th>
-      <td> 1</td>
-      <td> 1</td>
-      <td>  2</td>
-      <td> 0</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 03:00:00</th>
-      <td> 2</td>
-      <td> 3</td>
-      <td>  5</td>
-      <td> 0</td>
-    </tr>
-    <tr>
-      <th>2012-10-03 04:00:00</th>
-      <td> 6</td>
-      <td> 1</td>
-      <td>  7</td>
-      <td> 0</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>West</th>
+<th>East</th>
+<th>Total</th>
+<th>Cluster</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2012-10-03 00:00:00</th>
+<td> 4</td>
+<td> 9</td>
+<td> 13</td>
+<td> 0</td>
+</tr>
+<tr>
+<th>2012-10-03 01:00:00</th>
+<td> 4</td>
+<td> 6</td>
+<td> 10</td>
+<td> 0</td>
+</tr>
+<tr>
+<th>2012-10-03 02:00:00</th>
+<td> 1</td>
+<td> 1</td>
+<td>  2</td>
+<td> 0</td>
+</tr>
+<tr>
+<th>2012-10-03 03:00:00</th>
+<td> 2</td>
+<td> 3</td>
+<td>  5</td>
+<td> 0</td>
+</tr>
+<tr>
+<th>2012-10-03 04:00:00</th>
+<td> 6</td>
+<td> 1</td>
+<td>  7</td>
+<td> 0</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can find the average trend by cluster and time using a GroupBy within this updated dataset</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_hour</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">time</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">by_hour</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'Cluster'</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">time</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">by_hour</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>West</th>
-      <th>East</th>
-      <th>Total</th>
-    </tr>
-    <tr>
-      <th>Cluster</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="5" valign="top">0</th>
-      <th>00:00:00</th>
-      <td> 5.312139</td>
-      <td> 6.213873</td>
-      <td> 11.526012</td>
-    </tr>
-    <tr>
-      <th>01:00:00</th>
-      <td> 2.713873</td>
-      <td> 2.969653</td>
-      <td>  5.683526</td>
-    </tr>
-    <tr>
-      <th>02:00:00</th>
-      <td> 2.294798</td>
-      <td> 1.732659</td>
-      <td>  4.027457</td>
-    </tr>
-    <tr>
-      <th>03:00:00</th>
-      <td> 1.570809</td>
-      <td> 1.426301</td>
-      <td>  2.997110</td>
-    </tr>
-    <tr>
-      <th>04:00:00</th>
-      <td> 4.179191</td>
-      <td> 2.650289</td>
-      <td>  6.829480</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>West</th>
+<th>East</th>
+<th>Total</th>
+</tr>
+<tr>
+<th>Cluster</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th rowspan="5" valign="top">0</th>
+<th>00:00:00</th>
+<td> 5.312139</td>
+<td> 6.213873</td>
+<td> 11.526012</td>
+</tr>
+<tr>
+<th>01:00:00</th>
+<td> 2.713873</td>
+<td> 2.969653</td>
+<td>  5.683526</td>
+</tr>
+<tr>
+<th>02:00:00</th>
+<td> 2.294798</td>
+<td> 1.732659</td>
+<td>  4.027457</td>
+</tr>
+<tr>
+<th>03:00:00</th>
+<td> 1.570809</td>
+<td> 1.426301</td>
+<td>  2.997110</td>
+</tr>
+<tr>
+<th>04:00:00</th>
+<td> 4.179191</td>
+<td> 2.650289</td>
+<td>  6.829480</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can plot the average hourly trend among the days within each cluster:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">hourly_ticks</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
     <span class="n">by_hour</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xticks</span><span class="o">=</span><span class="n">hourly_ticks</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cluster </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;average hourly trips&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Cluster </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'average hourly trips'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0EAAAFRCAYAAACytKZrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmcXFWZ8PHfrb33fc2edHKykT2EsIMIggEUYWRcZtzA
 BR19xxlnXmdGHQUdZUYZdVwZZORVUREGAVEUQgjIkj1kO0lnX3qt3qq7umu97x9V1WlCurt6qb61
@@ -6227,15 +6089,11 @@ HQxT97RNt9ftZK8Af2CMCRtj6oCfAVfMQXwiIlLdVKek6ulIkMjs6yKYSvAEwfQCSl+nW2fKff8M
 bAB2Ebw3v2+t3THn0YqISLVRnZKq5/j+ya9xERERERGRyqXpcCIiIiIiUlXUBImIiIiISFVREyQi
 IiIiIlVFTZCIiIiIiFQVNUEiIiIiIlJV1ASJiIiIiEhVURMkIiIiIiJVRU2QiIiIiIhUlf8HJMvp
 822lYKMAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6247,7 +6105,6 @@ This is very clearly a commute pattern, with the majority of cyclists riding tow
 <p>In the unimodal cluster, we see fairly steady traffic in each direction beginning early in the morning and going until late at night, with a peak around 2:00 in the afternoon.
 This is very clearly a recreational pattern of use, with people out riding through the entire day.</p>
 <p>I find this is fascinating: from simple unsupervised dimensionality reduction and clustering, we've discovered two distinct classes of days in the data, and found that these classes have very intuitive explanations.</p>
-
 </div>
 </div>
 </div>
@@ -6255,42 +6112,32 @@ This is very clearly a recreational pattern of use, with people out riding throu
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Seattle's-Work-Habits">Seattle's Work Habits<a class="anchor-link" href="#Seattle's-Work-Habits">&#182;</a></h2><p>Let's go one step deeper and figure out what we can learn about people (well, bicycle commuters) in Seattle from just this hourly commute data.
+<h2 id="Seattle's-Work-Habits">Seattle's Work Habits<a class="anchor-link" href="#Seattle's-Work-Habits">¶</a></h2><p>Let's go one step deeper and figure out what we can learn about people (well, bicycle commuters) in Seattle from just this hourly commute data.
 As a rough approximation, you might guess that these two classes of data might be largely reflective of workdays in the first cluster, and non-work days in the second.
 We can check this intuition by re-plotting our projected data, except labeling them by day of the week:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dayofweek</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">dayofweek</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dayofweek</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">dayofweek</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">dayofweek</span><span class="p">,</span>
-            <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">'jet'</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">cb</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
-<span class="n">cb</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([</span><span class="s1">&#39;Mon&#39;</span><span class="p">,</span> <span class="s1">&#39;Tues&#39;</span><span class="p">,</span> <span class="s1">&#39;Wed&#39;</span><span class="p">,</span> <span class="s1">&#39;Thurs&#39;</span><span class="p">,</span> <span class="s1">&#39;Fri&#39;</span><span class="p">,</span> <span class="s1">&#39;Sat&#39;</span><span class="p">,</span> <span class="s1">&#39;Sun&#39;</span><span class="p">])</span>
+<span class="n">cb</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([</span><span class="s1">'Mon'</span><span class="p">,</span> <span class="s1">'Tues'</span><span class="p">,</span> <span class="s1">'Wed'</span><span class="p">,</span> <span class="s1">'Thurs'</span><span class="p">,</span> <span class="s1">'Fri'</span><span class="p">,</span> <span class="s1">'Sat'</span><span class="p">,</span> <span class="s1">'Sun'</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">clim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdUAAAFVCAYAAAC5CXUvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd4FNX6wPHvlvSekEJCCXXoLfQWmiAqKmBBLldFFLte
 K4rYQUXUn1fFcgFFkaJSRGlShVCkd5KBQAiQkBDSe7bM748NIZGAkCzZJLyf5/EhM3NmzjvrZt6c
@@ -7276,15 +7123,11 @@ KjDbPgotDa078255GZgphHgG7dg9bm+vqXWPZwKfCyF2lIvz0v9rYryXu9lzpLpivtfrYS8F7hNC
 bLc/HledwVzmZbQuxleFEJfurT6HdqwdgThgkX1k6nRgK9pxfVlVVXO1RFyRDfgn2udGjYxXVdVV
 QojOQojdlJ2TCTU55ppM1v6VJEmSpCpS7d2/kiRJkvTfQiZVSZIkSaoiMqlKkiRJUhWRSVWSJEmS
 qohMqpIkSZJURWRSlSRJkqQqIpOqJEmSJFWR/wcMv7GP7Ql2lQAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -7294,131 +7137,106 @@ qohMqpIkSZJURWRSlSRJkqQqIpOqJEmSJFWR/wcMv7GP7Ql2lQAAAABJRU5ErkJggg==
 Further, it's interesting to note that Fridays tend to be pulled closer to weekend days in this plot, though as a whole they still fall solidly in the work-day cluster.</p>
 <p>Let's take a closer look at the "special" weekdays that fall in the "wrong" cluster.
 We start by constructing a dataset listing the cluster id and the day of the week for each of the dates in our dataset:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;cluster&#39;</span><span class="p">:</span> <span class="n">cluster_label</span><span class="p">,</span>
-                        <span class="s1">&#39;is_weekend&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">dayofweek</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
-                        <span class="s1">&#39;weekday&#39;</span><span class="p">:</span> <span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%a&#39;</span><span class="p">))},</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'cluster'</span><span class="p">:</span> <span class="n">cluster_label</span><span class="p">,</span>
+                        <span class="s1">'is_weekend'</span><span class="p">:</span> <span class="p">(</span><span class="n">dayofweek</span> <span class="o">></span> <span class="mi">4</span><span class="p">),</span>
+                        <span class="s1">'weekday'</span><span class="p">:</span> <span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%a'</span><span class="p">))},</span>
                        <span class="n">index</span><span class="o">=</span><span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[14]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>cluster</th>
-      <th>is_weekend</th>
-      <th>weekday</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2012-10-03</th>
-      <td> 0</td>
-      <td> False</td>
-      <td> Wed</td>
-    </tr>
-    <tr>
-      <th>2012-10-04</th>
-      <td> 0</td>
-      <td> False</td>
-      <td> Thu</td>
-    </tr>
-    <tr>
-      <th>2012-10-05</th>
-      <td> 0</td>
-      <td> False</td>
-      <td> Fri</td>
-    </tr>
-    <tr>
-      <th>2012-10-06</th>
-      <td> 1</td>
-      <td>  True</td>
-      <td> Sat</td>
-    </tr>
-    <tr>
-      <th>2012-10-07</th>
-      <td> 1</td>
-      <td>  True</td>
-      <td> Sun</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>cluster</th>
+<th>is_weekend</th>
+<th>weekday</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2012-10-03</th>
+<td> 0</td>
+<td> False</td>
+<td> Wed</td>
+</tr>
+<tr>
+<th>2012-10-04</th>
+<td> 0</td>
+<td> False</td>
+<td> Thu</td>
+</tr>
+<tr>
+<th>2012-10-05</th>
+<td> 0</td>
+<td> False</td>
+<td> Fri</td>
+</tr>
+<tr>
+<th>2012-10-06</th>
+<td> 1</td>
+<td>  True</td>
+<td> Sat</td>
+</tr>
+<tr>
+<th>2012-10-07</th>
+<td> 1</td>
+<td>  True</td>
+<td> Sun</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's see how many weekend days fall in the first, commute-oriented cluster</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weekend_workdays</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;cluster == 0 and is_weekend&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">weekend_workdays</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">'cluster == 0 and is_weekend'</span><span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">weekend_workdays</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -7426,43 +7244,30 @@ We start by constructing a dataset listing the cluster id and the day of the wee
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>zero! Apparently, there is not a single weekend during the year where Seattle cyclists as a whole decide to go to work.</p>
 <p>Similarly, we can see how many weekdays fall in the second, recreation-oriented cluster:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">midweek_holidays</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;cluster == 1 and not is_weekend&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">midweek_holidays</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">'cluster == 1 and not is_weekend'</span><span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">midweek_holidays</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>23</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -7470,36 +7275,26 @@ We start by constructing a dataset listing the cluster id and the day of the wee
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There were 23 weekdays over the past several years in which Seattle cyclists as a whole did not go to work.
 To label these, let's load the US Federal holiday calendar available in Pandas:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="k">import</span> <span class="n">USFederalHolidayCalendar</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="k">import</span> <span class="n">USFederalHolidayCalendar</span>
 <span class="n">cal</span> <span class="o">=</span> <span class="n">USFederalHolidayCalendar</span><span class="p">()</span>
-<span class="n">holidays</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="s1">&#39;2012&#39;</span><span class="p">,</span> <span class="s1">&#39;2016&#39;</span><span class="p">,</span> <span class="n">return_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">holidays</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="s1">'2012'</span><span class="p">,</span> <span class="s1">'2016'</span><span class="p">,</span> <span class="n">return_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">holidays</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>2012-01-02                 New Years Day
 2012-01-16    Dr. Martin Luther King Jr.
@@ -7508,49 +7303,36 @@ To label these, let's load the US Federal holiday calendar available in Pandas:<
 2012-07-04                      July 4th
 dtype: object</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Just for completeness, we will add to the list the day before and day after each of these holidays:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">holidays_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">holidays</span><span class="p">,</span>
-                         <span class="s2">&quot;Day Before &quot;</span> <span class="o">+</span> <span class="n">holidays</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">),</span>
-                         <span class="s2">&quot;Day After &quot;</span> <span class="o">+</span> <span class="n">holidays</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">)])</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">holidays_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">holidays</span><span class="p">,</span>
+                         <span class="s2">"Day Before "</span> <span class="o">+</span> <span class="n">holidays</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">),</span>
+                         <span class="s2">"Day After "</span> <span class="o">+</span> <span class="n">holidays</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">)])</span>
 <span class="n">holidays_all</span> <span class="o">=</span> <span class="n">holidays_all</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
 <span class="n">holidays_all</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>2012-01-01                 Day Before New Years Day
 2012-01-02                            New Years Day
@@ -7559,12 +7341,9 @@ dtype: object</pre>
 2012-01-16               Dr. Martin Luther King Jr.
 dtype: object</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -7572,136 +7351,100 @@ dtype: object</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that these are <em>observed</em> holidays, which is why New Years Day 2012 falls on January 2nd.
 With this ready to go, we can compute the complete list of non-weekend days on which Seattle bicycle commuters as a whole chose to stay home from work:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">holidays_all</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>  <span class="c1"># required for join</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">holidays_all</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'name'</span>  <span class="c1"># required for join</span>
 <span class="n">joined</span> <span class="o">=</span> <span class="n">midweek_holidays</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">holidays_all</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="n">joined</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">joined</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[19]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Christmas&#39;,
- &#39;Day After Christmas&#39;,
- &#39;Day After Thanksgiving&#39;,
- &#39;Day Before Christmas&#39;,
- &#39;July 4th&#39;,
- &#39;Labor Day&#39;,
- &#39;MemorialDay&#39;,
- &#39;New Years Day&#39;,
- &#39;Thanksgiving&#39;}</pre>
-</div>
-
-</div>
-
+<pre>{'Christmas',
+ 'Day After Christmas',
+ 'Day After Thanksgiving',
+ 'Day Before Christmas',
+ 'July 4th',
+ 'Labor Day',
+ 'MemorialDay',
+ 'New Years Day',
+ 'Thanksgiving'}</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On the other side of things, here are the Federally recognized holidays where Seattle bicycle commuters chose to go to work anyway:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">holidays</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">joined</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">holidays</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">joined</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[20]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Columbus Day&#39;,
- &#39;Dr. Martin Luther King Jr.&#39;,
- &#39;Presidents Day&#39;,
- &#39;Veterans Day&#39;}</pre>
-</div>
-
-</div>
-
+<pre>{'Columbus Day',
+ 'Dr. Martin Luther King Jr.',
+ 'Presidents Day',
+ 'Veterans Day'}</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Update:-What's-up-with-Fridays?">Update: What's up with Fridays?<a class="anchor-link" href="#Update:-What's-up-with-Fridays?">&#182;</a></h2><p>A colleague of mine, Ariel Rokem, saw the first version of this post and noticed something interesting.
+<h2 id="Update:-What's-up-with-Fridays?">Update: What's up with Fridays?<a class="anchor-link" href="#Update:-What's-up-with-Fridays?">¶</a></h2><p>A colleague of mine, Ariel Rokem, saw the first version of this post and noticed something interesting.
 For the most part, Fridays tend to lie on the upper side of the weekday cluster, closer in this parameter space to the typical weekend pattern.
 This pattern holds nearly universally for Fridays, all except for three strange outliers which lie far on the other side of the cluster.</p>
 <p>We can see these more clearly if we highlight the Friday points in the plot:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fridays</span> <span class="o">=</span> <span class="p">(</span><span class="n">dayofweek</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[</span><span class="n">fridays</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[</span><span class="n">fridays</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fridays</span> <span class="o">=</span> <span class="p">(</span><span class="n">dayofweek</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xpca</span><span class="p">[</span><span class="n">fridays</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xpca</span><span class="p">[</span><span class="n">fridays</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfEAAAFVCAYAAAD/v9aFAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmYXFd54P/vrfXWvnRXb1JrtVyxJS8YOewxHssY7MRg
 IGGSgAkJJtj+YT8Zkskv/jEJZDwhCUuI/GCFsUkAsYTEE3sgXoLBGIIZIBo2y8bXkqVW71vt1V37
@@ -8392,15 +8135,11 @@ hdRdv8167APAE1YG3xDmFG4pugd4VCl1G+bP+WbreLnUmH8U+I5S6mfWx1/O+Lsc4rPl+zx1QmzL
 qf/B88AlSqm3rY9vLObJLNI9mFOr9yql7LXxOzCvowf4FfDvVobzTuBNzGt2j9Y6XpQzLlwKuAvz
 NdTxsWmtX1RKnaeUeoejv0ddLEF8UjtdCCGEcKiiT6cLIYQQojAyiAshhBAOJYO4EEII4VAyiAsh
 hBAOJYO4EEII4VAyiAshhBAOJYO4EEII4VD/D3+O3/JqhPyaAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -8408,43 +8147,30 @@ hBAOJYO4EEII4VAyiAshhBAOJYO4EEII4VD/D3+O3/JqhPyaAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The yellow points in the bottom-left of the plot are unique – they're far different than other Fridays, and they even stand-out in comparison to the other work days!
 Let's see what they represent:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weird_fridays</span> <span class="o">=</span> <span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">fridays</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">600</span><span class="p">)]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">weird_fridays</span> <span class="o">=</span> <span class="n">pivoted</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">fridays</span> <span class="o">&</span> <span class="p">(</span><span class="n">Xpca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o"><</span> <span class="o">-</span><span class="mi">600</span><span class="p">)]</span>
 <span class="n">weird_fridays</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[22]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>Index([2013-05-17, 2014-05-16, 2015-05-15], dtype=&#39;object&#39;)</pre>
-</div>
-
-</div>
-
+<pre>Index([2013-05-17, 2014-05-16, 2015-05-15], dtype='object')</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -8453,37 +8179,27 @@ Let's see what they represent:</p>
 <p>All three of these outlying Fridays fall in the middle of May. Curious!</p>
 <p>Let's quickly visualize the daily stats for these, along with the mean trend over all days.
 We can arrange the data this way with a pivot table operation:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_days</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="s1">&#39;Total&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_days</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="s1">'Total'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
 <span class="n">all_days</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">weird_fridays</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
-<span class="n">all_days</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+<span class="n">all_days</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                       <span class="n">xticks</span><span class="o">=</span><span class="n">hourly_ticks</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeMAAAFkCAYAAAATwlNYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8Y3d56P/POdoly5Jsy8vY49nnzCQQQkJYcmkSKJQt
 EEoLLS1Lwha2lF647aXhUgg3NK97uaWFhktbwhror1C4rGmAliWBBAhL2GfOzNgzHu+7ZO3bOb8/
@@ -9189,15 +8905,11 @@ Mk3zNIBSahRvaHsvcKlS6sW150WBbXiLJQghngWSjIVY/iqT7tt1tuvAX5im+QMApdRqzqyOJYR4
 FsgwtRDLh433BXtyD7leb3m6O4F3KaV8SqkYcA+w6xy8PyFEA9IzFmL5GMQbiv4yZ5YCdBvcZ9Jj
 nwcuBg7ifSZ8yTTN83ZdWCHOR7KEohBCCNFkMkwthBBCNJkkYyGEEKLJJBkLIYQQTSbJWAghhGgy
 ScZCCCFEk0kyFkIIIZpMkrEQQgjRZP8PYA3cvN1945UAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -9207,7 +8919,6 @@ ScZCCCFEk0kyFkIIIZpMkrEQQgjRZP8PYA3cvN1945UAAAAASUVORK5CYII=
 But what makes them so special?</p>
 <p>After some poking-around on the internet, the answer becomes clear: we've discovered Seattle's annual <a href="http://www.cascade.org/f5-bike-work-day">bike to work day</a>.
 Mystery solved!</p>
-
 </div>
 </div>
 </div>
@@ -9215,7 +8926,7 @@ Mystery solved!</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h2><p>We have seen here that by taking a close look at raw bicycle counts and using some basic visualization and unsupervised machine learning, we can make some very definite statements about the overall work habits of people in Seattle who bicycle to work across the Fremont bridge.
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>We have seen here that by taking a close look at raw bicycle counts and using some basic visualization and unsupervised machine learning, we can make some very definite statements about the overall work habits of people in Seattle who bicycle to work across the Fremont bridge.
 In summary, this is what we have learned:</p>
 <ul>
 <li>Seattle cyclists, as a whole, tend to take off work New Year's Day, Memorial Day, Independence Day, Labor Day, and the days surrounding Thanksgiving and Christmas.</li>
@@ -9227,12 +8938,9 @@ In summary, this is what we have learned:</p>
 <a href="http://jakevdp.github.io/downloads/notebooks/SeattleCycling2.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/SeattleCycling2.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -9262,6 +8970,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Learning Seattle's Work Habits from Bicycle Counts"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/learning-seattles-work-habits-from-bicycle-counts.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

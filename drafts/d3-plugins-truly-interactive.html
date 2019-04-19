@@ -1401,7 +1401,6 @@ h6:hover .anchor-link {
 Because of this, some of the code below will not work with the current release: please
 see the <a href="http://mpld3.github.io">mpld3 documentation</a> for more information.</strong></p>
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>It's been a few weeks since I introduced <a href="http://github.com/jakevdp/mpld3">mpld3</a>, a
 toolkit for visualizing matplotlib graphics in-browser via d3, and a lot of progress
 has been made.  I've added a lot of features, and there have also been dozens of pull
@@ -1413,13 +1412,11 @@ work this out.  The result is what I'll describe and demonstrate below: a genera
 plugin framework for matplotlib plots, which, given some d3 skills, can be utilized
 to modify your matplotlib plots in almost any imaginable way.</p>
 <!-- PELICAN_END_SUMMARY -->
-
 <p>As a side note, #HackAAS was really, really awesome.  There were about 40-60 astronomers
 there during the day, working on everything from visualization tools to data analysis
 methods to visualization of gender-related data to natural language processing.
 I've been told that a full report will be compiled at the <a href="http://www.astrobetter.com/">AstroBetter</a> website,
 and it will definitely be worth checking out.</p>
-
 </div>
 </div>
 </div>
@@ -1427,7 +1424,7 @@ and it will definitely be worth checking out.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="New-Features-of-mpld3">New Features of mpld3<a class="anchor-link" href="#New-Features-of-mpld3">&#182;</a></h2>
+<h2 id="New-Features-of-mpld3">New Features of mpld3<a class="anchor-link" href="#New-Features-of-mpld3">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1438,49 +1435,45 @@ and it will definitely be worth checking out.</p>
 <p>Since my <a href="http://jakevdp.github.io/blog/2013/12/19/a-d3-viewer-for-matplotlib/">last post</a>,
 there have been many new features implemented in mpld3.  Most
 notably, fine-tuned axis and style control, histograms, scatter plots, images, color bars,
-and tied zooming &amp; panning are now in the package.  We'll see some of these below.</p>
+and tied zooming & panning are now in the package.  We'll see some of these below.</p>
 <p>Another nice piece is that IPython notebook integration is now much more convenient.
 Brian Granger of the IPython team submitted a nice patch which allows IPython to
 automatically use mpld3 as a backend.  It can
 be accomplished using the <code>enable_notebook</code> function:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">mpld3</span>
 
 <span class="n">mpld3</span><span class="o">.</span><span class="n">enable_notebook</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As a quick demonstration, let's take a look at a simple scatter plot:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">axisbg</span><span class="o">=</span><span class="s1">&#39;#EEEEEE&#39;</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">axisbg</span><span class="o">=</span><span class="s1">'#EEEEEE'</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">)</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">),</span>
@@ -1490,30 +1483,18 @@ be accomplished using the <code>enable_notebook</code> function:</p>
                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                      <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;D3 Scatter Plot&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"D3 Scatter Plot"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-
-
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-
-    <script type="text/javascript">
+<div class="output_html rendered_html output_subarea">
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 
     function Figure(figid, width, height){
@@ -1868,9 +1849,7 @@ be accomplished using the <code>enable_notebook</code> function:</p>
 
 
     </script>
-
-
-    <style>
+<style>
 
 
     div#figure8a3c4591195d4203b724a9850bc991f8
@@ -1974,13 +1953,9 @@ text.textd863c32597b54824b6a7c327d2e3be9e {
 
 
     </style>
-
-
-
-    <div id='figure8a3c4591195d4203b724a9850bc991f8'>
-
-    </div>
-    <script type="text/javascript">
+<div id="figure8a3c4591195d4203b724a9850bc991f8">
+</div>
+<script type="text/javascript">
     var create_fig8a3c4591195d4203b724a9850bc991f8 = function(){
       var figwidth = 6.0 * 80;
       var figheight = 4.0 * 80;
@@ -2201,17 +2176,10 @@ ax1.add_element(new function(){
     // set a timeout of 0: this makes things work in the IPython notebook
     setTimeout(create_fig8a3c4591195d4203b724a9850bc991f8, 0);
     </script>
-
-
-
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2221,7 +2189,6 @@ ax1.add_element(new function(){
 Nearly all of the basic features of matplotlib are supported now, with a few exceptions that
 I plan to work on as I find the time.  I'd encourage you to update the package, try out some
 of your favorite plots, and see how they turn out!</p>
-
 </div>
 </div>
 </div>
@@ -2229,7 +2196,7 @@ of your favorite plots, and see how they turn out!</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Brand-New-Feature:-Plugins">The Brand New Feature: Plugins<a class="anchor-link" href="#The-Brand-New-Feature:-Plugins">&#182;</a></h2><p>But all of that is now weeks old.  The real reason for this post is to
+<h2 id="The-Brand-New-Feature:-Plugins">The Brand New Feature: Plugins<a class="anchor-link" href="#The-Brand-New-Feature:-Plugins">¶</a></h2><p>But all of that is now weeks old.  The real reason for this post is to
 introduce the new interactive features I added during HackAAS.</p>
 <p>My goal for the hack day was to create a plugin framework which would allow different
 interactive d3/javascript/html/css elements to be added to the plots.
@@ -2241,19 +2208,18 @@ scatter plot with information that appears when the mouse hovers over the points
 a list of desired plugins to the figure object.  The two extra lines of
 code at the bottom of this cell are all that are needed to make this 
 happen!</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpld3</span> <span class="k">import</span> <span class="n">plugins</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpld3</span> <span class="k">import</span> <span class="n">plugins</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">axisbg</span><span class="o">=</span><span class="s1">&#39;#EEEEEE&#39;</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">axisbg</span><span class="o">=</span><span class="s1">'#EEEEEE'</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">)</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">),</span>
@@ -2263,33 +2229,21 @@ happen!</p>
                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                      <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;D3 Scatter Plot (with tooltips!)&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"D3 Scatter Plot (with tooltips!)"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;point </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'point </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="n">plugins</span><span class="o">.</span><span class="n">PointLabelTooltip</span><span class="p">(</span><span class="n">scatter</span><span class="p">,</span> <span class="n">labels</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-
-
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-
-    <script type="text/javascript">
+<div class="output_html rendered_html output_subarea">
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 
     function Figure(figid, width, height){
@@ -2644,9 +2598,7 @@ happen!</p>
 
 
     </script>
-
-
-    <style>
+<style>
 
 
     div#figure0587eab8d7ae4fceb272afd0ec80cf9a
@@ -2750,13 +2702,9 @@ text.text191b7abc473643f3aaf9d7727a56db05 {
 
 
     </style>
-
-
-
-    <div id='figure0587eab8d7ae4fceb272afd0ec80cf9a'>
-
-    </div>
-    <script type="text/javascript">
+<div id="figure0587eab8d7ae4fceb272afd0ec80cf9a">
+</div>
+<script type="text/javascript">
     var create_fig0587eab8d7ae4fceb272afd0ec80cf9a = function(){
       var figwidth = 6.0 * 80;
       var figheight = 4.0 * 80;
@@ -3007,17 +2955,10 @@ ax1.add_element(new function(){
     // set a timeout of 0: this makes things work in the IPython notebook
     setTimeout(create_fig0587eab8d7ae4fceb272afd0ec80cf9a, 0);
     </script>
-
-
-
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3025,7 +2966,6 @@ ax1.add_element(new function(){
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you move your mouse around this plot, you should see the labels pop up
 as you hover over the points.</p>
-
 </div>
 </div>
 </div>
@@ -3033,7 +2973,7 @@ as you hover over the points.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-this-works">How this works<a class="anchor-link" href="#How-this-works">&#182;</a></h2><p>What's going on here is that the plugin object defines some HTML, CSS, and D3/Javascript snippets
+<h2 id="How-this-works">How this works<a class="anchor-link" href="#How-this-works">¶</a></h2><p>What's going on here is that the plugin object defines some HTML, CSS, and D3/Javascript snippets
 which together implement the desired behavior.  Then when <code>mpld3</code> generates the html for a figure,
 it identifies the list of plugins and injects the code at the appropriate place in the
 HTML output.  You can take a look at the
@@ -3050,16 +2990,15 @@ two different axes.</p>
 <p>We'll start by creating a toy dataset: we'll randomly draw a number of periods and amplitudes,
 and from these create a sinusoidal time-series.  In a typical static matplotlib plot, it might
 look something like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -3072,36 +3011,24 @@ look something like this:</p>
 
 <span class="n">points</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">P</span> <span class="o">+</span> <span class="n">A</span><span class="p">,</span>
                        <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Period&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Period'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Amplitude'</span><span class="p">)</span>
 
 <span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">()</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">P</span> <span class="o">+</span> <span class="n">A</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">l</span><span class="p">),</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-
-
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-
-    <script type="text/javascript">
+<div class="output_html rendered_html output_subarea">
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 
     function Figure(figid, width, height){
@@ -3456,9 +3383,7 @@ look something like this:</p>
 
 
     </script>
-
-
-    <style>
+<style>
 
 
     div#figure89261aefcef540a4948200ae23126093
@@ -3824,13 +3749,9 @@ text.text247495a6e7d04fa6aea0d87bf773fbe4 {
 
 
     </style>
-
-
-
-    <div id='figure89261aefcef540a4948200ae23126093'>
-
-    </div>
-    <script type="text/javascript">
+<div id="figure89261aefcef540a4948200ae23126093">
+</div>
+<script type="text/javascript">
     var create_fig89261aefcef540a4948200ae23126093 = function(){
       var figwidth = 6.0 * 80;
       var figheight = 4.0 * 80;
@@ -4568,17 +4489,10 @@ ax2.add_element(new function(){
     // set a timeout of 0: this makes things work in the IPython notebook
     setTimeout(create_fig89261aefcef540a4948200ae23126093, 0);
     </script>
-
-
-
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4592,33 +4506,32 @@ There are many ways in which this might be accomplished, but we'll take the
 approach of showing the desired line after hovering over the associated point.</p>
 <p>To do this, all we need is to create a plugin class deriving from PluginBase,
 which writes a few extra lines of javascript into the figure rendering:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpld3.plugins</span> <span class="k">import</span> <span class="n">PluginBase</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpld3.plugins</span> <span class="k">import</span> <span class="n">PluginBase</span>
 <span class="kn">import</span> <span class="nn">jinja2</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
 
 <span class="k">class</span> <span class="nc">LinkedView</span><span class="p">(</span><span class="n">PluginBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A simple plugin showing how multiple axes can be linked&quot;&quot;&quot;</span>
+    <span class="sd">"""A simple plugin showing how multiple axes can be linked"""</span>
     
-    <span class="n">FIG_JS</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">FIG_JS</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s2">"""</span>
 <span class="s2">    var linedata{{ id }} = {{ linedata }};</span>
 
-<span class="s2">    ax{{ axid }}.axes.selectAll(&quot;.paths{{ collid }}&quot;)</span>
-<span class="s2">	    .on(&quot;mouseover&quot;, function(d, i){</span>
+<span class="s2">    ax{{ axid }}.axes.selectAll(".paths{{ collid }}")</span>
+<span class="s2">	    .on("mouseover", function(d, i){</span>
 <span class="s2">             line{{ elid }}.data = linedata{{ id }}[i];</span>
 <span class="s2">             line{{ elid }}.lineobj.transition()</span>
-<span class="s2">                .attr(&quot;d&quot;, line{{ elid }}.line(line{{ elid }}.data))</span>
-<span class="s2">                .style(&quot;stroke&quot;, this.style.fill);})</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">                .attr("d", line{{ elid }}.line(line{{ elid }}.data))</span>
+<span class="s2">                .style("stroke", this.style.fill);})</span>
+<span class="s2">    """</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">linedata</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
@@ -4637,11 +4550,9 @@ which writes a few extra lines of javascript into the figure rendering:</p>
                     <span class="n">lineid</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">lineid</span><span class="p">,</span>
                     <span class="n">linedata</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linedata</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4651,16 +4562,15 @@ which writes a few extra lines of javascript into the figure rendering:</p>
 of plotting all the lines here, we plot just a single line instance which
 the plugin will modify.  The result is a much more compelling visualization
 of the data.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># scatter periods and amplitudes</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -4671,39 +4581,27 @@ of the data.</p>
                  <span class="k">for</span> <span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="n">Pi</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">P</span><span class="p">)])</span>
 <span class="n">points</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">P</span> <span class="o">+</span> <span class="n">A</span><span class="p">,</span>
                        <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Period&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Period'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Amplitude'</span><span class="p">)</span>
 
 <span class="c1"># create the line object</span>
-<span class="n">lines</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'-w'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># transpose line data and add plugin</span>
 <span class="n">linedata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="n">LinkedView</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linedata</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-
-
-
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-
-    <script type="text/javascript">
+<div class="output_html rendered_html output_subarea">
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 
     function Figure(figid, width, height){
@@ -5058,9 +4956,7 @@ of the data.</p>
 
 
     </script>
-
-
-    <style>
+<style>
 
 
     div#figure16de74deec1f469193edced1224d3c4f
@@ -5228,13 +5124,9 @@ text.textda666da542764ee68a20c6bc8bbbfa4c {
 
 
     </style>
-
-
-
-    <div id='figure16de74deec1f469193edced1224d3c4f'>
-
-    </div>
-    <script type="text/javascript">
+<div id="figure16de74deec1f469193edced1224d3c4f">
+</div>
+<script type="text/javascript">
     var create_fig16de74deec1f469193edced1224d3c4f = function(){
       var figwidth = 6.0 * 80;
       var figheight = 4.0 * 80;
@@ -5621,17 +5513,10 @@ ax2.add_element(new function(){
     // set a timeout of 0: this makes things work in the IPython notebook
     setTimeout(create_fig16de74deec1f469193edced1224d3c4f, 0);
     </script>
-
-
-
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5642,7 +5527,6 @@ was defined, it was only a couple extra lines of Python to make this happen!
 I think that this plugin framework is sufficiently flexible that, with a bit of knowledge of
 d3 and of the mpld3 javascript object structure, you could do almost anything with this!
 I'm really excited to see what people can come up with.</p>
-
 </div>
 </div>
 </div>
@@ -5650,7 +5534,7 @@ I'm really excited to see what people can come up with.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Side-Note:-Why-Am-I-Doing-This?">Side Note: Why Am I Doing This?<a class="anchor-link" href="#Side-Note:-Why-Am-I-Doing-This?">&#182;</a></h2><p>At the AAS meeting this week, David Hogg of NYU joked that I'm taking the package with the worst
+<h2 id="Side-Note:-Why-Am-I-Doing-This?">Side Note: Why Am I Doing This?<a class="anchor-link" href="#Side-Note:-Why-Am-I-Doing-This?">¶</a></h2><p>At the AAS meeting this week, David Hogg of NYU joked that I'm taking the package with the worst
 interface (matplotlib), the package with the steepest learning curve (d3),
 and finally doing the world the service of combining them.
 I've run into several other people who are also incredulous about this whole project.
@@ -5691,7 +5575,6 @@ here.  This is a niche that mpld3 will fill even as matplotlib's WebAgg support 
 <p>So, although alternatives do exist, and matplotlib does have some distinct weaknesses,
 I think work on mpld3 is a worthy investment that will continue to enable good work
 well into the future.</p>
-
 </div>
 </div>
 </div>
@@ -5703,12 +5586,9 @@ well into the future.</p>
 <a href="http://jakevdp.github.com/downloads/notebooks/mpld3_plugins.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.com/downloads/notebooks/mpld3_plugins.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -5738,6 +5618,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "D3 Plugins: Truly Interactive Matplotlib In Your Browser"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/d3-plugins-truly-interactive.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

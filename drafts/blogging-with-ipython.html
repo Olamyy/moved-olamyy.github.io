@@ -1400,7 +1400,6 @@ h6:hover .anchor-link {
 <p><em>Note: this blog has since moved from octopress to</em>
 <a href="http://www.getpelican.com"><em>Pelican</em></a>,
 <em>though the tips below should still help for octopress.</em></p>
-
 </div>
 </div>
 </div>
@@ -1409,10 +1408,9 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>A few weeks ago, Fernando Perez, the creator of IPython, wrote a <a href="http://blog.fperez.org/2012/09/blogging-with-ipython-notebook.html">post</a> about blogging with IPython notebooks.  I decided to take a stab at making this work in Octopress.</p>
 <p>I started by following Fernando's outline:  I first went to <a href="http://github.com/ipython/nbconvert">http://github.com/ipython/nbconvert</a> and obtained the current version of the notebook converter.  Running <code>nbconvert.py -f blogger-html filename.ipynb</code> produces a separate html and header file with the notebook content.  I inserted the stylesheet info into my header (in octopress, the default location is <code>source/_includes/custom/head.html</code>) and copied the html directly into my post.</p>
-<p>I immediately encountered a problem.  <code>nbconvert</code> uses global CSS classes and style markups, and some of these (notably the "hightlight" class and the <code>&lt;pre&gt;</code> tag formatting) conflict with styles defined in my octopress theme.  The result was that every post in my blog ended up looking like an ugly hybrid of octopress and an ipython notebook.  Not very nice.</p>
+<p>I immediately encountered a problem.  <code>nbconvert</code> uses global CSS classes and style markups, and some of these (notably the "hightlight" class and the <code><pre></code> tag formatting) conflict with styles defined in my octopress theme.  The result was that every post in my blog ended up looking like an ugly hybrid of octopress and an ipython notebook.  Not very nice.</p>
 <p>So I did some surgery.  Admittedly, this is a terrible hack, but the following code takes the files output by nbconvert, slices them up, and creates a specific set of CSS classes for the notebook markup, such that there's no longer a conflict with the native octopress styles
 (you can download this script <a href="http://jakevdp.github.com/downloads/code/convert_notebook.py">here</a>):</p>
 <!-- PELICAN_END_SUMMARY -->
@@ -1431,16 +1429,16 @@ h6:hover .anchor-link {
     <span class="n">nbconvert</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">notebook</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="k">except</span><span class="p">:</span>
-    <span class="k">print</span> <span class="s2">&quot;usage: python octopress_notebook.py  /path/to/nbconvert.py  /path/to/notebook_file.ipynb&quot;</span>
+    <span class="k">print</span> <span class="s2">"usage: python octopress_notebook.py  /path/to/nbconvert.py  /path/to/notebook_file.ipynb"</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># convert notebook</span>
-<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> -f blogger-html </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nbconvert</span><span class="p">,</span> <span class="n">notebook</span><span class="p">))</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> -f blogger-html </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">nbconvert</span><span class="p">,</span> <span class="n">notebook</span><span class="p">))</span>
 
 <span class="c1"># get out filenames</span>
 <span class="n">outfile_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">notebook</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">body_file</span> <span class="o">=</span> <span class="n">outfile_root</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span>
-<span class="n">header_file</span> <span class="o">=</span> <span class="n">outfile_root</span> <span class="o">+</span> <span class="s1">&#39;_header.html&#39;</span>
+<span class="n">body_file</span> <span class="o">=</span> <span class="n">outfile_root</span> <span class="o">+</span> <span class="s1">'.html'</span>
+<span class="n">header_file</span> <span class="o">=</span> <span class="n">outfile_root</span> <span class="o">+</span> <span class="s1">'_header.html'</span>
 
 
 <span class="c1"># read the files</span>
@@ -1449,57 +1447,56 @@ h6:hover .anchor-link {
 
 
 <span class="c1"># replace the highlight tags</span>
-<span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;class=&quot;highlight&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;class=&quot;highlight-ipynb&quot;&#39;</span><span class="p">)</span>
-<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;highlight-ipynb&#39;</span><span class="p">)</span>
+<span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'class="highlight"'</span><span class="p">,</span> <span class="s1">'class="highlight-ipynb"'</span><span class="p">)</span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'highlight'</span><span class="p">,</span> <span class="s1">'highlight-ipynb'</span><span class="p">)</span>
 
 
-<span class="c1"># specify &lt;pre&gt; tags</span>
-<span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;pre&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;pre class=&quot;ipynb&quot;&#39;</span><span class="p">)</span>
-<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;html, body&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;pre.ipynb {&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;  color: black;&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;  background: #f7f7f7;&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;  border: 0;&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;  box-shadow: none;&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;  margin-bottom: 0;&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;  padding: 0;&#39;</span>
-                                                 <span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
-                                                 <span class="s1">&#39;html, body&#39;</span><span class="p">)))</span>
+<span class="c1"># specify <pre> tags</span>
+<span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'<pre'</span><span class="p">,</span> <span class="s1">'<pre class="ipynb"'</span><span class="p">)</span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'html, body'</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">'pre.ipynb {'</span><span class="p">,</span>
+                                                 <span class="s1">'  color: black;'</span><span class="p">,</span>
+                                                 <span class="s1">'  background: #f7f7f7;'</span><span class="p">,</span>
+                                                 <span class="s1">'  border: 0;'</span><span class="p">,</span>
+                                                 <span class="s1">'  box-shadow: none;'</span><span class="p">,</span>
+                                                 <span class="s1">'  margin-bottom: 0;'</span><span class="p">,</span>
+                                                 <span class="s1">'  padding: 0;'</span>
+                                                 <span class="s1">'}</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span>
+                                                 <span class="s1">'html, body'</span><span class="p">)))</span>
 
 
 <span class="c1"># create a special div for notebook</span>
-<span class="n">body</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;ipynb&quot;&gt;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">body</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&lt;/div&gt;&quot;</span>
-<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;body {&#39;</span><span class="p">,</span> <span class="s1">&#39;div.ipynb {&#39;</span><span class="p">)</span>
+<span class="n">body</span> <span class="o">=</span> <span class="s1">'<div class="ipynb"></span><span class="se">\n\n</span><span class="s1">'</span> <span class="o">+</span> <span class="n">body</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2"></div>"</span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'body {'</span><span class="p">,</span> <span class="s1">'div.ipynb {'</span><span class="p">)</span>
 
 
 <span class="c1"># specialize headers</span>
-<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;html, body,&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(((</span><span class="s1">&#39;h1.ipynb h2.ipynb h3.ipynb &#39;</span>
-                                    <span class="s1">&#39;h4.ipynb h5.ipynb h6.ipynb {&#39;</span><span class="p">),</span>
-                                   <span class="s1">&#39;h1.ipynb h2.ipynb ... {&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;  margin: 0;&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;  padding: 0;&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;  border: 0;&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;  font-size: 100%;&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;  font: inherit;&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;  vertical-align: baseline;&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
-                                   <span class="s1">&#39;html, body,&#39;</span><span class="p">)))</span>
-<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="s1">&#39;123456&#39;</span><span class="p">:</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;h</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;&lt;h</span><span class="si">%s</span><span class="s1"> class=&quot;ipynb&quot;&#39;</span> <span class="o">%</span> <span class="n">h</span><span class="p">)</span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'html, body,'</span><span class="p">,</span>
+                        <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(((</span><span class="s1">'h1.ipynb h2.ipynb h3.ipynb '</span>
+                                    <span class="s1">'h4.ipynb h5.ipynb h6.ipynb {'</span><span class="p">),</span>
+                                   <span class="s1">'h1.ipynb h2.ipynb ... {'</span><span class="p">,</span>
+                                   <span class="s1">'  margin: 0;'</span><span class="p">,</span>
+                                   <span class="s1">'  padding: 0;'</span><span class="p">,</span>
+                                   <span class="s1">'  border: 0;'</span><span class="p">,</span>
+                                   <span class="s1">'  font-size: 100%;'</span><span class="p">,</span>
+                                   <span class="s1">'  font: inherit;'</span><span class="p">,</span>
+                                   <span class="s1">'  vertical-align: baseline;'</span><span class="p">,</span>
+                                   <span class="s1">'}</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span>
+                                   <span class="s1">'html, body,'</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="s1">'123456'</span><span class="p">:</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'<h</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">h</span><span class="p">,</span> <span class="s1">'<h</span><span class="si">%s</span><span class="s1"> class="ipynb"'</span> <span class="o">%</span> <span class="n">h</span><span class="p">)</span>
 
 
 <span class="c1"># comment out document-level formatting</span>
-<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;html, body,&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;/*html, body,*/&#39;</span><span class="p">)</span>
-<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;h1, h2, h3, h4, h5, h6,&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;/*h1, h2, h3, h4, h5, h6,*/&#39;</span><span class="p">)</span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'html, body,'</span><span class="p">,</span>
+                        <span class="s1">'/*html, body,*/'</span><span class="p">)</span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'h1, h2, h3, h4, h5, h6,'</span><span class="p">,</span>
+                        <span class="s1">'/*h1, h2, h3, h4, h5, h6,*/'</span><span class="p">)</span>
 
 <span class="c1">#----------------------------------------------------------------------</span>
 <span class="c1"># Write the results to file</span>
-<span class="nb">open</span><span class="p">(</span><span class="n">body_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
-<span class="nb">open</span><span class="p">(</span><span class="n">header_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="n">body_file</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="n">header_file</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
@@ -1508,7 +1505,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This code should be run with two arguments: first the file to be converted, then the path to <code>nbconvert.py</code>.  Like the native <code>nbconvert.py</code> this produces a separate file of header code (which is inserted once into the  master blog header) and body code which can be copied verbatim into the post.</p>
-
 </div>
 </div>
 </div>
@@ -1516,7 +1512,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Trying-it-out">Trying it out<a class="anchor-link" href="#Trying-it-out">&#182;</a></h2>
+<h2 id="Trying-it-out">Trying it out<a class="anchor-link" href="#Trying-it-out">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1525,7 +1521,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you haven't noticed already, this post is written entirely in an IPython notebook.  So let's see how some things look.</p>
-
 </div>
 </div>
 </div>
@@ -1537,82 +1532,56 @@ h6:hover .anchor-link {
 <p>$f(x) = \int_0^\infty \left(\frac{\sin(x)}{x^2}\right)dx$</p>
 <p>As we see, it renders nicely.</p>
 <p>Or we can do some inline plotting:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 Welcome to pylab, a matplotlib-based Python environment [backend: module://IPython.zmq.pylab.backend_inline].
-For more information, type &#39;help(pylab)&#39;.
+For more information, type 'help(pylab)'.
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x2cdba90&gt;]</pre>
+<pre>[<matplotlib.lines.Line2D at 0x2cdba90>]</pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAD9CAYAAABQvqc9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlYVdX6B/DvUchSc0zQACUFBZwNMzWTQjRREcRUyjRt
 sMG6eS1/3e7vuVdv5U8fu5Vdy6x7LS3nCTGR1Aw1lUjFIbXEAWVQKqcknMD9++O9OKIezjn7rD18
@@ -1804,22 +1773,17 @@ VGvSpIk2fvx41eEos379es3hcGitW7fW2rRpo7Vp00ZbsWKF6rCUSk9P1/r06aM6DOW2bdumRUZG
 aq1atdISEhK0kydPqg5JmYkTJ15asjlkyBDt/PnzqkPymkGDBmkNGjTQfH19tcDAQG369OnasWPH
 tOjo6Aot2TTEwehEROQdXB5BRGQjTPpERDbCpE9EZCNM+kRENsKkT0RkI0z6REQ28v8ujsxbbCsI
 oAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can do pretty much anything else a notebook does as well.  The IPython team did the hard part.</p>
-
 </div>
 </div>
 </div>
@@ -1827,7 +1791,7 @@ oAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Where-to-go-from-here?">Where to go from here?<a class="anchor-link" href="#Where-to-go-from-here?">&#182;</a></h2>
+<h2 id="Where-to-go-from-here?">Where to go from here?<a class="anchor-link" href="#Where-to-go-from-here?">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1839,12 +1803,9 @@ oAAAAABJRU5ErkJggg==
 <p>Second, I'd love to build notebook support directly into octopress.  If <code>nbconvert.py</code> is available on the user's system, it could be called directly from the Ruby script that generates Octopress HTML.  I have about as much experience with Ruby as I do with Swahili (read: None) so this would take some work for me.  I'd be happy to pass the baton to any Octopress gurus out there...</p>
 <p>Either of those options will smooth out the notebook/blogging combo considerably, and give me the potential to prognosticate Python in perpetuum.
 By the way, the notebook used to generate this page can be downloaded <a href="http://jakevdp.github.com/downloads/notebooks/nb_in_octopress.ipynb">here</a>.  Happy coding!</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1874,6 +1835,18 @@ By the way, the notebook used to generate this page can be downloaded <a href="h
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Blogging with IPython in Octopress"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/blogging-with-ipython.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

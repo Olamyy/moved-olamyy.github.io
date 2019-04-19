@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>This is a bit of a niche topic, but I figured there might be one or two people out there who would find this useful (including my future self)... today I managed to implement a simple Python object which exposes the buffer protocol. If that means nothing to you, you may want to stop reading and instead browse this <a href="http://imgur.com/gallery/zWeJ5">gallery of puppy gifs</a>.</p>
 <p>But if you're the kind of person who becomes mildly excited at the words <em>Python buffer protocol</em>, I hope this short post will help you in your quest...</p>
 <!-- PELICAN_END_SUMMARY -->
@@ -1409,7 +1408,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="What-is-the-Python-Buffer-Protocol?">What is the Python Buffer Protocol?<a class="anchor-link" href="#What-is-the-Python-Buffer-Protocol?">&#182;</a></h2>
+<h2 id="What-is-the-Python-Buffer-Protocol?">What is the Python Buffer Protocol?<a class="anchor-link" href="#What-is-the-Python-Buffer-Protocol?">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1419,44 +1418,31 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The Python buffer protocol, also known in the community as <a href="http://legacy.python.org/dev/peps/pep-3118/">PEP 3118</a>, is a framework in which Python objects can expose raw byte arrays to other Python objects. This can be extremely useful for scientific computing, where we often use packages such as <a href="http://numpy.org">NumPy</a> to efficiently store and manipulate large arrays of data. Using the buffer protocol, we can let multiple objects efficiently manipulate views of the same data buffers, without having to make copies of the often large datasets.</p>
 <p>Here, for example, we'll use Python's built-in <code>array</code> object to create an array:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">array</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">array</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s1">'i'</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">A</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[1]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>array(&#39;i&#39;, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</pre>
-</div>
-
-</div>
-
+<pre>array('i', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1464,136 +1450,96 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that the array object is different than a Python list, in that it stores the data as <strong>a contiguous block</strong> of integers. For this reason, the data are stored much more compactly than a list, and certain operations can be performed much more quickly.</p>
 <p><code>array</code> objects by themselves are not particularly useful, but a similar type of object can be found in the <code>numpy</code> array.  Because both Python's <code>array</code> and NumPy's <code>ndarray</code> objects implement the buffer protocol, it's possible to seamlessly pass data between them using views – that is, without the need to copy the raw data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">np_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="n">np_A</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=int32)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can confirm that this is a view of the same buffer by modifying the numpy array: we'll set one of the elements to 555...</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np_A</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">555</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np_A</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">555</span>
 <span class="n">np_A</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([  0,   1,   2,   3, 555,   5,   6,   7,   8,   9], dtype=int32)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>...and once this is done we see that the original array has been modified as well:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">A</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">A</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>array(&#39;i&#39;, [0, 1, 2, 3, 555, 5, 6, 7, 8, 9])</pre>
-</div>
-
-</div>
-
+<pre>array('i', [0, 1, 2, 3, 555, 5, 6, 7, 8, 9])</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This shows that both <code>A</code> and <code>np_A</code> are pointing to the same block of data, and it required nothing special on our part to make that happen!  That's the beauty of the buffer protocol.</p>
-
 </div>
 </div>
 </div>
@@ -1601,7 +1547,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Why-Is-This-Useful?">Why Is This Useful?<a class="anchor-link" href="#Why-Is-This-Useful?">&#182;</a></h2>
+<h2 id="Why-Is-This-Useful?">Why Is This Useful?<a class="anchor-link" href="#Why-Is-This-Useful?">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1613,7 +1559,6 @@ h6:hover .anchor-link {
 <p>Well, in scientific computing, most of the interesting algorithms are implemented in compiled code: for example, <a href="http://scipy.org">scipy</a> is essentially a set of wrappers around <a href="http://www.netlib.org/">NetLib</a> utilities, which are well-tested implementations of scientific algorithms written mostly in Fortran and C. The ability for Python to natively share data with these compiled libraries is incredibly important for scientific computing. This is one big reason that NumPy and its predecessors were initially developed, and it's why the buffer protocol was later proposed and added to Python's standard library. The buffer protocol is extremely useful for what scientists do with Python: build intuitive interfaces to compiled legacy code.</p>
 <p>With apologies to the <a href="http://pypy.org/">PyPy</a> project's extremely active community, I should also mention that this is one of the main reasons that scientists don't really pay much attention to it: until PyPy can easily interface to all the C and Fortran code we use on a daily basis, all its JIT-ed performance gain is of very little use to us.</p>
 <p>This cannot be emphasized enough: <strong>it is fundamentally the Buffer Protocol and related NumPy functionality that make Python useful as a scientific computing platform.</strong></p>
-
 </div>
 </div>
 </div>
@@ -1621,7 +1566,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Implementing-a-Custom-Buffer-Interface">Implementing a Custom Buffer Interface<a class="anchor-link" href="#Implementing-a-Custom-Buffer-Interface">&#182;</a></h2>
+<h2 id="Implementing-a-Custom-Buffer-Interface">Implementing a Custom Buffer Interface<a class="anchor-link" href="#Implementing-a-Custom-Buffer-Interface">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1632,7 +1577,6 @@ h6:hover .anchor-link {
 <p>Fortunately, most scientists can simply use the buffer protocol via tools like NumPy without knowing too much of the details of what's behind it. Because the buffer protocol is fundamentally a C-API entity, implementing new functionality with it generally requires digging into the guts of Python's C API. For example, the code that enables the above numpy example is found in NumPy's <a href="https://github.com/numpy/numpy/blob/master/numpy/core/src/multiarray/buffer.c">buffer.c</a> file, and reading through it is not particularly enlightening. This is the power of Python in a nutshell: it abstracts away C-level messiness like this and instead gives us the nice, powerful, and clean Python interface we all know and love.</p>
 <p>But sometimes you need to get your hands dirty. Imagine, for instance, that you have a C object that you'd like to wrap and make available to Python.  Your first course might be to use something like <a href="http://wiki.scipy.org/Cookbook/F2Py">f2py</a>, <a href="http://cython.org">cython</a>, or <a href="http://www.swig.org/">SWIG</a> to do this: I'd definitely recommend these tools for most problems of this nature.</p>
 <p>But you may, for various reasons, want to go even deeper and implement the buffer protocol directly. (For example, you may be interested in taking data structures from another language, such as Julia, and exposing them to Python in a flexible manner). Below I'll give you an example of how to do this.</p>
-
 </div>
 </div>
 </div>
@@ -1640,7 +1584,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Preliminaries">Preliminaries<a class="anchor-link" href="#Preliminaries">&#182;</a></h3>
+<h3 id="Preliminaries">Preliminaries<a class="anchor-link" href="#Preliminaries">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1659,7 +1603,6 @@ h6:hover .anchor-link {
 <li><a href="http://legacy.python.org/dev/peps/pep-3118/">PEP 3118</a>: the Python Enhancement Proposal (PEP) outlining the new buffer interface, introduced in Python 3.3.</li>
 </ul>
 <p>I should emphasize here that <strong>I'll using the syntax of Python 3.3+</strong>; it's possible to modify this to be compatible with older Python versions, but that requires some judicious use of C compiler directives (see the <a href="https://github.com/numpy/numpy/blob/master/numpy/core/src/multiarray/buffer.c">NumPy buffer module</a> for an excellent example of this cross-version approach).  If you try to run this notebook under older Python versions, things will probably not go very well for you.</p>
-
 </div>
 </div>
 </div>
@@ -1667,7 +1610,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Setting-the-Stage">Setting the Stage<a class="anchor-link" href="#Setting-the-Stage">&#182;</a></h3>
+<h3 id="Setting-the-Stage">Setting the Stage<a class="anchor-link" href="#Setting-the-Stage">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1676,18 +1619,17 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's imagine that we have a C library which creates a buffer of data that we're interested in wrapping.  For simplicity, we'll assume it can be boiled-down to the following structure. Notice throughout that we will use IPython's <code>%%file</code> magic to save the scripts we write to files, from which they will later be compiled:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> mylib.c
-<span class="c1">#include &lt;stdlib.h&gt;</span>
-<span class="c1">#include &lt;stdio.h&gt;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> mylib.c
+<span class="c1">#include <stdlib.h></span>
+<span class="c1">#include <stdio.h></span>
 
 <span class="o">/*</span> <span class="n">Structure</span> <span class="n">defines</span> <span class="n">a</span> <span class="mi">1</span><span class="o">-</span><span class="n">dimensional</span> <span class="n">strided</span> <span class="n">array</span> <span class="o">*/</span>
 <span class="n">typedef</span> <span class="n">struct</span><span class="p">{</span>
@@ -1697,62 +1639,53 @@ h6:hover .anchor-link {
 
 <span class="o">/*</span> <span class="n">initialize</span> <span class="n">the</span> <span class="n">array</span> <span class="k">with</span> <span class="n">integers</span> <span class="mf">0.</span><span class="o">..</span><span class="n">length</span> <span class="o">*/</span>
 <span class="n">void</span> <span class="n">initialize_MyArray</span><span class="p">(</span><span class="n">MyArray</span><span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">long</span> <span class="n">length</span><span class="p">){</span>
-    <span class="n">a</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span>
-    <span class="n">a</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">));</span>
-    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
-        <span class="n">a</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">a</span><span class="o">-></span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span>
+    <span class="n">a</span><span class="o">-></span><span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">));</span>
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o"><</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">a</span><span class="o">-></span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="o">/*</span> <span class="n">free</span> <span class="n">the</span> <span class="n">memory</span> <span class="n">when</span> <span class="n">finished</span> <span class="o">*/</span>
 <span class="n">void</span> <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="n">MyArray</span><span class="o">*</span> <span class="n">a</span><span class="p">){</span>
-    <span class="n">free</span><span class="p">(</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">);</span>
-    <span class="n">a</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">a</span><span class="o">-></span><span class="n">arr</span><span class="p">);</span>
+    <span class="n">a</span><span class="o">-></span><span class="n">arr</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="o">/*</span> <span class="n">tools</span> <span class="n">to</span> <span class="nb">print</span> <span class="n">the</span> <span class="n">array</span> <span class="o">*/</span>
 <span class="n">char</span><span class="o">*</span> <span class="n">stringify</span><span class="p">(</span><span class="n">MyArray</span><span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nmax</span><span class="p">){</span>
     <span class="n">char</span><span class="o">*</span> <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">char</span><span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">nmax</span> <span class="o">*</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nb">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;[&quot;</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="o">&</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"["</span><span class="p">);</span>
 
-    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">a</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">nmax</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">){</span>
-        <span class="n">pos</span> <span class="o">+=</span> <span class="n">sprintf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="s2">&quot; </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o"><</span> <span class="n">a</span><span class="o">-></span><span class="n">length</span> <span class="o">&&</span> <span class="n">k</span> <span class="o"><</span> <span class="n">nmax</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">pos</span> <span class="o">+=</span> <span class="n">sprintf</span><span class="p">(</span><span class="o">&</span><span class="n">output</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="s2">" </span><span class="si">%d</span><span class="s2">"</span><span class="p">,</span> <span class="n">a</span><span class="o">-></span><span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">&gt;</span> <span class="n">nmax</span><span class="p">)</span>
-        <span class="n">pos</span> <span class="o">+=</span> <span class="n">sprintf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">);</span>
-    <span class="n">sprintf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="s2">&quot; ]&quot;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">-></span><span class="n">length</span> <span class="o">></span> <span class="n">nmax</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">+=</span> <span class="n">sprintf</span><span class="p">(</span><span class="o">&</span><span class="n">output</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="s2">"..."</span><span class="p">);</span>
+    <span class="n">sprintf</span><span class="p">(</span><span class="o">&</span><span class="n">output</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="s2">" ]"</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="n">void</span> <span class="n">print_MyArray</span><span class="p">(</span><span class="n">MyArray</span><span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nmax</span><span class="p">){</span>
     <span class="n">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">nmax</span><span class="p">);</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
     <span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Overwriting mylib.c
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1760,109 +1693,86 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This code essentially defines a structure <code>MyArray</code> which contains information about an array of values, and we have functions to allocate, deallocate, and stringify the array.  This C code is overly simplistic; in real life there would be a lot more checks to prevent memory errors and other issues, but it will be a useful stand-in for our purposes.</p>
 <p>We can write a quick script to test these functionalities, and compile it using the <code>g++</code> compiler:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> test_mylib.c
-<span class="c1">#include &quot;mylib.c&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> test_mylib.c
+<span class="c1">#include "mylib.c"</span>
 
 <span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">){</span>
     <span class="n">MyArray</span> <span class="n">a</span><span class="p">;</span>
-    <span class="n">initialize_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-    <span class="n">print_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-    <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">initialize_MyArray</span><span class="p">(</span><span class="o">&</span><span class="n">a</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">print_MyArray</span><span class="p">(</span><span class="o">&</span><span class="n">a</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&</span><span class="n">a</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Overwriting test_mylib.c
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we'll compile it (using the <code>g++</code> compiler; you may have to modify this for your system):</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>g++ test_mylib.c -o test_mylib
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>g++ test_mylib.c -o test_mylib
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And running the tests...</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>./test_mylib
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>./test_mylib
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[ 0 1 2 3 4 5 6 7 8 9 ]</pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1871,18 +1781,17 @@ h6:hover .anchor-link {
 <p>It worked! This basically creates an array similar to Python's <code>range(10)</code>, but using Python's C API rather than Python itself (aren't you glad you use Python rather than C every day?)</p>
 <p>Our task now is to create a simple wrapper for this <code>MyArray</code> structure which exposes the buffer interface.  We'll basically follow the <a href="https://docs.python.org/3/extending/newtypes.html">Noddy</a> example from the Python documentation, with a few little extra enhancements, and see how this looks.</p>
 <p>Let's start by ignoring the Buffer protocol entirely, and simply create a Python wrapper of the <code>MyArray</code> object:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> pymyarray.c
-<span class="c1">#include &lt;Python.h&gt;</span>
-<span class="c1">#include &quot;mylib.c&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> pymyarray.c
+<span class="c1">#include <Python.h></span>
+<span class="c1">#include "mylib.c"</span>
 
 <span class="o">/*</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">where</span> <span class="n">we</span> <span class="n">define</span> <span class="n">the</span> <span class="n">PyMyArray</span> <span class="nb">object</span> <span class="n">structure</span> <span class="o">*/</span>
 <span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
@@ -1897,18 +1806,18 @@ h6:hover .anchor-link {
 <span class="n">PyMyArray_init</span><span class="p">(</span><span class="n">PyMyArray</span> <span class="o">*</span><span class="bp">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="o">//</span> <span class="n">init</span> <span class="n">may</span> <span class="n">have</span> <span class="n">already</span> <span class="n">been</span> <span class="n">called</span>
-    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="o">.</span><span class="n">arr</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">);</span>
-        <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="o">.</span><span class="n">arr</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">);</span>
+        <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">);</span>
 
     <span class="nb">int</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">static</span> <span class="n">char</span> <span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">};</span>
-    <span class="k">if</span> <span class="p">(</span><span class="err">!</span> <span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">,</span> <span class="s2">&quot;|i&quot;</span><span class="p">,</span> <span class="n">kwlist</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">))</span>
+    <span class="n">static</span> <span class="n">char</span> <span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"length"</span><span class="p">,</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="err">!</span> <span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">,</span> <span class="s2">"|i"</span><span class="p">,</span> <span class="n">kwlist</span><span class="p">,</span> <span class="o">&</span><span class="n">length</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o"><</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
-    <span class="n">initialize_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+    <span class="n">initialize_MyArray</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -1918,8 +1827,8 @@ h6:hover .anchor-link {
 <span class="n">static</span> <span class="n">void</span>
 <span class="n">PyMyArray_dealloc</span><span class="p">(</span><span class="n">PyMyArray</span><span class="o">*</span> <span class="bp">self</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">);</span>
-    <span class="n">Py_TYPE</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">tp_free</span><span class="p">((</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="p">);</span>
+    <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">);</span>
+    <span class="n">Py_TYPE</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-></span><span class="n">tp_free</span><span class="p">((</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="p">);</span>
 <span class="p">}</span>
 
 
@@ -1927,7 +1836,7 @@ h6:hover .anchor-link {
 <span class="n">static</span> <span class="n">PyObject</span> <span class="o">*</span>
 <span class="n">PyMyArray_str</span><span class="p">(</span><span class="n">PyMyArray</span> <span class="o">*</span> <span class="bp">self</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+  <span class="n">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
   <span class="n">PyObject</span><span class="o">*</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">PyUnicode_FromString</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
   <span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
@@ -1937,7 +1846,7 @@ h6:hover .anchor-link {
    <span class="ow">in</span> <span class="n">order</span> <span class="n">to</span> <span class="n">actually</span> <span class="n">define</span> <span class="n">the</span> <span class="n">Python</span> <span class="nb">object</span> <span class="nb">type</span> <span class="o">*/</span>
 <span class="n">static</span> <span class="n">PyTypeObject</span> <span class="n">PyMyArrayType</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="s2">&quot;pymyarray.PyMyArray&quot;</span><span class="p">,</span>        <span class="o">/*</span> <span class="n">tp_name</span> <span class="o">*/</span>
+    <span class="s2">"pymyarray.PyMyArray"</span><span class="p">,</span>        <span class="o">/*</span> <span class="n">tp_name</span> <span class="o">*/</span>
     <span class="n">sizeof</span><span class="p">(</span><span class="n">PyMyArray</span><span class="p">),</span>            <span class="o">/*</span> <span class="n">tp_basicsize</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_itemsize</span> <span class="o">*/</span>
     <span class="p">(</span><span class="n">destructor</span><span class="p">)</span><span class="n">PyMyArray_dealloc</span><span class="p">,</span><span class="o">/*</span> <span class="n">tp_dealloc</span> <span class="o">*/</span>
@@ -1956,7 +1865,7 @@ h6:hover .anchor-link {
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_setattro</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_as_buffer</span> <span class="o">*/</span>
     <span class="n">Py_TPFLAGS_DEFAULT</span><span class="p">,</span>           <span class="o">/*</span> <span class="n">tp_flags</span> <span class="o">*/</span>
-    <span class="s2">&quot;PyMyArray object&quot;</span><span class="p">,</span>           <span class="o">/*</span> <span class="n">tp_doc</span> <span class="o">*/</span>
+    <span class="s2">"PyMyArray object"</span><span class="p">,</span>           <span class="o">/*</span> <span class="n">tp_doc</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_traverse</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_clear</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_richcompare</span> <span class="o">*/</span>
@@ -1977,8 +1886,8 @@ h6:hover .anchor-link {
 <span class="o">/*</span> <span class="n">now</span> <span class="n">we</span> <span class="n">initialize</span> <span class="n">the</span> <span class="n">Python</span> <span class="n">module</span> <span class="n">which</span> <span class="n">contains</span> <span class="n">our</span> <span class="n">new</span> <span class="nb">object</span><span class="p">:</span> <span class="o">*/</span>
 <span class="n">static</span> <span class="n">PyModuleDef</span> <span class="n">pymyarray_module</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
-    <span class="s2">&quot;pymyarray&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Extension type for myarray object.&quot;</span><span class="p">,</span>
+    <span class="s2">"pymyarray"</span><span class="p">,</span>
+    <span class="s2">"Extension type for myarray object."</span><span class="p">,</span>
     <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span>
 <span class="p">};</span>
@@ -1989,159 +1898,121 @@ h6:hover .anchor-link {
     <span class="n">PyObject</span><span class="o">*</span> <span class="n">m</span><span class="p">;</span>
 
     <span class="n">PyMyArrayType</span><span class="o">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PyType_GenericNew</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">PyType_Ready</span><span class="p">(</span><span class="o">&amp;</span><span class="n">PyMyArrayType</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">PyType_Ready</span><span class="p">(</span><span class="o">&</span><span class="n">PyMyArrayType</span><span class="p">)</span> <span class="o"><</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
 
-    <span class="n">m</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pymyarray_module</span><span class="p">);</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&</span><span class="n">pymyarray_module</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
 
-    <span class="n">Py_INCREF</span><span class="p">(</span><span class="o">&amp;</span><span class="n">PyMyArrayType</span><span class="p">);</span>
-    <span class="n">PyModule_AddObject</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;PyMyArray&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">PyMyArrayType</span><span class="p">);</span>
+    <span class="n">Py_INCREF</span><span class="p">(</span><span class="o">&</span><span class="n">PyMyArrayType</span><span class="p">);</span>
+    <span class="n">PyModule_AddObject</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"PyMyArray"</span><span class="p">,</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="o">&</span><span class="n">PyMyArrayType</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">m</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Overwriting pymyarray.c
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That's all there is to it!  Now we'll create a quick setup script and run it to compile the module in-place:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> setup.py
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> setup.py
 <span class="kn">from</span> <span class="nn">distutils.core</span> <span class="k">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
-<span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;pymyarray&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pymyarray.c&quot;</span><span class="p">])])</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">"pymyarray"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"pymyarray.c"</span><span class="p">])])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Overwriting setup.py
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python setup.py build_ext --inplace
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>python setup.py build_ext --inplace
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>running build_ext
-building &#39;pymyarray&#39; extension
+building 'pymyarray' extension
 /usr/bin/clang -fno-strict-aliasing -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -I/Users/jakevdp/anaconda/envs/py3k/include -arch x86_64 -I/Users/jakevdp/anaconda/envs/py3k/include/python3.3m -c pymyarray.c -o build/temp.macosx-10.5-x86_64-3.3/pymyarray.o
 /usr/bin/clang -bundle -undefined dynamic_lookup -L/Users/jakevdp/anaconda/envs/py3k/lib -arch x86_64 build/temp.macosx-10.5-x86_64-3.3/pymyarray.o -L/Users/jakevdp/anaconda/envs/py3k/lib -o /Users/jakevdp/Opensource/bufint/pymyarray.so
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can import our new module and create a <code>MyArray</code> object from Python and see what we have:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pymyarray</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pymyarray</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">pymyarray</span><span class="o">.</span><span class="n">PyMyArray</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[ 0 1 2 3 4 5 6 7 8 9 ]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2149,49 +2020,38 @@ building &#39;pymyarray&#39; extension
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Yes! It worked!</p>
 <p>But what if we want to use this with NumPy?  It turns out that we're out of luck:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">nparr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">nparr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>()
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>NumPy doesn't know what to do with this object, so it just creates a zero-dimensional array (i.e. a scalar), with a value equal to this object. This is not what we want, and addressing this issue is where the Buffer Protocol comes in.</p>
-
 </div>
 </div>
 </div>
@@ -2199,7 +2059,7 @@ building &#39;pymyarray&#39; extension
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Adding-the-Buffer-Protocol">Adding the Buffer Protocol<a class="anchor-link" href="#Adding-the-Buffer-Protocol">&#182;</a></h3>
+<h3 id="Adding-the-Buffer-Protocol">Adding the Buffer Protocol<a class="anchor-link" href="#Adding-the-Buffer-Protocol">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2207,7 +2067,7 @@ building &#39;pymyarray&#39; extension
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To add the buffer protocol, we're going to have to re-write most of the above code, adding some specific functionality that NumPy and other tools know how to interface with.  The buffer protocol in Python is basically structure which defines a very flexible interface to an offset &amp; strided multi-dimensional array.  From the <a href="https://github.com/python/cpython/blob/master/Include/object.h#L178-191">CPython source</a>, we can see what it looks like:</p>
+<p>To add the buffer protocol, we're going to have to re-write most of the above code, adding some specific functionality that NumPy and other tools know how to interface with.  The buffer protocol in Python is basically structure which defines a very flexible interface to an offset & strided multi-dimensional array.  From the <a href="https://github.com/python/cpython/blob/master/Include/object.h#L178-191">CPython source</a>, we can see what it looks like:</p>
 <div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">bufferinfo</span><span class="p">{</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>
     <span class="n">PyObject</span> <span class="o">*</span><span class="n">obj</span><span class="p">;</span>        <span class="cm">/* owned reference */</span>
@@ -2224,18 +2084,17 @@ building &#39;pymyarray&#39; extension
 </pre></div>
 <p>What the buffer interface does is allow you to define a function which constructs a struct like this that points to your particular data. We see that the array can be multi-dimensional, it can have arbitrary NumPy-style strides along each dimension, as well as arbitrary <a href="http://www.pythonware.com/products/pil/">PIL</a>-style suboffsets for each dimension.</p>
 <p>For our simple 1D array example, we won't be using the full extent of this interface, but it's an easy extension of what we're doing here.  Let's create a <code>pymyarray2</code> module, copying and pasting much of the above code, and adding the buffer protocol hooks along the way:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> pymyarray2.c
-<span class="c1">#include &lt;Python.h&gt;</span>
-<span class="c1">#include &quot;mylib.c&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> pymyarray2.c
+<span class="c1">#include <Python.h></span>
+<span class="c1">#include "mylib.c"</span>
 
 <span class="o">/*</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">where</span> <span class="n">we</span> <span class="n">define</span> <span class="n">the</span> <span class="n">PyMyArray</span> <span class="nb">object</span> <span class="n">structure</span> <span class="o">*/</span>
 <span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
@@ -2250,18 +2109,18 @@ building &#39;pymyarray&#39; extension
 <span class="n">PyMyArray_init</span><span class="p">(</span><span class="n">PyMyArray</span> <span class="o">*</span><span class="bp">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="o">//</span> <span class="n">init</span> <span class="n">may</span> <span class="n">have</span> <span class="n">already</span> <span class="n">been</span> <span class="n">called</span>
-    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="o">.</span><span class="n">arr</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">);</span>
-        <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="o">.</span><span class="n">arr</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">);</span>
+        <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">);</span>
 
     <span class="nb">int</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">static</span> <span class="n">char</span> <span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">};</span>
-    <span class="k">if</span> <span class="p">(</span><span class="err">!</span> <span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">,</span> <span class="s2">&quot;|i&quot;</span><span class="p">,</span> <span class="n">kwlist</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">))</span>
+    <span class="n">static</span> <span class="n">char</span> <span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"length"</span><span class="p">,</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="err">!</span> <span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">,</span> <span class="s2">"|i"</span><span class="p">,</span> <span class="n">kwlist</span><span class="p">,</span> <span class="o">&</span><span class="n">length</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o"><</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
-    <span class="n">initialize_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+    <span class="n">initialize_MyArray</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -2271,8 +2130,8 @@ building &#39;pymyarray&#39; extension
 <span class="n">static</span> <span class="n">void</span>
 <span class="n">PyMyArray_dealloc</span><span class="p">(</span><span class="n">PyMyArray</span><span class="o">*</span> <span class="bp">self</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">);</span>
-    <span class="n">Py_TYPE</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">tp_free</span><span class="p">((</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="p">);</span>
+    <span class="n">deallocate_MyArray</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">);</span>
+    <span class="n">Py_TYPE</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-></span><span class="n">tp_free</span><span class="p">((</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="p">);</span>
 <span class="p">}</span>
 
 
@@ -2280,7 +2139,7 @@ building &#39;pymyarray&#39; extension
 <span class="n">static</span> <span class="n">PyObject</span> <span class="o">*</span>
 <span class="n">PyMyArray_str</span><span class="p">(</span><span class="n">PyMyArray</span> <span class="o">*</span> <span class="bp">self</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+  <span class="n">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
   <span class="n">PyObject</span><span class="o">*</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">PyUnicode_FromString</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
   <span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
@@ -2291,22 +2150,22 @@ building &#39;pymyarray&#39; extension
 <span class="n">PyMyArray_getbuffer</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">obj</span><span class="p">,</span> <span class="n">Py_buffer</span> <span class="o">*</span><span class="n">view</span><span class="p">,</span> <span class="nb">int</span> <span class="n">flags</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_ValueError</span><span class="p">,</span> <span class="s2">&quot;NULL view in getbuffer&quot;</span><span class="p">);</span>
+    <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_ValueError</span><span class="p">,</span> <span class="s2">"NULL view in getbuffer"</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="n">PyMyArray</span><span class="o">*</span> <span class="bp">self</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyMyArray</span><span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">void</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="o">.</span><span class="n">arr</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="nb">len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">);</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">readonly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">itemsize</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">);</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;i&quot;</span><span class="p">;</span>  <span class="o">//</span> <span class="n">integer</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">ndim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span> <span class="o">=</span> <span class="o">&amp;</span><span class="bp">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="o">.</span><span class="n">length</span><span class="p">;</span>  <span class="o">//</span> <span class="n">length</span><span class="o">-</span><span class="mi">1</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">dimensions</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">itemsize</span><span class="p">;</span>  <span class="o">//</span> <span class="k">for</span> <span class="n">the</span> <span class="n">simple</span> <span class="n">case</span> <span class="n">we</span> <span class="n">can</span> <span class="n">do</span> <span class="n">this</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">suboffsets</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">internal</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">void</span><span class="o">*</span><span class="p">)</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="o">.</span><span class="n">arr</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="nb">len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">);</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">readonly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">itemsize</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">);</span>
+  <span class="n">view</span><span class="o">-></span><span class="nb">format</span> <span class="o">=</span> <span class="s2">"i"</span><span class="p">;</span>  <span class="o">//</span> <span class="n">integer</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">ndim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">shape</span> <span class="o">=</span> <span class="o">&</span><span class="bp">self</span><span class="o">-></span><span class="n">arr</span><span class="o">.</span><span class="n">length</span><span class="p">;</span>  <span class="o">//</span> <span class="n">length</span><span class="o">-</span><span class="mi">1</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">dimensions</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">strides</span> <span class="o">=</span> <span class="o">&</span><span class="n">view</span><span class="o">-></span><span class="n">itemsize</span><span class="p">;</span>  <span class="o">//</span> <span class="k">for</span> <span class="n">the</span> <span class="n">simple</span> <span class="n">case</span> <span class="n">we</span> <span class="n">can</span> <span class="n">do</span> <span class="n">this</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">suboffsets</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">internal</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
 
   <span class="n">Py_INCREF</span><span class="p">(</span><span class="bp">self</span><span class="p">);</span>  <span class="o">//</span> <span class="n">need</span> <span class="n">to</span> <span class="n">increase</span> <span class="n">the</span> <span class="n">reference</span> <span class="n">count</span>
   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
@@ -2323,7 +2182,7 @@ building &#39;pymyarray&#39; extension
    <span class="ow">in</span> <span class="n">order</span> <span class="n">to</span> <span class="n">actually</span> <span class="n">define</span> <span class="n">the</span> <span class="n">Python</span> <span class="nb">object</span> <span class="nb">type</span> <span class="o">*/</span>
 <span class="n">static</span> <span class="n">PyTypeObject</span> <span class="n">PyMyArrayType</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="s2">&quot;pymyarray.PyMyArray&quot;</span><span class="p">,</span>        <span class="o">/*</span> <span class="n">tp_name</span> <span class="o">*/</span>
+    <span class="s2">"pymyarray.PyMyArray"</span><span class="p">,</span>        <span class="o">/*</span> <span class="n">tp_name</span> <span class="o">*/</span>
     <span class="n">sizeof</span><span class="p">(</span><span class="n">PyMyArray</span><span class="p">),</span>            <span class="o">/*</span> <span class="n">tp_basicsize</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_itemsize</span> <span class="o">*/</span>
     <span class="p">(</span><span class="n">destructor</span><span class="p">)</span><span class="n">PyMyArray_dealloc</span><span class="p">,</span><span class="o">/*</span> <span class="n">tp_dealloc</span> <span class="o">*/</span>
@@ -2340,9 +2199,9 @@ building &#39;pymyarray&#39; extension
     <span class="p">(</span><span class="n">reprfunc</span><span class="p">)</span><span class="n">PyMyArray_str</span><span class="p">,</span>      <span class="o">/*</span> <span class="n">tp_str</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_getattro</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_setattro</span> <span class="o">*/</span>
-    <span class="o">&amp;</span><span class="n">PyMyArray_as_buffer</span><span class="p">,</span>         <span class="o">/*</span> <span class="n">tp_as_buffer</span> <span class="o">*/</span>
+    <span class="o">&</span><span class="n">PyMyArray_as_buffer</span><span class="p">,</span>         <span class="o">/*</span> <span class="n">tp_as_buffer</span> <span class="o">*/</span>
     <span class="n">Py_TPFLAGS_DEFAULT</span><span class="p">,</span>           <span class="o">/*</span> <span class="n">tp_flags</span> <span class="o">*/</span>
-    <span class="s2">&quot;PyMyArray object&quot;</span><span class="p">,</span>           <span class="o">/*</span> <span class="n">tp_doc</span> <span class="o">*/</span>
+    <span class="s2">"PyMyArray object"</span><span class="p">,</span>           <span class="o">/*</span> <span class="n">tp_doc</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_traverse</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_clear</span> <span class="o">*/</span>
     <span class="mi">0</span><span class="p">,</span>                            <span class="o">/*</span> <span class="n">tp_richcompare</span> <span class="o">*/</span>
@@ -2363,8 +2222,8 @@ building &#39;pymyarray&#39; extension
 <span class="o">/*</span> <span class="n">now</span> <span class="n">we</span> <span class="n">initialize</span> <span class="n">the</span> <span class="n">Python</span> <span class="n">module</span> <span class="n">which</span> <span class="n">contains</span> <span class="n">our</span> <span class="n">new</span> <span class="nb">object</span><span class="p">:</span> <span class="o">*/</span>
 <span class="n">static</span> <span class="n">PyModuleDef</span> <span class="n">pymyarray2_module</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
-    <span class="s2">&quot;pymyarray2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Extension type for myarray object.&quot;</span><span class="p">,</span>
+    <span class="s2">"pymyarray2"</span><span class="p">,</span>
+    <span class="s2">"Extension type for myarray object."</span><span class="p">,</span>
     <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span>
 <span class="p">};</span>
@@ -2375,151 +2234,114 @@ building &#39;pymyarray&#39; extension
     <span class="n">PyObject</span><span class="o">*</span> <span class="n">m</span><span class="p">;</span>
 
     <span class="n">PyMyArrayType</span><span class="o">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PyType_GenericNew</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">PyType_Ready</span><span class="p">(</span><span class="o">&amp;</span><span class="n">PyMyArrayType</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">PyType_Ready</span><span class="p">(</span><span class="o">&</span><span class="n">PyMyArrayType</span><span class="p">)</span> <span class="o"><</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
 
-    <span class="n">m</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pymyarray2_module</span><span class="p">);</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&</span><span class="n">pymyarray2_module</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
 
-    <span class="n">Py_INCREF</span><span class="p">(</span><span class="o">&amp;</span><span class="n">PyMyArrayType</span><span class="p">);</span>
-    <span class="n">PyModule_AddObject</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;PyMyArray&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">PyMyArrayType</span><span class="p">);</span>
+    <span class="n">Py_INCREF</span><span class="p">(</span><span class="o">&</span><span class="n">PyMyArrayType</span><span class="p">);</span>
+    <span class="n">PyModule_AddObject</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"PyMyArray"</span><span class="p">,</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="o">&</span><span class="n">PyMyArrayType</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">m</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Overwriting pymyarray2.c
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> setup2.py
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> setup2.py
 <span class="kn">from</span> <span class="nn">distutils.core</span> <span class="k">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
-<span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;pymyarray2&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pymyarray2.c&quot;</span><span class="p">])])</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">"pymyarray2"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"pymyarray2.c"</span><span class="p">])])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Overwriting setup2.py
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python setup2.py build_ext --inplace
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>python setup2.py build_ext --inplace
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>running build_ext
-building &#39;pymyarray2&#39; extension
+building 'pymyarray2' extension
 /usr/bin/clang -fno-strict-aliasing -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -I/Users/jakevdp/anaconda/envs/py3k/include -arch x86_64 -I/Users/jakevdp/anaconda/envs/py3k/include/python3.3m -c pymyarray2.c -o build/temp.macosx-10.5-x86_64-3.3/pymyarray2.o
 /usr/bin/clang -bundle -undefined dynamic_lookup -L/Users/jakevdp/anaconda/envs/py3k/lib -arch x86_64 build/temp.macosx-10.5-x86_64-3.3/pymyarray2.o -L/Users/jakevdp/anaconda/envs/py3k/lib -o /Users/jakevdp/Opensource/bufint/pymyarray2.so
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's try it out, and see if numpy detects the correct shape</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pymyarray2</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pymyarray2</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">pymyarray2</span><span class="o">.</span><span class="n">PyMyArray</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">nparr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">nparr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(10,)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2527,119 +2349,89 @@ building &#39;pymyarray2&#39; extension
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It worked!</p>
 <p>We can now print the array and make sure it has the data we hope for:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">nparr</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">nparr</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[0 1 2 3 4 5 6 7 8 9]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we'll double-check that the two objects are really pointing to the same data array. We'll change the value of one of the elements in NumPy, and make sure the change is reflected in our <code>PyMyArray</code> object:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nparr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">555</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">nparr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">555</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">nparr</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[  0   1   2   3   4 555   6   7   8   9]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[ 0 1 2 3 4 555 6 7 8 9 ]
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Success!</p>
-
 </div>
 </div>
 </div>
@@ -2647,7 +2439,7 @@ building &#39;pymyarray2&#39; extension
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Exploring-the-Buffer-Protocol-Code">Exploring the Buffer Protocol Code<a class="anchor-link" href="#Exploring-the-Buffer-Protocol-Code">&#182;</a></h3>
+<h3 id="Exploring-the-Buffer-Protocol-Code">Exploring the Buffer Protocol Code<a class="anchor-link" href="#Exploring-the-Buffer-Protocol-Code">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2661,22 +2453,22 @@ building &#39;pymyarray2&#39; extension
 <span class="nf">PyMyArray_getbuffer</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">obj</span><span class="p">,</span> <span class="n">Py_buffer</span> <span class="o">*</span><span class="n">view</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_ValueError</span><span class="p">,</span> <span class="s">&quot;NULL view in getbuffer&quot;</span><span class="p">);</span>
+    <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_ValueError</span><span class="p">,</span> <span class="s">"NULL view in getbuffer"</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="n">PyMyArray</span><span class="o">*</span> <span class="n">self</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyMyArray</span><span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">.</span><span class="n">arr</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">.</span><span class="n">length</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">readonly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">itemsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">format</span> <span class="o">=</span> <span class="s">&quot;i&quot;</span><span class="p">;</span>  <span class="c1">// integer</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">ndim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">shape</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">.</span><span class="n">length</span><span class="p">;</span>  <span class="c1">// length-1 sequence of dimensions</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">strides</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">itemsize</span><span class="p">;</span>  <span class="c1">// for the simple case we can do this</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">suboffsets</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-  <span class="n">view</span><span class="o">-&gt;</span><span class="n">internal</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="o">-></span><span class="n">arr</span><span class="p">.</span><span class="n">arr</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">len</span> <span class="o">=</span> <span class="n">self</span><span class="o">-></span><span class="n">arr</span><span class="p">.</span><span class="n">length</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">readonly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">itemsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">format</span> <span class="o">=</span> <span class="s">"i"</span><span class="p">;</span>  <span class="c1">// integer</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">ndim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">shape</span> <span class="o">=</span> <span class="o">&</span><span class="n">self</span><span class="o">-></span><span class="n">arr</span><span class="p">.</span><span class="n">length</span><span class="p">;</span>  <span class="c1">// length-1 sequence of dimensions</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">strides</span> <span class="o">=</span> <span class="o">&</span><span class="n">view</span><span class="o">-></span><span class="n">itemsize</span><span class="p">;</span>  <span class="c1">// for the simple case we can do this</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">suboffsets</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="n">view</span><span class="o">-></span><span class="n">internal</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
 
   <span class="n">Py_INCREF</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>  <span class="c1">// need to increase the reference count</span>
   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
@@ -2693,12 +2485,11 @@ building &#39;pymyarray2&#39; extension
 <p>And then include this structure in the Python Type definition.</p>
 <div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">PyMyArrayType</span> <span class="o">=</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="o">&amp;</span><span class="n">PyMyArray_as_buffer</span><span class="p">,</span>         <span class="cm">/* tp_as_buffer */</span>
+    <span class="o">&</span><span class="n">PyMyArray_as_buffer</span><span class="p">,</span>         <span class="cm">/* tp_as_buffer */</span>
     <span class="p">...</span>
 <span class="p">}</span>
 </pre></div>
 <p>Simple, right?</p>
-
 </div>
 </div>
 </div>
@@ -2706,7 +2497,7 @@ building &#39;pymyarray2&#39; extension
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2717,7 +2508,6 @@ building &#39;pymyarray2&#39; extension
 <p>This was just a simple example of defining the buffer protocol for an object in CPython. It's exactly the kind of description I <em>wished</em> I had had as I tried to figure out how this stuff worked.  I hope this is as helpful to you as it would have been to me!</p>
 <p>Now that I've figured it out, my hope is to apply what I've learned to building an interface between <a href="http://julialang.org/">Julia</a> arrays and Python objects. We'll see how far I get on that front...</p>
 <p>Thanks for reading, and happy coding!</p>
-
 </div>
 </div>
 </div>
@@ -2726,12 +2516,9 @@ building &#39;pymyarray2&#39; extension
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was composed within an IPython notebook; you can view a static version <a href="http://nbviewer.ipython.org/url/jakevdp.github.com/downloads/notebooks/BufferProtocol.ipynb">here</a> or download the full source <a href="http://jakevdp.github.com/downloads/notebooks/BufferProtocol.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2761,6 +2548,18 @@ building &#39;pymyarray2&#39; extension
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "An Introduction to the Python Buffer Protocol"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/introduction-to-the-python-buffer-protocol.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

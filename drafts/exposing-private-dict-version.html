@@ -1398,8 +1398,7 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!--PELICAN_BEGIN_SUMMARY-->
-
-<p>I just got home from my sixth PyCon, and it was wonderful as usual. If you weren't able to attend—or even if you were—you'll find a wealth of entertaining and informative talks on the <a href="https://www.youtube.com/channel/UCrJhliKNQ8g0qoE_zvL8eVg/videos?sort=p&amp;view=0&amp;flow=grid">PyCon 2017 YouTube channel</a>.</p>
+<p>I just got home from my sixth PyCon, and it was wonderful as usual. If you weren't able to attend—or even if you were—you'll find a wealth of entertaining and informative talks on the <a href="https://www.youtube.com/channel/UCrJhliKNQ8g0qoE_zvL8eVg/videos?sort=p&view=0&flow=grid">PyCon 2017 YouTube channel</a>.</p>
 <p>Two of my favorites this year were a complementary pair of talks on Python dictionaries by two PyCon regulars: Raymond Hettinger's <a href="https://www.youtube.com/watch?v=npw4s1QTmPg">Modern Python Dictionaries A confluence of a dozen great ideas</a> and Brandon Rhodes' <a href="https://www.youtube.com/watch?v=66P5FMkWoVU">The Dictionary Even Mightier</a> (a followup of his PyCon 2010 talk, <a href="https://www.youtube.com/watch?v=C4Kc8xzcA68">The Mighty Dictionary</a>)</p>
 <p>Raymond's is a fascinating dive into the guts of the CPython dict implementation, while Brandon's focuses more on recent improvements in the dict's user-facing API. One piece both mention is the addition in Python 3.6 of a private dictionary version to aid CPython optimization efforts. In Brandon's words:</p>
 <blockquote><p>"<a href="https://www.python.org/dev/peps/pep-0509/">PEP509</a> added a private version number... every dictionary has a version number, and elsewhere in memory a master version counter. And when you go and change a dictionary the master counter is incremented from a million to a million and one, and that value a million and one is written into the version number of that dictionary. So what this means is that you can come back later and know if it's been modified, without reading maybe its hundreds of keys and values: you just look and see if the version has increased since the last time you were there."</p>
@@ -1416,7 +1415,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exposing-CPython's-Internals">Exposing CPython's Internals<a class="anchor-link" href="#Exposing-CPython's-Internals">&#182;</a></h2><p>In a <a href="https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/">post a few years ago</a>, I showed how to use the <code>ctypes</code> module to muck around in the internals of CPython's implementation at runtime, and I'll use a similar strategy here.</p>
+<h2 id="Exposing-CPython's-Internals">Exposing CPython's Internals<a class="anchor-link" href="#Exposing-CPython's-Internals">¶</a></h2><p>In a <a href="https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/">post a few years ago</a>, I showed how to use the <code>ctypes</code> module to muck around in the internals of CPython's implementation at runtime, and I'll use a similar strategy here.</p>
 <p>Briefly, the approach is to define a <code>ctypes.Structure</code> object that mirrors the sructure CPython uses to implement the type in question.
 We can start with the base structure that <a href="https://github.com/python/cpython/blob/3.6/Include/object.h#L106-L110">underlies every Python object</a>:</p>
 <div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_object</span> <span class="p">{</span>
@@ -1426,30 +1425,27 @@ We can start with the base structure that <a href="https://github.com/python/cpy
 <span class="p">}</span> <span class="n">PyObject</span><span class="p">;</span>
 </pre></div>
 <p>A <code>ctypes</code> wrapper might look like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="k">assert</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="c1"># Valid only in Python 3.6</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">assert</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o"><=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o"><</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="c1"># Valid only in Python 3.6</span>
 
 <span class="kn">import</span> <span class="nn">ctypes</span>
 <span class="n">py_ssize_t</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_ssize_t</span>  <span class="c1"># Almost always the case</span>
 
 <span class="k">class</span> <span class="nc">PyObjectStruct</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">Structure</span><span class="p">):</span>
-    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;ob_refcnt&#39;</span><span class="p">,</span> <span class="n">py_ssize_t</span><span class="p">),</span>
-                <span class="p">(</span><span class="s1">&#39;ob_type&#39;</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)]</span>
+    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">'ob_refcnt'</span><span class="p">,</span> <span class="n">py_ssize_t</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">'ob_type'</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1465,60 +1461,54 @@ We can start with the base structure that <a href="https://github.com/python/cpy
 <span class="p">}</span> <span class="n">PyDictObject</span><span class="p">;</span>
 </pre></div>
 <p>We can mirror the structure behind the <code>dict</code>  this way, plus add some methods that will be useful later:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">DictStruct</span><span class="p">(</span><span class="n">PyObjectStruct</span><span class="p">):</span>
-    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;ma_used&quot;</span><span class="p">,</span> <span class="n">py_ssize_t</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;ma_version_tag&quot;</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint64</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;ma_keys&quot;</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;ma_values&quot;</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">DictStruct</span><span class="p">(</span><span class="n">PyObjectStruct</span><span class="p">):</span>
+    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"ma_used"</span><span class="p">,</span> <span class="n">py_ssize_t</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"ma_version_tag"</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint64</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"ma_keys"</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"ma_values"</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
                <span class="p">]</span>
     
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="s2">&quot;DictStruct(size=</span><span class="si">{self.ma_used}</span><span class="s2">, &quot;</span>
-                <span class="n">f</span><span class="s2">&quot;refcount=</span><span class="si">{self.ob_refcnt}</span><span class="s2">, &quot;</span>
-                <span class="n">f</span><span class="s2">&quot;version=</span><span class="si">{self.ma_version_tag}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="s2">"DictStruct(size=</span><span class="si">{self.ma_used}</span><span class="s2">, "</span>
+                <span class="n">f</span><span class="s2">"refcount=</span><span class="si">{self.ob_refcnt}</span><span class="s2">, "</span>
+                <span class="n">f</span><span class="s2">"version=</span><span class="si">{self.ma_version_tag}</span><span class="s2">)"</span><span class="p">)</span>
     
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_address</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As a sanity check, let's make sure our structures match the size in memory of the types they are meant to wrap:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">object</span><span class="o">.</span><span class="n">__basicsize__</span> <span class="o">==</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">sizeof</span><span class="p">(</span><span class="n">PyObjectStruct</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">object</span><span class="o">.</span><span class="n">__basicsize__</span> <span class="o">==</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">sizeof</span><span class="p">(</span><span class="n">PyObjectStruct</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">dict</span><span class="o">.</span><span class="n">__basicsize__</span> <span class="o">==</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">sizeof</span><span class="p">(</span><span class="n">DictStruct</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1526,95 +1516,68 @@ We can start with the base structure that <a href="https://github.com/python/cpy
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With this setup, we can now wrap any dict object to get a look at its internal properties.
 Here's what this gives for a simple dict:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>DictStruct(size=3, refcount=1, version=508220)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To convince ourselves further that we're properly wrapping the object, let's make two more explicit references to this dict, add a new key, and make sure the size and reference count reflect this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D2</span> <span class="o">=</span> <span class="n">D</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">D2</span> <span class="o">=</span> <span class="n">D</span>
 <span class="n">D3</span> <span class="o">=</span> <span class="n">D2</span>
-<span class="n">D3</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">D3</span><span class="p">[</span><span class="s1">'d'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>DictStruct(size=4, refcount=3, version=515714)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It seems this is working correctly!</p>
-
 </div>
 </div>
 </div>
@@ -1622,7 +1585,7 @@ Here's what this gives for a simple dict:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exploring-the-Version-Number">Exploring the Version Number<a class="anchor-link" href="#Exploring-the-Version-Number">&#182;</a></h2><p>So what does the version number do? As Brandon explained in his talk, every dict in CPython 3.6 now has a version number that is</p>
+<h2 id="Exploring-the-Version-Number">Exploring the Version Number<a class="anchor-link" href="#Exploring-the-Version-Number">¶</a></h2><p>So what does the version number do? As Brandon explained in his talk, every dict in CPython 3.6 now has a version number that is</p>
 <ol>
 <li>globally unique</li>
 <li>updated locally whenever a dict is modified</li>
@@ -1630,33 +1593,25 @@ Here's what this gives for a simple dict:</p>
 </ol>
 <p>This global value is stored in the <a href="https://github.com/python/cpython/blob/3.6/Objects/dictobject.c#L243"><code>pydict_global_version</code></a> variable in the CPython source.
 So if we create a bunch of new dicts, we should expect each to have a higher version number than the last:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">dct</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>DictStruct(size=0, refcount=1, version=518136)
 DictStruct(size=0, refcount=1, version=518152)
@@ -1671,10 +1626,8 @@ DictStruct(size=0, refcount=1, version=518192)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1682,35 +1635,27 @@ DictStruct(size=0, refcount=1, version=518192)
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You might expect these versions to increment by one each time, but the version numbers are affected by the fact that Python uses many dictionaries in the background: among other things, local variables, global variables, and object attributes are all stored as dicts, and creating or modifying any of these results in the global version number being incremented.</p>
 <p>Similarly, any time we modify our dict it gets a higher version number:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">Dwrap</span> <span class="o">=</span> <span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">Dwrap</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>DictStruct(size=1, refcount=1, version=521221)
 DictStruct(size=2, refcount=1, version=521254)
@@ -1725,57 +1670,45 @@ DictStruct(size=10, refcount=1, version=521531)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Monkey-patching-Dict">Monkey-patching Dict<a class="anchor-link" href="#Monkey-patching-Dict">&#182;</a></h2><p>Let's go a step further and monkey-patch the dict object itself with a method that accesses the version directly.
+<h2 id="Monkey-patching-Dict">Monkey-patching Dict<a class="anchor-link" href="#Monkey-patching-Dict">¶</a></h2><p>Let's go a step further and monkey-patch the dict object itself with a method that accesses the version directly.
 Basically, we want to add a <code>get_version</code> method to the <code>dict</code> class that accesses this value.</p>
 <p>Our first attempt might look something like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">dict</span><span class="o">.</span><span class="n">get_version</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">ma_version_tag</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">dict</span><span class="o">.</span><span class="n">get_version</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">ma_version_tag</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_text output_error">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-8-99d51a65c779&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>dict<span class="ansi-blue-fg">.</span>get_version <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">lambda</span> obj<span class="ansi-blue-fg">:</span> DictStruct<span class="ansi-blue-fg">.</span>wrap<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>ma_version_tag
+<span class="ansi-green-fg"><ipython-input-8-99d51a65c779></span> in <span class="ansi-cyan-fg"><module></span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----> 1</span><span class="ansi-red-fg"> </span>dict<span class="ansi-blue-fg">.</span>get_version <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">lambda</span> obj<span class="ansi-blue-fg">:</span> DictStruct<span class="ansi-blue-fg">.</span>wrap<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>ma_version_tag
 
-<span class="ansi-red-fg">TypeError</span>: can&#39;t set attributes of built-in/extension type &#39;dict&#39;</pre>
+<span class="ansi-red-fg">TypeError</span>: can't set attributes of built-in/extension type 'dict'</pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1784,49 +1717,36 @@ Basically, we want to add a <code>get_version</code> method to the <code>dict</c
 <p>We get an error, because Python protects the attributes of built-in types from this kind of mucking.
 But never fear! We can get around this with (you guessed it) <code>ctypes</code>!</p>
 <p>The attributes and methods of any Python object are stored in its <code>__dict__</code> attribute, which in Python 3.6 is not a dictionary but a <code>mappingproxy</code> object, which you can think of as a read-only wrapper of the underlying dictionary:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
     <span class="n">bar</span> <span class="o">=</span> <span class="mi">4</span>
     
 <span class="n">Foo</span><span class="o">.</span><span class="vm">__dict__</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>mappingproxy({&#39;__dict__&#39;: &lt;attribute &#39;__dict__&#39; of &#39;Foo&#39; objects&gt;,
-              &#39;__doc__&#39;: None,
-              &#39;__module__&#39;: &#39;__main__&#39;,
-              &#39;__weakref__&#39;: &lt;attribute &#39;__weakref__&#39; of &#39;Foo&#39; objects&gt;,
-              &#39;bar&#39;: 4})</pre>
-</div>
-
-</div>
-
+<pre>mappingproxy({'__dict__': <attribute '__dict__' of 'Foo' objects>,
+              '__doc__': None,
+              '__module__': '__main__',
+              '__weakref__': <attribute '__weakref__' of 'Foo' objects>,
+              'bar': 4})</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1839,19 +1759,18 @@ But never fear! We can get around this with (you guessed it) <code>ctypes</code>
 <span class="p">}</span> <span class="n">mappingproxyobject</span><span class="p">;</span>
 </pre></div>
 <p>Let's write a <code>ctypes</code> structure that exposes this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">types</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">types</span>
 
 <span class="k">class</span> <span class="nc">MappingProxyStruct</span><span class="p">(</span><span class="n">PyObjectStruct</span><span class="p">):</span>
-    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;mapping&quot;</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">DictStruct</span><span class="p">))]</span>
+    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"mapping"</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">DictStruct</span><span class="p">))]</span>
     
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
@@ -1861,196 +1780,148 @@ But never fear! We can get around this with (you guessed it) <code>ctypes</code>
 <span class="c1"># Sanity check</span>
 <span class="k">assert</span> <span class="n">types</span><span class="o">.</span><span class="n">MappingProxyType</span><span class="o">.</span><span class="n">__basicsize__</span> <span class="o">==</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">sizeof</span><span class="p">(</span><span class="n">MappingProxyStruct</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can use this to get a C-level handle for the underlying dict of any mapping proxy:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">proxy</span> <span class="o">=</span> <span class="n">MappingProxyStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">proxy</span> <span class="o">=</span> <span class="n">MappingProxyStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
 <span class="n">proxy</span><span class="o">.</span><span class="n">mapping</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;__main__.LP_DictStruct at 0x10667dc80&gt;</pre>
-</div>
-
-</div>
-
+<pre><__main__.LP_DictStruct at 0x10667dc80></pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And we can pass this handle to functions in the C API in order to modify the dictionary wrapped by a read-only mapping proxy:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">mappingproxy_setitem</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set an item in a read-only mapping proxy&quot;&quot;&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">mappingproxy_setitem</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="sd">"""Set an item in a read-only mapping proxy"""</span>
     <span class="n">proxy</span> <span class="o">=</span> <span class="n">MappingProxyStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="n">ctypes</span><span class="o">.</span><span class="n">pythonapi</span><span class="o">.</span><span class="n">PyDict_SetItem</span><span class="p">(</span><span class="n">proxy</span><span class="o">.</span><span class="n">mapping</span><span class="p">,</span>
                                     <span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
                                     <span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mappingproxy_setitem</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
-                     <span class="s1">&#39;get_version&#39;</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mappingproxy_setitem</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
+                     <span class="s1">'get_version'</span><span class="p">,</span>
                      <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="n">DictStruct</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">ma_version_tag</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Once this is executed, we can call <code>get_version()</code> as a method on <em>any</em> Python dictionary to get the version number:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">{}</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="p">{}</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>544453</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This kind of monkey patching could be used for any built-in type; for example, we could add a <code>scramble</code> method to strings that randomly chooses upper or lower case for its contents:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="n">mappingproxy_setitem</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
-                     <span class="s1">&#39;scramble&#39;</span><span class="p">,</span>
-                     <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">()])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">))</span>
+                     <span class="s1">'scramble'</span><span class="p">,</span>
+                     <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">()])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;hello world&#39;</span><span class="o">.</span><span class="n">scramble</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="s1">'hello world'</span><span class="o">.</span><span class="n">scramble</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;hellO WORLd&#39;</pre>
-</div>
-
-</div>
-
+<pre>'hellO WORLd'</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2059,7 +1930,6 @@ But never fear! We can get around this with (you guessed it) <code>ctypes</code>
 <p>The possibilities are endless, but be warned that any time you muck around with the CPython internals at runtime, there are likely to be strange side-effects.
 This is definitely not code you should use for any purpose beyond simply having fun exploring the language.</p>
 <p>If you're curious about other ways you can modify the CPython runtime, you might be interested in my post from two years ago, <a href="https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/">Why Python is Slow: Looking Under the Hood</a>.</p>
-
 </div>
 </div>
 </div>
@@ -2067,13 +1937,12 @@ This is definitely not code you should use for any purpose beyond simply having 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="So...-Why?">So... Why?<a class="anchor-link" href="#So...-Why?">&#182;</a></h2><p>Now we have easy access to the dict version number, and you might wonder what can we do with this.</p>
-<p>The answer is, currently, not so much. In the CPython source, the only time the version tag is referenced aside from its definition is <a href="https://github.com/python/cpython/search?utf8=%E2%9C%93&amp;q=ma_version_tag">in a unit test</a>.
+<h2 id="So...-Why?">So... Why?<a class="anchor-link" href="#So...-Why?">¶</a></h2><p>Now we have easy access to the dict version number, and you might wonder what can we do with this.</p>
+<p>The answer is, currently, not so much. In the CPython source, the only time the version tag is referenced aside from its definition is <a href="https://github.com/python/cpython/search?utf8=%E2%9C%93&q=ma_version_tag">in a unit test</a>.
 Various Python optimization projects will in the future be able to use this feature to better optimize Python code, but to my knowledge none do yet (for example, here's a relevant <a href="https://github.com/numba/numba/issues/2242">Numba issue</a> and <a href="http://faster-cpython.readthedocs.io/fat_python.html">FATpython discussion</a>).</p>
 <p>So for the time being, access to the dictionary version number is, as they say, purely academic.
 But I hope that some time in the near future, a web search will land someone on this page who will find this code useful in more than a purely academic sense.</p>
 <p>Happy hacking!</p>
-
 </div>
 </div>
 </div>
@@ -2085,12 +1954,9 @@ But I hope that some time in the near future, a web search will land someone on 
 <a href="http://jakevdp.github.io/downloads/notebooks/DictVersion.ipynb">download</a>
 this notebook, or see a static view
 <a href="http://nbviewer.ipython.org/url/jakevdp.github.io/downloads/notebooks/DictVersion.ipynb">here</a>.</em></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2120,6 +1986,18 @@ this notebook, or see a static view
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Exposing Python 3.6's Private Dict Version"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/exposing-private-dict-version.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

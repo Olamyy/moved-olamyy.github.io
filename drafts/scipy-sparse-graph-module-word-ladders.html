@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>The recent <a href="http://sourceforge.net/projects/scipy/files/">0.11 release</a> of scipy includes several new features,
 one of which is the <a href="http://docs.scipy.org/doc/scipy/reference/sparse.csgraph.html">sparse graph submodule</a>
 which I contributed, with help from other developers.  I'm pretty excited about this: there are some
@@ -1407,7 +1406,6 @@ classic algorithms implemented, and it will open up whole new realms of computat
 at Scipy 2012, and some of the material below comes from a <a href="http://docs.scipy.org/doc/scipy/reference/tutorial/csgraph.html">tutorial</a>
 I wrote for the scipy documentation.</p>
 <!-- PELICAN_END_SUMMARY -->
-
 <p>First: what exactly is a sparse graph?  Well, a graph is just a collection of nodes, which have links between them.
 <a href="http://networkx.lanl.gov/">NetworkX</a> has some good examples and diagrams.  Graphs can represent nearly anything:
 social network connections, where each node is a person and is connected to acquaintences;
@@ -1425,7 +1423,6 @@ interest.</p>
 <li>Spectral Decomposition: a projection algorithm based on sparse graph laplacians</li>
 </ul>
 <p>And many more.</p>
-
 </div>
 </div>
 </div>
@@ -1436,106 +1433,83 @@ interest.</p>
 <p>Let's take a look at the package, and some of the algorithms available.
 Remember, this requires at least Scipy version 0.11, which was
 released in September 2012.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># First the preliminaries: enter pylab inline mode, do some imports</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># First the preliminaries: enter pylab inline mode, do some imports</span>
 <span class="o">%</span><span class="k">pylab</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">csgraph</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 Welcome to pylab, a matplotlib-based Python environment [backend: module://IPython.zmq.pylab.backend_inline].
-For more information, type &#39;help(pylab)&#39;.
+For more information, type 'help(pylab)'.
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's first list all the routines available in the module:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">csgraph</span><span class="o">.</span><span class="n">__all__</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">csgraph</span><span class="o">.</span><span class="n">__all__</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;cs_graph_components&#39;,
- &#39;connected_components&#39;,
- &#39;laplacian&#39;,
- &#39;shortest_path&#39;,
- &#39;floyd_warshall&#39;,
- &#39;dijkstra&#39;,
- &#39;bellman_ford&#39;,
- &#39;johnson&#39;,
- &#39;breadth_first_order&#39;,
- &#39;depth_first_order&#39;,
- &#39;breadth_first_tree&#39;,
- &#39;depth_first_tree&#39;,
- &#39;minimum_spanning_tree&#39;,
- &#39;construct_dist_matrix&#39;,
- &#39;reconstruct_path&#39;,
- &#39;csgraph_from_dense&#39;,
- &#39;csgraph_masked_from_dense&#39;,
- &#39;csgraph_to_dense&#39;,
- &#39;csgraph_to_masked&#39;,
- &#39;NegativeCycleError&#39;]</pre>
-</div>
-
-</div>
-
+<pre>['cs_graph_components',
+ 'connected_components',
+ 'laplacian',
+ 'shortest_path',
+ 'floyd_warshall',
+ 'dijkstra',
+ 'bellman_ford',
+ 'johnson',
+ 'breadth_first_order',
+ 'depth_first_order',
+ 'breadth_first_tree',
+ 'depth_first_tree',
+ 'minimum_spanning_tree',
+ 'construct_dist_matrix',
+ 'reconstruct_path',
+ 'csgraph_from_dense',
+ 'csgraph_masked_from_dense',
+ 'csgraph_to_dense',
+ 'csgraph_to_masked',
+ 'NegativeCycleError']</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1543,7 +1517,6 @@ For more information, type &#39;help(pylab)&#39;.
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Lots of good stuff there!  In order to show the utility of these routines, I'd like to introduce
 an example of a problem that can be quite interesting: word ladders.</p>
-
 </div>
 </div>
 </div>
@@ -1551,7 +1524,7 @@ an example of a problem that can be quite interesting: word ladders.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example:-Word-Ladders">Example: Word Ladders<a class="anchor-link" href="#Example:-Word-Ladders">&#182;</a></h2>
+<h2 id="Example:-Word-Ladders">Example: Word Ladders<a class="anchor-link" href="#Example:-Word-Ladders">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1561,8 +1534,7 @@ an example of a problem that can be quite interesting: word ladders.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="http://en.wikipedia.org/wiki/Word_ladder">Word ladders</a> are a game invented by Lewis Carroll, in which words are linked
 by changing a single letter at each step.  For example:</p>
-
-<pre><code>APE -&gt; APT -&gt; AIT -&gt; BIT -&gt; BIG -&gt; BAG -&gt; MAG -&gt; MAN
+<pre><code>APE -> APT -> AIT -> BIT -> BIG -> BAG -> MAG -> MAN
 
 </code></pre>
 <p>Here we have gone from "APE" to "MAN" in seven steps, changing one
@@ -1572,7 +1544,6 @@ As we'll see below, this problem is naturally expressed as a
 sparse graph problem.  The nodes will correspond to individual words,
 and we'll create connections
 between words that differ by at most one letter.</p>
-
 </div>
 </div>
 </div>
@@ -1580,7 +1551,7 @@ between words that differ by at most one letter.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Obtaining-a-List-of-Words">Obtaining a List of Words<a class="anchor-link" href="#Obtaining-a-List-of-Words">&#182;</a></h3>
+<h3 id="Obtaining-a-List-of-Words">Obtaining a List of Words<a class="anchor-link" href="#Obtaining-a-List-of-Words">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1591,43 +1562,30 @@ between words that differ by at most one letter.</p>
 <p>First, of course, we must obtain a list of valid words.  I'm running Ubuntu Linux, and
 Linux has a word dictionary at the location below.  If you're on a different architecture,
 you may have to search a bit to find your system dictionary.  But it's there somewhere...</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordlist</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/usr/share/dict/words&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">wordlist</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'/usr/share/dict/words'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>99171</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1636,47 +1594,34 @@ you may have to search a bit to find your system dictionary.  But it's there som
 <p>Our dictionary contains nearly 100,000 words.  We need to reduce these to just
 the three-letter words, and also remove invalid words like acronyms, proper
 nouns, and contractions.  We'll do that the following way:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordlist</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">)</span> <span class="c1"># keep 3-letter words</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">wordlist</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">)</span> <span class="c1"># keep 3-letter words</span>
 <span class="n">wordlist</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">)</span> <span class="c1"># no punctuation</span>
 <span class="n">wordlist</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">islower</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">)</span> <span class="c1"># no proper nouns or acronyms</span>
 
 <span class="n">wordlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span>
 <span class="n">wordlist</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(585,)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1687,45 +1632,32 @@ nouns, and contractions.  We'll do that the following way:</p>
 words which differ by a single letter.  We'll do that with some
 hard-core numpy type-wrangling, by converting the 3-letter words
 into a [585 x 3] matrix of numbers:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">word_bytes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">((</span><span class="n">wordlist</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">itemsize</span><span class="p">),</span>
-                        <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int8&#39;</span><span class="p">,</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">word_bytes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">((</span><span class="n">wordlist</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">itemsize</span><span class="p">),</span>
+                        <span class="n">dtype</span><span class="o">=</span><span class="s1">'int8'</span><span class="p">,</span>
                         <span class="n">buffer</span><span class="o">=</span><span class="n">wordlist</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">word_bytes</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(585, 3)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1733,7 +1665,6 @@ into a [585 x 3] matrix of numbers:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here we've converted the raw bytes of the characters to 8-bit integers.  This sort of strategy
 can be dangerous if you're not careful with your types, but in this instance it works fine.</p>
-
 </div>
 </div>
 </div>
@@ -1741,7 +1672,7 @@ can be dangerous if you're not careful with your types, but in this instance it 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Word-Ladders-as-a-Graph">Word Ladders as a Graph<a class="anchor-link" href="#Word-Ladders-as-a-Graph">&#182;</a></h3>
+<h3 id="Word-Ladders-as-a-Graph">Word Ladders as a Graph<a class="anchor-link" href="#Word-Ladders-as-a-Graph">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1753,48 +1684,35 @@ can be dangerous if you're not careful with your types, but in this instance it 
 part.  We now have 585 points in three dimensions, and want to link all points
 that differ in a single dimension.  One nice way to do this is to use the
 hamming distance in scipy: it does precisely this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">sparse</span>
 
-<span class="n">hamming_dist</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">word_bytes</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;hamming&#39;</span><span class="p">)</span>
-<span class="n">graph</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">squareform</span><span class="p">(</span><span class="n">hamming_dist</span> <span class="o">&lt;</span> <span class="mf">1.01</span> <span class="o">/</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">itemsize</span><span class="p">))</span>
+<span class="n">hamming_dist</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">word_bytes</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">'hamming'</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">squareform</span><span class="p">(</span><span class="n">hamming_dist</span> <span class="o"><</span> <span class="mf">1.01</span> <span class="o">/</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">itemsize</span><span class="p">))</span>
 
 <span class="n">graph</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(585, 585)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1802,46 +1720,36 @@ hamming distance in scipy: it does precisely this:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We're left with a 585 x 585 graph of our word data.  To get a feeling for what 
 this looks like, let's visualize it with matplotlib</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">)</span>
 
 <span class="c1"># Label axes with the words</span>
 <span class="k">def</span> <span class="nf">formatfunc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="s1">''</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">wordlist</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">graph</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))]</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="n">formatfunc</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="n">formatfunc</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeIAAAHaCAYAAADcwEpjAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXusXlWZ/5/zaztBaaHF28SkMhOiYKXtObahNkB6GExn
 TESUmZJIwAoJTb0kJkqYMkZpwyUQMTMQqIlmIAjFCIIzYkQbJUcRbdRjRdKKRu0BL/EyttRSKpd0
@@ -2142,15 +2050,11 @@ fpMWYhSGiOnVV1/t0JI06PJnSgU/BDn7q0/ZRPcXSuN9ZAe6v3xg2wmkEIv/wE2hZ26LpnuWcwGl
 gkYCJZZQtpO5BMWOJlze6DQUCrG0H0tG+oFeCIegNS667lxFAMWO0MQuL7H9HuP9SPV+lFXThBBC
 SE60Se3cgHaISPyWHyGEEIIEh6YJIYSQiFCICSGEkIhQiAkhhJCIUIgJIYSQiFCICSGEkIhQiAkh
 hJCI/H9cLhFxH6/cDAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2160,35 +2064,25 @@ hJCI/H9cLhFxH6/cDAAAAABJRU5ErkJggg==
 indicate groups of words which are closely related: for instance, "cog", "con", "coo", "cot", "cow", 
 etc. are all near each other in alphabetical order, and share many links: this creates a dark
 blob on the diagonal.  We can zoom in to see this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="mi">93</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="mi">93</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="mi">84</span><span class="p">)</span>
 <span class="n">fig</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
 <div class="output_png output_subarea output_execute_result">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAesAAAHcCAYAAAD2jIK0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHL5JREFUeJzt3G9sXeddwPHfqaNuqAkoWeIXWVZUUxwWaK6xlirxNEfc
@@ -2321,15 +2215,11 @@ ZrMZfX19MTU1FXv37o3Jycno7++/9Pj77rsvfvVXfzV+7/d+b8H1LRR5AGBhVbZYzkajEWNjY9HR
 0RG9vb1x8ODBGB0djTNnzkRnZ2dMTEzEli1bIiLi1KlT0dXVFadOnYqf/MmfXNEdAIDVruVYL8aj
 jz4ajz/+eHzxi19c7lUDwA2npdvgi/HJT34y/uZv/ib++q//erlXDQA3pBW5sgYAlo+/YAYAhRNr
 ACicWANA4cQaAAon1gBQOLEGgML9DzQ1Ed06r/0rAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2338,35 +2228,25 @@ ACicWANA4cQaAAon1gBQOLEGgML9DzQ1Ed06r/0rAAAAAElFTkSuQmCC
 <p>We also see linear patterns off the diagonal.  These are the result of words which differ by their first
 letter: For example "ton" is linked to "con", "too" is linked to "coo", "top" is linked to "cop", etc.
 Let's zoom in and take a look at these as well:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">510</span><span class="p">,</span> <span class="mi">519</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">510</span><span class="p">,</span> <span class="mi">519</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="mi">85</span><span class="p">)</span>
 <span class="n">fig</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
 <div class="output_png output_subarea output_execute_result">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAesAAAHeCAYAAAC7RCO/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAH6pJREFUeJzt3Hts1fX9x/HXl9OoizJHpTXpELfivKBySg2oZbTHkzrj
@@ -2512,15 +2392,11 @@ sWPHHUcSN27cuHHjNqxu8RjUZfBwOKzi4mItWrRI6enpisVi/T7uzjvvVGlpqcrLy3t33F/2ea8B
 AIAfnhtkOWtqalRZWalAIKCJEyfK8zwVFRVpxowZvY/p6enR6NGjtX37dl166aVDPjQAAMPJoGPt
 x5tvvqn77rtPr7766lAfGgCAYWdQl8H9+OlPf6pf//rX+tOf/jTUhwYAYFhKyM4aAAAMHX7dKAAA
 xhFrAACMI9YAABhHrAEAMI5YAwBgHLEGAMC4/wOiG5mHlLYkkwAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2529,7 +2405,6 @@ xhFrAACMI9YAABhHrAEAMI5YAwBgHLEGAMC4/wOiG5mHlLYkkwAAAABJRU5ErkJggg==
 <p>Using matplotlib's
 interactive plotting functionality and zooming around this graph can be a pretty interesting exercise,
 and help you gain further intuition into the connections between the words.</p>
-
 </div>
 </div>
 </div>
@@ -2537,7 +2412,7 @@ and help you gain further intuition into the connections between the words.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Finding-the-Shortest-Path:-Dijkstra's-Algorithm">Finding the Shortest Path: Dijkstra's Algorithm<a class="anchor-link" href="#Finding-the-Shortest-Path:-Dijkstra's-Algorithm">&#182;</a></h3>
+<h3 id="Finding-the-Shortest-Path:-Dijkstra's-Algorithm">Finding the Shortest Path: Dijkstra's Algorithm<a class="anchor-link" href="#Finding-the-Shortest-Path:-Dijkstra's-Algorithm">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2552,88 +2427,65 @@ accomplish this task is Dyjkstra's algorithm, which is based on <a href="http://
 principles.  Dijkstra's algorithm is built into the new <code>csgraph</code> package, and can be used as
 follows.</p>
 <p>First we need to find the indices of the two words in question:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">i1</span> <span class="o">=</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="s1">&#39;ape&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">i1</span> <span class="o">=</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="s1">'ape'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span>
 
-<span class="n">i2</span> <span class="o">=</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="s1">&#39;man&#39;</span><span class="p">)</span>
+<span class="n">i2</span> <span class="o">=</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="s1">'man'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">i2</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(22, &#39;ape&#39;)
-(310, &#39;man&#39;)
+<pre>(22, 'ape')
+(310, 'man')
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next we'll call the <code>shortest_path</code> function, which calls Dijkstra's algorithm under the hood:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">distances</span><span class="p">,</span> <span class="n">predecessors</span> <span class="o">=</span> <span class="n">csgraph</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">return_predecessors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="s2">&quot;distance from &#39;</span><span class="si">%s</span><span class="s2">&#39; to &#39;</span><span class="si">%s</span><span class="s2">&#39;: </span><span class="si">%i</span><span class="s2"> steps&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="n">wordlist</span><span class="p">[</span><span class="n">i2</span><span class="p">],</span> <span class="n">distances</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">distances</span><span class="p">,</span> <span class="n">predecessors</span> <span class="o">=</span> <span class="n">csgraph</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">return_predecessors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="s2">"distance from '</span><span class="si">%s</span><span class="s2">' to '</span><span class="si">%s</span><span class="s2">': </span><span class="si">%i</span><span class="s2"> steps"</span> <span class="o">%</span> <span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="n">wordlist</span><span class="p">[</span><span class="n">i2</span><span class="p">],</span> <span class="n">distances</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&#34;distance from &#39;ape&#39; to &#39;man&#39;: 5 steps&#34;</pre>
-</div>
-
-</div>
-
+<pre>"distance from 'ape' to 'man': 5 steps"</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2641,35 +2493,27 @@ follows.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We found a path of length 5 steps!  This is shorter than the seven steps above.
 The steps taken are stored in the predecessor list:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="n">i1</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="n">i1</span>
 <span class="k">while</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">i2</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">predecessors</span><span class="p">[</span><span class="n">i2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>ape
 apt
@@ -2680,16 +2524,14 @@ man
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Finding-the-Longest-Minimal-Path">Finding the Longest Minimal Path<a class="anchor-link" href="#Finding-the-Longest-Minimal-Path">&#182;</a></h3>
+<h3 id="Finding-the-Longest-Minimal-Path">Finding the Longest Minimal Path<a class="anchor-link" href="#Finding-the-Longest-Minimal-Path">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2703,42 +2545,29 @@ in our linguistic space?  To find out, we can use the distances matrix returned 
 the algorithm.</p>
 <p>If any words have no path between them, the algorithm returns infinity.  We don't care about
 the infinities here, so we'll mask them out and ask what the longest distance is:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>13.0</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2746,44 +2575,31 @@ the infinities here, so we'll mask them out and ask what the longest distance is
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Evidently there exist words that cannot be linked in fewer than 13 steps!
 Let's see which ones they are:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">distances</span> <span class="o">==</span> <span class="mi">13</span><span class="p">)</span>
-<span class="n">unique_paths</span> <span class="o">=</span> <span class="p">(</span><span class="n">i1</span> <span class="o">&lt;</span> <span class="n">i2</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">distances</span> <span class="o">==</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">unique_paths</span> <span class="o">=</span> <span class="p">(</span><span class="n">i1</span> <span class="o"><</span> <span class="n">i2</span><span class="p">)</span>
 <span class="nb">zip</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i1</span><span class="p">][</span><span class="n">unique_paths</span><span class="p">],</span> <span class="n">wordlist</span><span class="p">[</span><span class="n">i2</span><span class="p">][</span><span class="n">unique_paths</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[(&#39;imp&#39;, &#39;ohm&#39;), (&#39;imp&#39;, &#39;ohs&#39;), (&#39;ohm&#39;, &#39;ump&#39;), (&#39;ohs&#39;, &#39;ump&#39;)]</pre>
-</div>
-
-</div>
-
+<pre>[('imp', 'ohm'), ('imp', 'ohs'), ('ohm', 'ump'), ('ohs', 'ump')]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2792,35 +2608,27 @@ Let's see which ones they are:</p>
 <p>We have four pairs of words, and examining them, we see that the paths go from
 one pair, "imp" and "ump", to another pair, "ohm" and "ohs".  We'll use the same
 trick as above to list the links between two of these:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="n">i2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="n">i2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="k">while</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">i1</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">predecessors</span><span class="p">[</span><span class="n">i1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>ohm
 oho
@@ -2839,16 +2647,14 @@ imp
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Connected-Components">Connected Components<a class="anchor-link" href="#Connected-Components">&#182;</a></h3>
+<h3 id="Connected-Components">Connected Components<a class="anchor-link" href="#Connected-Components">¶</a></h3>
 </div>
 </div>
 </div>
@@ -2860,43 +2666,30 @@ imp
 "islands" in the word graph which can't be reached from the majority of words,
 and we'd like to see what these are.  To do this, we can use the <code>connected_components</code>
 routine:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_components</span><span class="p">,</span> <span class="n">component_list</span> <span class="o">=</span> <span class="n">csgraph</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">n_components</span><span class="p">,</span> <span class="n">component_list</span> <span class="o">=</span> <span class="n">csgraph</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
 <span class="n">n_components</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>14</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2904,42 +2697,29 @@ routine:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This shows us that we have 14 distinct components: 14 islands of words with no paths between them.
 Let's see how big these islands are:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">component_list</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">)]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">component_list</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>[571, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2948,54 +2728,41 @@ Let's see how big these islands are:</p>
 <p>We see that the bulk of three letter words are connected: the main set of 571 has
 paths to all others in that set.  The interesting words are the ones all by
 themselves:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">component_list</span> <span class="o">==</span> <span class="n">i</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">)]</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">wordlist</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">component_list</span> <span class="o">==</span> <span class="n">i</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[[&#39;aha&#39;],
- [&#39;chi&#39;],
- [&#39;ebb&#39;],
- [&#39;ems&#39;, &#39;emu&#39;],
- [&#39;gnu&#39;],
- [&#39;ism&#39;],
- [&#39;nth&#39;],
- [&#39;ova&#39;],
- [&#39;qua&#39;],
- [&#39;ugh&#39;],
- [&#39;ups&#39;],
- [&#39;urn&#39;],
- [&#39;use&#39;]]</pre>
-</div>
-
-</div>
-
+<pre>[['aha'],
+ ['chi'],
+ ['ebb'],
+ ['ems', 'emu'],
+ ['gnu'],
+ ['ism'],
+ ['nth'],
+ ['ova'],
+ ['qua'],
+ ['ugh'],
+ ['ups'],
+ ['urn'],
+ ['use']]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3003,7 +2770,6 @@ themselves:</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These are all the three-letter "loner" words, which can't reach any other valid
 words through the changing of a single letter.</p>
-
 </div>
 </div>
 </div>
@@ -3011,7 +2777,7 @@ words through the changing of a single letter.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="More:-Minimum-Spanning-Tree,-Depth-first-search,-Breadth-first-search...">More: Minimum Spanning Tree, Depth-first search, Breadth-first search...<a class="anchor-link" href="#More:-Minimum-Spanning-Tree,-Depth-first-search,-Breadth-first-search...">&#182;</a></h3>
+<h3 id="More:-Minimum-Spanning-Tree,-Depth-first-search,-Breadth-first-search...">More: Minimum Spanning Tree, Depth-first search, Breadth-first search...<a class="anchor-link" href="#More:-Minimum-Spanning-Tree,-Depth-first-search,-Breadth-first-search...">¶</a></h3>
 </div>
 </div>
 </div>
@@ -3032,12 +2798,9 @@ to get from "Guido" to "Python" using English language words?
 First to give the answer wins... well, nothing, actually.
 What can I say: I do this for free.</p>
 <p>Happy coding!</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -3067,6 +2830,18 @@ What can I say: I do this for free.</p>
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Sparse Graphs in Python: Playing with Word Ladders"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/scipy-sparse-graph-module-word-ladders.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

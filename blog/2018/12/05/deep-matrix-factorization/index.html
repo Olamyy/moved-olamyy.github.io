@@ -1399,7 +1399,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h3>
+<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1418,7 +1418,6 @@ The focus of this article will be on a variant of collaborative filtering called
 <li>Sparsity as a reference to the number of items that were successfully rated by users (Usually always really low).</li>
 </ol>
 <p>To solve the problem of sparsity, earlier systems relied on filling the missing rating (i.e making the data dense) with the average ratings for each user and item. This was expensive as it increases the amount of data significantly and introduces a lot of noise into the data. Simon Funk <sup>3</sup> while taking part in the Netflix Prize<sup>4</sup> proposed the Matrix Factorization idea for solving this problem.</p>
-
 </div>
 </div>
 </div>
@@ -1426,7 +1425,7 @@ The focus of this article will be on a variant of collaborative filtering called
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Matrix-Factorization">Matrix Factorization<a class="anchor-link" href="#Matrix-Factorization">&#182;</a></h3>
+<h3 id="Matrix-Factorization">Matrix Factorization<a class="anchor-link" href="#Matrix-Factorization">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1434,7 +1433,7 @@ The focus of this article will be on a variant of collaborative filtering called
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="/images/user_item.png" alt="UserItemRating"></p>
+<p><img alt="UserItemRating" src="/images/user_item.png"></p>
 <p>The collection of user, item, rating in a typical RecSys problem can be stored as a <code>sparse matrix</code> where users are in <code>rows</code> and items are in <code>columns</code> with the ratings as values in the matrix. The missing values in the matrix are unobserved instances i.e ratings to predict. and is essentially the task here. The prediction of these ratings  is usually done in one of 3 ways:</p>
 <ol>
 <li>If the data is numeric and bimodal between two distant values, the mean imputation is used to fill the data with values that otherwise would not exist in the dataset at all.</li>
@@ -1445,14 +1444,12 @@ The focus of this article will be on a variant of collaborative filtering called
 <p>Matrix factorization is a solution to this problem that attempts to bypass the challenges above. It assumes that a bunch of hidden feature exists that determine how a user rates an item. For example, Users A and C could give high ratings to a particular Item B if they both like a certain thing about this item. As such, if we can discover what the hidden thing they both like about the item is, we should be able to predict a rating with respect to this user and other items.
 Assuming our sparse user-item-rating matrix is denoted by $A$, matrix factorization tries to learn a number of features, say $k$ that represents a user or item. Using the concept of matrix decomposition, $A$ is then decomposed into the dot product of two lower rank matrices $L$ and $U$, such that
         $$A = L.U$$ where</p>
-
 <pre><code>      A = Our sparse matrix
       L = user-factor matrix i.e features that stand out about the users 
       U = item-factor matrix i.e features that stand out about the items.                    
 </code></pre>
 <p>The predicted rating for each missing value is then given as the sum of $k$ instances of the $L$ and $U$ reprisented as:</p>
 <p>$$rating_{i,j} = \sum_{l=1}^k \ L_{i,l} . \ U_{j,l} = U_{i,l}^T.L_{j,l}$$</p>
-
 </div>
 </div>
 </div>
@@ -1466,7 +1463,6 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
     where $d_{i,j}$ = real rating and $\overbrace{d_{i,j}}$ = predicted rating</p>
 <p>Substituting our initial equation into this, we get:
         $$\left(d_{i,j} - \overbrace{d_{i,j}}\right)^2 = \left(d_{i,j} - \sum_{l=1}^k \ L_{i,l} . \ U_{j,l}\right)^2$$</p>
-
 </div>
 </div>
 </div>
@@ -1480,7 +1476,6 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
     $$L^{'}_{il} \ =L_{il} + 2\alpha d_{ij} U_{lj} \ $$</p>
 <p>Similarly, $U_{i,l}$ can be updated at each point with:
     $$U^{'}_{lj} \ =U_{il} + 2\alpha d_{ij} L_{il} \ $$</p>
-
 </div>
 </div>
 </div>
@@ -1494,7 +1489,6 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
     $$b'_{user, i} = b_{user, i} + \alpha \times (d_{ij} - \beta bu_i)$$
        $$b'_{item, i} = b_{item, i} + \alpha \times (d_{ij} - \beta bu_i)$$</p>
 <p>To better illustrate matrix factorization, let's try a simple python implementation of the algorithm using a top down approach.</p>
-
 </div>
 </div>
 </div>
@@ -1502,17 +1496,17 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-1-:-Create-the-user-items-rating-matrix">Step 1 : Create the user-items-rating matrix<a class="anchor-link" href="#Step-1-:-Create-the-user-items-rating-matrix">&#182;</a></h6>
+<h6 id="Step-1-:-Create-the-user-items-rating-matrix">Step 1 : Create the user-items-rating matrix<a class="anchor-link" href="#Step-1-:-Create-the-user-items-rating-matrix">¶</a></h6>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[177]:</div>
+<div class="prompt input_prompt">In [177]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Simple matrix with ratings as element.</span>
-<span class="c1">### We&#39;re to predict the 0 values which are items that have not been rated yet.</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">### Simple matrix with ratings as element.</span>
+<span class="c1">### We're to predict the 0 values which are items that have not been rated yet.</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="n">user_item_rating</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
@@ -1521,26 +1515,24 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
                                 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
                                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-2-:-Find-the-values-of-L-and-U-using-gradient-descent">Step 2 : Find the values of L and U using gradient descent<a class="anchor-link" href="#Step-2-:-Find-the-values-of-L-and-U-using-gradient-descent">&#182;</a></h6>
+<h6 id="Step-2-:-Find-the-values-of-L-and-U-using-gradient-descent">Step 2 : Find the values of L and U using gradient descent<a class="anchor-link" href="#Step-2-:-Find-the-values-of-L-and-U-using-gradient-descent">¶</a></h6>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[178]:</div>
+<div class="prompt input_prompt">In [178]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_l_u_gradient_descent</span><span class="p">(</span><span class="n">user_item_rating</span><span class="p">):</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_l_u_gradient_descent</span><span class="p">(</span><span class="n">user_item_rating</span><span class="p">):</span>
     <span class="n">features</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># number of hidden factors in our matrix</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.0002</span>  <span class="c1"># learning rate i.e $\alpha$</span>
     <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.02</span>     <span class="c1"># Bias</span>
@@ -1557,8 +1549,8 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
             <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">user_item_rating</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="p">]</span> <span class="c1">### Map of items with no ratings. i.e ratings we&#39;re predicting for </span>
+            <span class="k">if</span> <span class="n">user_item_rating</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">></span> <span class="mi">0</span>
+        <span class="p">]</span> <span class="c1">### Map of items with no ratings. i.e ratings we're predicting for </span>
     
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
@@ -1568,68 +1560,54 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
                 <span class="n">U</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d_ij</span> <span class="o">*</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">l</span><span class="p">]</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">U</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">j</span><span class="p">])</span> <span class="c1">### Update U at each new feature descent point</span>
     <span class="k">return</span> <span class="n">L</span><span class="p">,</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span>   <span class="c1">### Return L and U</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-3-:-Find-the-dot-product-of-L-and-U">Step 3 : Find the dot product of L and U<a class="anchor-link" href="#Step-3-:-Find-the-dot-product-of-L-and-U">&#182;</a></h6>
+<h6 id="Step-3-:-Find-the-dot-product-of-L-and-U">Step 3 : Find the dot product of L and U<a class="anchor-link" href="#Step-3-:-Find-the-dot-product-of-L-and-U">¶</a></h6>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[179]:</div>
+<div class="prompt input_prompt">In [179]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_dot_l_u</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_dot_l_u</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Putting this all together, we get:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[180]:</div>
+<div class="prompt input_prompt">In [180]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">find_l_u_gradient_descent</span><span class="p">(</span><span class="n">user_item_rating</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">L</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">find_l_u_gradient_descent</span><span class="p">(</span><span class="n">user_item_rating</span><span class="p">)</span>
 
 <span class="n">find_dot_l_u</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[180]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[3.58193084, 2.11016737, 2.5515962 , 2.51643076],
        [2.67882287, 1.53323706, 2.05104122, 2.06722282],
@@ -1637,19 +1615,15 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
        [2.03771395, 0.83453415, 2.61521841, 2.94143927],
        [3.41638943, 1.50125544, 4.05995427, 4.51028962]])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A less hacky (and easily more practical) way of computing Matrix Factorization is to use the <code>SVD</code> (Singular Value Decomposition) module available in the <code>surprise</code> RecSys python package. It should however be noted that SVD is used mostly for dense matrices. It (SVD) makes it easy for the eigenvectors of these matrices to be calculated. The <code>NMF</code> ( Non-negative Matrix Factorization) module produces better predictions for sparse matrices since the missing values are included in the algorithm.</p>
-
 </div>
 </div>
 </div>
@@ -1658,11 +1632,10 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An often interesting challenge with RecSys is effectively handling the changing nature of both users and items. This time-drifting nature of data in RecSys, often goes a long way to determining the rating of items, since each new (time-based) selection leads to a change in user taste. Given this, a good RecSys should account for temporal changes in user tastes. Examples of timeseries plots (using the movielens data) showing this changing nature is shown below.</p>
-<p><img src="/images/ts.png" alt="UserItemRating">
+<p><img alt="UserItemRating" src="/images/ts.png">
 *Image Source: <a href="https://github.com/WJMatthew/MovieLens-EDA">Github</a> License MIT</p>
-<p><img src="/images/ts_1.png" alt="UserItemRating">
+<p><img alt="UserItemRating" src="/images/ts_1.png">
 *Image Source: <a href="https://github.com/WJMatthew/MovieLens-EDA">Github</a> License MIT</p>
-
 </div>
 </div>
 </div>
@@ -1677,7 +1650,6 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
 </ol>
 <p>To account for this change, we can introduce a time based constant, $t$ into our initial equation:
     $$\overbrace{d_{i,j}}(t) = b_{user, i}(t) + b_{item, j}(t) + rating_{i,j}(t)$$</p>
-
 </div>
 </div>
 </div>
@@ -1685,7 +1657,7 @@ If $A$ is dense, i.e most of the elements are non-zero, the $L$ is the eigenvect
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Deep-Matrix-Factorization">Deep Matrix Factorization<a class="anchor-link" href="#Deep-Matrix-Factorization">&#182;</a></h3>
+<h3 id="Deep-Matrix-Factorization">Deep Matrix Factorization<a class="anchor-link" href="#Deep-Matrix-Factorization">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1705,7 +1677,6 @@ ratings. Implicit feedback is also applied in this research line
 of deep learning for recommendation.  [He et
 al., 2017] also attempted to model the user-item interactions
 with a multi-layer feedforward neural network. Regardless of the implementation chosen, the architecture is pretty similar.</p>
-
 </div>
 </div>
 </div>
@@ -1720,9 +1691,8 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
    Finally, our hidden features can be computed as a function of the product of the weights $W_{N}$ and hidden layers $l_{N}$, i.e
    $$h = f(W_{n}l_{n-1} + b_{N})$$ where $h$ is the hidden feature and $b$ bias.</p>
 <p>Following this pattern, our final architecture ends up to containing two multi-layer networks mapped to hidden layers of low-dimensional vector as shown below. A ReLU activation can be applied at each point of the network and the similarity between hidden features calculated using cosine similarity.</p>
-<p><img src="/images/dmf_layers.png" alt="DMF Architecture"></p>
+<p><img alt="DMF Architecture" src="/images/dmf_layers.png"></p>
 <p>Deep matrix factorization provides a leverage over the normal matrix factorization in that output size of the embedded layer is not restricted to a particular value. This is useful in the case where one dimension may be significantly larger than the other and thus requires training a massive number of features.</p>
-
 </div>
 </div>
 </div>
@@ -1731,16 +1701,15 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below is an implementation of the DMF using Keras.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[214]:</div>
+<div class="prompt input_prompt">In [214]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Embedding</span><span class="p">,</span> <span class="n">Reshape</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">dot</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Embedding</span><span class="p">,</span> <span class="n">Reshape</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">dot</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 
 <span class="k">class</span> <span class="nc">DMF</span><span class="p">(</span><span class="n">Sequential</span><span class="p">):</span>
@@ -1764,7 +1733,7 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
     <span class="k">def</span> <span class="nf">setup_L</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">L</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_count</span><span class="p">):</span>
-            <span class="n">L</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">))</span>
         <span class="n">l_embedding</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">L</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l_embedding</span><span class="p">)</span>
         <span class="n">L</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Reshape</span><span class="p">((</span><span class="n">features</span><span class="p">,)))</span>
@@ -1773,7 +1742,7 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
     <span class="k">def</span> <span class="nf">setup_U</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">U</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_count</span><span class="p">):</span>
-            <span class="n">U</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+            <span class="n">U</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">))</span>
         <span class="n">u_embedding</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">U</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u_embedding</span><span class="p">)</span>
         <span class="n">U</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Reshape</span><span class="p">((</span><span class="n">features</span><span class="p">,)))</span>
@@ -1783,17 +1752,15 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">user</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="p">])])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h3>
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1802,7 +1769,6 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There's no general rule as to which of vanilla matrix factorization or deep matrix factorization will perfectly fit a problem. Most times, it doesn't hurt to try out both and compare performance. The most compromising issues with the vanilla implementation is inclusion on non-linear interactions in the matrix while for deep matrix factorization, it can be either negative sampling ratio, depth of network(too deep? overfits . too shallow? underfits) and the factors of the final hidden state. As a general form of reference, [Li et al., 2015; Sedhain et al., 2015; Strub and Mary, 2015] all have performance benchmarks for the implementations.</p>
-
 </div>
 </div>
 </div>
@@ -1812,7 +1778,6 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Thank you for reading.</p>
 <p><em>This post was written entirely in the IPython notebook.</em></p>
-
 </div>
 </div>
 </div>
@@ -1820,7 +1785,7 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Resources">Resources<a class="anchor-link" href="#Resources">&#182;</a></h2><ol>
+<h2 id="Resources">Resources<a class="anchor-link" href="#Resources">¶</a></h2><ol>
 <li><a href="https://www.yuspify.com/blog/cold-start-problem-recommender-systems/">https://www.yuspify.com/blog/cold-start-problem-recommender-systems/</a></li>
 <li><a href="https://dspace.mit.edu/handle/1721.1/99785">https://dspace.mit.edu/handle/1721.1/99785</a></li>
 <li><a href="https://sifter.org/simon/journal/20061211.html">https://sifter.org/simon/journal/20061211.html</a></li>
@@ -1833,12 +1798,9 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
 <li><a href="https://www.ijcai.org/proceedings/2017/0447.pdf">https://www.ijcai.org/proceedings/2017/0447.pdf</a></li>
 <li><a href="https://github.com/khanhnamle1994/movielens/blob/master/CFModel.py">https://github.com/khanhnamle1994/movielens/blob/master/CFModel.py</a></li>
 </ol>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1868,6 +1830,18 @@ with a multi-layer feedforward neural network. Regardless of the implementation 
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "Deep Matrix Factorization"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=blog/2018/12/05/deep-matrix-factorization/&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>

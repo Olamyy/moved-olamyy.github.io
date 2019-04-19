@@ -1398,7 +1398,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>Note: recent releases of IPython/Jupyter greatly streamline this kind of communication, and the approach in this post will no longer work as shown here.</em></p>
-
 </div>
 </div>
 </div>
@@ -1407,7 +1406,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!-- PELICAN_BEGIN_SUMMARY -->
-
 <p>I've been working with javascript and the IPython notebook recently, and found myself
 in need of a way to pass data back and forth between the Javascript runtime and the
 IPython kernel.  There's a bit of information about this floating around on various
@@ -1431,7 +1429,7 @@ the notebook and open it in IPython.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Executing-Python-Statements-From-Javascript">Executing Python Statements From Javascript<a class="anchor-link" href="#Executing-Python-Statements-From-Javascript">&#182;</a></h2>
+<h2 id="Executing-Python-Statements-From-Javascript">Executing Python Statements From Javascript<a class="anchor-link" href="#Executing-Python-Statements-From-Javascript">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1443,7 +1441,6 @@ the notebook and open it in IPython.</p>
 IPython kernel is the <code>kernel</code> object
 in the IPython Javascript package.
 A python statement can be executed from javascript as follows:</p>
-
 <pre><code>var kernel = IPython.notebook.kernel;
 kernel.execute(command);
 
@@ -1452,64 +1449,53 @@ kernel.execute(command);
 <p>Here is a short example where we use HTML elements and javascript callbacks
 to execute a statement in the Python kernel from Javascript, using the
 <code>kernel.execute</code> command:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 
-<span class="n">input_form</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;div style=&quot;background-color:gainsboro; border:solid black; width:300px; padding:20px;&quot;&gt;</span>
-<span class="s2">Variable Name: &lt;input type=&quot;text&quot; id=&quot;var_name&quot; value=&quot;foo&quot;&gt;&lt;br&gt;</span>
-<span class="s2">Variable Value: &lt;input type=&quot;text&quot; id=&quot;var_value&quot; value=&quot;bar&quot;&gt;&lt;br&gt;</span>
-<span class="s2">&lt;button onclick=&quot;set_value()&quot;&gt;Set Value&lt;/button&gt;</span>
-<span class="s2">&lt;/div&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">input_form</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2"><div style="background-color:gainsboro; border:solid black; width:300px; padding:20px;"></span>
+<span class="s2">Variable Name: <input type="text" id="var_name" value="foo"><br></span>
+<span class="s2">Variable Value: <input type="text" id="var_value" value="bar"><br></span>
+<span class="s2"><button onclick="set_value()">Set Value</button></span>
+<span class="s2"></div></span>
+<span class="s2">"""</span>
 
-<span class="n">javascript</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;script type=&quot;text/Javascript&quot;&gt;</span>
+<span class="n">javascript</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2"><script type="text/Javascript"></span>
 <span class="s2">    function set_value(){</span>
-<span class="s2">        var var_name = document.getElementById(&#39;var_name&#39;).value;</span>
-<span class="s2">        var var_value = document.getElementById(&#39;var_value&#39;).value;</span>
-<span class="s2">        var command = var_name + &quot; = &#39;&quot; + var_value + &quot;&#39;&quot;;</span>
-<span class="s2">        console.log(&quot;Executing Command: &quot; + command);</span>
+<span class="s2">        var var_name = document.getElementById('var_name').value;</span>
+<span class="s2">        var var_value = document.getElementById('var_value').value;</span>
+<span class="s2">        var command = var_name + " = '" + var_value + "'";</span>
+<span class="s2">        console.log("Executing Command: " + command);</span>
 <span class="s2">        </span>
 <span class="s2">        var kernel = IPython.notebook.kernel;</span>
 <span class="s2">        kernel.execute(command);</span>
 <span class="s2">    }</span>
-<span class="s2">&lt;/script&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"></script></span>
+<span class="s2">"""</span>
 
 <span class="n">HTML</span><span class="p">(</span><span class="n">input_form</span> <span class="o">+</span> <span class="n">javascript</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[1]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
 <div style="background-color:gainsboro; border:solid black; width:300px; padding:20px;">
-Variable Name: <input type="text" id="var_name" value="foo"><br>
-Variable Value: <input type="text" id="var_value" value="bar"><br>
+Variable Name: <input id="var_name" type="text" value="foo"><br>
+Variable Value: <input id="var_value" type="text" value="bar"><br>
 <button onclick="set_value()">Set Value</button>
 </div>
-
 <script type="text/Javascript">
     function set_value(){
         var var_name = document.getElementById('var_name').value;
@@ -1521,14 +1507,10 @@ Variable Value: <input type="text" id="var_value" value="bar"><br>
         kernel.execute(command);
     }
 </script>
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1538,40 +1520,30 @@ Variable Value: <input type="text" id="var_value" value="bar"><br>
 with the default arguments, the value of the variable
 <code>foo</code> is set in the Python kernel, and can be
 accessed from Python:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">foo</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">foo</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>bar
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1585,7 +1557,6 @@ above, the key to interaction between Javascript and the notebook kernel is to u
 the <code>IPython.notebook.kernel.execute()</code> command, passing valid Python
 code in a string.  We also log the result to the javascript console, which
 can be helpful for Javascript debugging.</p>
-
 </div>
 </div>
 </div>
@@ -1593,7 +1564,7 @@ can be helpful for Javascript debugging.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Accessing-Python-Output-In-Javascript">Accessing Python Output In Javascript<a class="anchor-link" href="#Accessing-Python-Output-In-Javascript">&#182;</a></h2>
+<h2 id="Accessing-Python-Output-In-Javascript">Accessing Python Output In Javascript<a class="anchor-link" href="#Accessing-Python-Output-In-Javascript">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1609,7 +1580,6 @@ The full extent of callbacks is a bit involved, but the first step is
 to set a callback which does something with the <code>output</code> attribute.</p>
 <p>To set an output, we pass a Javascript callback object to the
 execute call, looking like this:</p>
-
 <pre><code>var kernel = IPython.notebook.kernel;
 function callback(out_type, out_data){
     // do_something
@@ -1622,109 +1592,95 @@ the result.  The python command can be as simple as a variable name:
 in this case, the value returned is simply the value of that variable.</p>
 <p>To demonstrate this, we'll first import <code>pi</code> and <code>sin</code>
 from the <code>math</code> package in Python:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sin</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sin</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And then we'll manipulate this value via Javascript:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add an input form similar to what we saw above</span>
-<span class="n">input_form</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;div style=&quot;background-color:gainsboro; border:solid black; width:600px; padding:20px;&quot;&gt;</span>
-<span class="s2">Code: &lt;input type=&quot;text&quot; id=&quot;code_input&quot; size=&quot;50&quot; height=&quot;2&quot; value=&quot;sin(pi / 2)&quot;&gt;&lt;br&gt;</span>
-<span class="s2">Result: &lt;input type=&quot;text&quot; id=&quot;result_output&quot; size=&quot;50&quot; value=&quot;1.0&quot;&gt;&lt;br&gt;</span>
-<span class="s2">&lt;button onclick=&quot;exec_code()&quot;&gt;Execute&lt;/button&gt;</span>
-<span class="s2">&lt;/div&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Add an input form similar to what we saw above</span>
+<span class="n">input_form</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2"><div style="background-color:gainsboro; border:solid black; width:600px; padding:20px;"></span>
+<span class="s2">Code: <input type="text" id="code_input" size="50" height="2" value="sin(pi / 2)"><br></span>
+<span class="s2">Result: <input type="text" id="result_output" size="50" value="1.0"><br></span>
+<span class="s2"><button onclick="exec_code()">Execute</button></span>
+<span class="s2"></div></span>
+<span class="s2">"""</span>
 
 <span class="c1"># here the javascript has a function to execute the code</span>
 <span class="c1"># within the input box, and a callback to handle the output.</span>
-<span class="n">javascript</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;script type=&quot;text/Javascript&quot;&gt;</span>
+<span class="n">javascript</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2"><script type="text/Javascript"></span>
 <span class="s2">    function handle_output(out_type, out){</span>
 <span class="s2">        console.log(out_type);</span>
 <span class="s2">        console.log(out);</span>
 <span class="s2">        var res = null;</span>
 <span class="s2">         // if output is a print statement</span>
-<span class="s2">        if(out_type == &quot;stream&quot;){</span>
+<span class="s2">        if(out_type == "stream"){</span>
 <span class="s2">            res = out.data;</span>
 <span class="s2">        }</span>
 <span class="s2">        // if output is a python object</span>
-<span class="s2">        else if(out_type === &quot;pyout&quot;){</span>
-<span class="s2">            res = out.data[&quot;text/plain&quot;];</span>
+<span class="s2">        else if(out_type === "pyout"){</span>
+<span class="s2">            res = out.data["text/plain"];</span>
 <span class="s2">        }</span>
 <span class="s2">        // if output is a python error</span>
-<span class="s2">        else if(out_type == &quot;pyerr&quot;){</span>
-<span class="s2">            res = out.ename + &quot;: &quot; + out.evalue;</span>
+<span class="s2">        else if(out_type == "pyerr"){</span>
+<span class="s2">            res = out.ename + ": " + out.evalue;</span>
 <span class="s2">        }</span>
-<span class="s2">        // if output is something we haven&#39;t thought of</span>
+<span class="s2">        // if output is something we haven't thought of</span>
 <span class="s2">        else{</span>
-<span class="s2">            res = &quot;[out type not implemented]&quot;;   </span>
+<span class="s2">            res = "[out type not implemented]";   </span>
 <span class="s2">        }</span>
-<span class="s2">        document.getElementById(&quot;result_output&quot;).value = res;</span>
+<span class="s2">        document.getElementById("result_output").value = res;</span>
 <span class="s2">    }</span>
 <span class="s2">    </span>
 <span class="s2">    function exec_code(){</span>
-<span class="s2">        var code_input = document.getElementById(&#39;code_input&#39;).value;</span>
+<span class="s2">        var code_input = document.getElementById('code_input').value;</span>
 <span class="s2">        var kernel = IPython.notebook.kernel;</span>
-<span class="s2">        var callbacks = {&#39;output&#39; : handle_output};</span>
-<span class="s2">        document.getElementById(&quot;result_output&quot;).value = &quot;&quot;;  // clear output box</span>
+<span class="s2">        var callbacks = {'output' : handle_output};</span>
+<span class="s2">        document.getElementById("result_output").value = "";  // clear output box</span>
 <span class="s2">        var msg_id = kernel.execute(code_input, callbacks, {silent:false});</span>
-<span class="s2">        console.log(&quot;button pressed&quot;);</span>
+<span class="s2">        console.log("button pressed");</span>
 <span class="s2">    }</span>
-<span class="s2">&lt;/script&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"></script></span>
+<span class="s2">"""</span>
 
 <span class="n">HTML</span><span class="p">(</span><span class="n">input_form</span> <span class="o">+</span> <span class="n">javascript</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
 <div style="background-color:gainsboro; border:solid black; width:600px; padding:20px;">
-Code: <input type="text" id="code_input" size="50" height="2" value="sin(pi / 2)"><br>
-Result: <input type="text" id="result_output" size="50" value="1.0"><br>
+Code: <input height="2" id="code_input" size="50" type="text" value="sin(pi / 2)"><br>
+Result: <input id="result_output" size="50" type="text" value="1.0"><br>
 <button onclick="exec_code()">Execute</button>
 </div>
-
 <script type="text/Javascript">
     function handle_output(out_type, out){
         console.log(out_type);
@@ -1758,14 +1714,10 @@ Result: <input type="text" id="result_output" size="50" value="1.0"><br>
         console.log("button pressed");
     }
 </script>
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1779,7 +1731,6 @@ of outputs we need to handle.  Note that the output handler is given as the <cod
 attribute of a Javascript object, and passed to the <code>kernel.execute</code> function.
 Again, we use <code>console.log</code> to allow us to inspect the objects
 using the Javascript console.</p>
-
 </div>
 </div>
 </div>
@@ -1787,7 +1738,7 @@ using the Javascript console.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Application:-An-On-the-fly-Matplotlib-Animation">Application: An On-the-fly Matplotlib Animation<a class="anchor-link" href="#Application:-An-On-the-fly-Matplotlib-Animation">&#182;</a></h2>
+<h2 id="Application:-An-On-the-fly-Matplotlib-Animation">Application: An On-the-fly Matplotlib Animation<a class="anchor-link" href="#Application:-An-On-the-fly-Matplotlib-Animation">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1804,90 +1755,80 @@ we'll use the javascript/python kernel communication and <em>generate the frames
 unexciting: with no IPython kernel available, calls to the kernel will do nothing.
 To see this in action, please
 <a href="http://jakevdp.github.io/downloads/notebooks/JSInteraction.ipynb">download</a> the notebook and open it with a running IPython notebook instance.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 Welcome to pylab, a matplotlib-based Python environment [backend: module://IPython.kernel.zmq.pylab.backend_inline].
-For more information, type &#39;help(pylab)&#39;.
+For more information, type 'help(pylab)'.
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 <span class="kn">from</span> <span class="nn">cStringIO</span> <span class="k">import</span> <span class="n">StringIO</span>
 
-<span class="c1"># We&#39;ll use HTML to create a control panel with an</span>
+<span class="c1"># We'll use HTML to create a control panel with an</span>
 <span class="c1"># empty image and a number of navigation buttons.</span>
 
-<span class="n">disp_html</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;div class=&quot;animation&quot; align=&quot;center&quot;&gt;</span>
-<span class="s2">&lt;img id=&quot;anim_frame&quot; src=&quot;&quot;&gt;&lt;br&gt;</span>
-<span class="s2">&lt;button onclick=&quot;prevFrame()&quot;&gt;Prev Frame&lt;/button&gt;</span>
-<span class="s2">&lt;button onclick=&quot;reverse()&quot;&gt;Reverse&lt;/button&gt;</span>
-<span class="s2">&lt;button onclick=&quot;pause()&quot;&gt;Pause&lt;/button&gt;</span>
-<span class="s2">&lt;button onclick=&quot;play()&quot;&gt;Play&lt;/button&gt;</span>
-<span class="s2">&lt;button onclick=&quot;nextFrame()&quot;&gt;Next Frame&lt;/button&gt;</span>
-<span class="s2">&lt;/div&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">disp_html</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2"><div class="animation" align="center"></span>
+<span class="s2"><img id="anim_frame" src=""><br></span>
+<span class="s2"><button onclick="prevFrame()">Prev Frame</button></span>
+<span class="s2"><button onclick="reverse()">Reverse</button></span>
+<span class="s2"><button onclick="pause()">Pause</button></span>
+<span class="s2"><button onclick="play()">Play</button></span>
+<span class="s2"><button onclick="nextFrame()">Next Frame</button></span>
+<span class="s2"></div></span>
+<span class="s2">"""</span>
 
 <span class="c1"># now the javascript to drive it.  The nextFrame() and prevFrame()</span>
 <span class="c1"># functions will call the kernel and pull-down the frame which</span>
 <span class="c1"># is generated.  The play() and reverse() functions use timeouts</span>
 <span class="c1"># to repeatedly call nextFrame() and prevFrame().</span>
 
-<span class="n">javascript</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;script type=&quot;text/Javascript&quot;&gt;</span>
+<span class="n">javascript</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2"><script type="text/Javascript"></span>
 <span class="s2">var count = -1;  // keep track of frame number</span>
 <span class="s2">var animating = 0;  // keep track of animation direction</span>
 <span class="s2">var timer = null;</span>
 <span class="s2">var kernel = IPython.notebook.kernel;</span>
 
 <span class="s2">function output(out_type, out){</span>
-<span class="s2">    data = out.data[&quot;text/plain&quot;];</span>
-<span class="s2">    document.getElementById(&quot;anim_frame&quot;).src = data.substring(1, data.length - 1);</span>
+<span class="s2">    data = out.data["text/plain"];</span>
+<span class="s2">    document.getElementById("anim_frame").src = data.substring(1, data.length - 1);</span>
 <span class="s2">    </span>
-<span class="s2">    if(animating &gt; 0){</span>
+<span class="s2">    if(animating > 0){</span>
 <span class="s2">        timer = setTimeout(nextFrame, 0);</span>
 <span class="s2">    }</span>
-<span class="s2">    else if(animating &lt; 0){</span>
+<span class="s2">    else if(animating < 0){</span>
 <span class="s2">        timer = setTimeout(prevFrame, 0);</span>
 <span class="s2">    }</span>
 <span class="s2">}</span>
 
-<span class="s2">var callbacks = {&#39;output&#39; : output};</span>
+<span class="s2">var callbacks = {'output' : output};</span>
 
 <span class="s2">function pause(){</span>
 <span class="s2">    animating = 0;</span>
@@ -1911,23 +1852,23 @@ For more information, type &#39;help(pylab)&#39;.
 
 <span class="s2">function nextFrame(){</span>
 <span class="s2">    count += 1;</span>
-<span class="s2">    var msg_id = kernel.execute(&quot;disp._get_frame_data(&quot; + count + &quot;)&quot;, callbacks, {silent:false});</span>
+<span class="s2">    var msg_id = kernel.execute("disp._get_frame_data(" + count + ")", callbacks, {silent:false});</span>
 <span class="s2">}</span>
 
 <span class="s2">function prevFrame(){</span>
 <span class="s2">    count -= 1;</span>
-<span class="s2">    var msg_id = kernel.execute(&quot;disp._get_frame_data(&quot; + count + &quot;)&quot;, callbacks, {silent:false});</span>
+<span class="s2">    var msg_id = kernel.execute("disp._get_frame_data(" + count + ")", callbacks, {silent:false});</span>
 <span class="s2">}</span>
 
 <span class="s2">// display the first frame</span>
 <span class="s2">setTimeout(nextFrame, 0);</span>
 
-<span class="s2">&lt;/script&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"></script></span>
+<span class="s2">"""</span>
 
 <span class="c1"># Here we create a class whose HTML representation is the above</span>
-<span class="c1"># HTML and javascript.  Note that we&#39;ve hard-coded the global</span>
-<span class="c1"># variable name `disp` in the Javascript, so you&#39;ll have to assign</span>
+<span class="c1"># HTML and javascript.  Note that we've hard-coded the global</span>
+<span class="c1"># variable name `disp` in the Javascript, so you'll have to assign</span>
 <span class="c1"># the resulting object to this name in order to view it.</span>
 
 <span class="k">class</span> <span class="nc">DisplayAnimation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1939,19 +1880,17 @@ For more information, type &#39;help(pylab)&#39;.
     <span class="k">def</span> <span class="nf">_get_frame_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="n">anim</span><span class="o">.</span><span class="n">_draw_frame</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'png'</span><span class="p">)</span>
         <span class="n">buffer</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;data:image/png;base64,</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'base64'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"data:image/png;base64,</span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
     
     <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">disp_html</span> <span class="o">+</span> <span class="n">javascript</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1961,16 +1900,15 @@ For more information, type &#39;help(pylab)&#39;.
 requires the display object to be named <code>disp</code> in the global namespace.
 But making it more robust would be a relatively simple process.</p>
 <p>Here we'll test the result by creating a simple animation and displaying it dynamically:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">animation</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">animation</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -1993,24 +1931,15 @@ But making it more robust would be a relatively simple process.</p>
 <span class="n">disp</span> <span class="o">=</span> <span class="n">DisplayAnimation</span><span class="p">(</span><span class="n">anim</span><span class="p">)</span>
 <span class="n">disp</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-
-<div class="animation" align="center">
+<div align="center" class="animation">
 <img id="anim_frame" src=""><br>
 <button onclick="prevFrame()">Prev Frame</button>
 <button onclick="reverse()">Reverse</button>
@@ -2018,7 +1947,6 @@ But making it more robust would be a relatively simple process.</p>
 <button onclick="play()">Play</button>
 <button onclick="nextFrame()">Next Frame</button>
 </div>
-
 <script type="text/Javascript">
 var count = -1;  // keep track of frame number
 var animating = 0;  // keep track of animation direction
@@ -2073,14 +2001,10 @@ function prevFrame(){
 setTimeout(nextFrame, 0);
 
 </script>
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2100,55 +2024,38 @@ more than a finished result.  In particular, on my four-year-old linux box, I
 can only achieve a frame-rate of about 10 frames/sec.
 Part of this is due to the reliance on png images saved within matplotlib,
 as we can see by profiling the function:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">save_to_mem</span><span class="p">(</span><span class="n">fig</span><span class="p">):</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">save_to_mem</span><span class="p">(</span><span class="n">fig</span><span class="p">):</span>
     <span class="n">buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'png'</span><span class="p">)</span>
     <span class="n">buffer</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">&quot;data:image/png;base64,</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'base64'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"data:image/png;base64,</span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x3a26f50&gt;]</pre>
+<pre>[<matplotlib.lines.Line2D at 0x3a26f50>]</pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAD9CAYAAAC2l2x5AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXt0XdV9579XupIsyzK2sS1AcnDAjm2CsZmYEmDSMWkI
 cWZq2tJOoA1NU5c6tEySmSSTrHZ1BbImDGSaWc0KbQeaR5OmoWSmTU064IQ8HAINNgmPTDEN4mGw
@@ -2652,46 +2559,33 @@ t672xje+8fQxfO2112q/9Eu/VJRJOuK6666rnX322bWOjo7awMBA7Qtf+IL12H3yk5+snX/++bVV
 q1bVtm/fPoUtb82Qx/Pzn/987YYbbqitXbu2dtFFF9Wuueaa2quvvnp6+eJ4muMHP/hBrVQq1dat
 W3e6xPSBBx6Ien2WarViopgiiiiiiJkY0/6NTkUUUUQRReijEPgiiiiiiBkahcAXUUQRRczQKAS+
 iCKKKGKGRiHwRRRRRBEzNAqBL6KIIoqYofH/AXtefgmaVOPdAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> save_to_mem(fig)
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> save_to_mem(fig)
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>10 loops, best of 3: 54.2 ms per loop
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2702,7 +2596,6 @@ the time required to serialize and send the data,
 or to render each frame on the page.
 I'm certain there are much better ways to do this particular application,
 but they would take a bit more thought.</p>
-
 </div>
 </div>
 </div>
@@ -2716,7 +2609,6 @@ Also, keep in mind that Javascript support should be improving immensely in
 IPython 2.0, which (according to the <a href="https://github.com/ipython/ipython/wiki/Roadmap:-IPython">roadmap</a>)
 should be released in December of 2013.  At that point I may have more to say
 on the subject!</p>
-
 </div>
 </div>
 </div>
@@ -2727,12 +2619,9 @@ on the subject!</p>
 <p><em>This post was composed entirely in IPython notebook.</em>
 <em>The source notebook can be downloaded</em>
 <a href="http://jakevdp.github.io/downloads/notebooks/JSInteraction.ipynb">here</a></p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2762,6 +2651,18 @@ on the subject!</p>
 }
 </script>
         </div>
+
+        <div>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button read_more" 
+            data-size="large" data-text='I just read "IPython Notebook: Javascript/Python Bi-directional Communication"' data-via="__olamilekan__" 
+            data-show-count="false">Share on twitter</a><script async src="https://platform.twitter.com/widgets.js" 
+            charset="utf-8"></script>
+
+            <iframe src="https://www.facebook.com/plugins/share_button.php?href=drafts/ipython-notebook-javascript-python-communication.html&layout=button&size=large&appId=289061011534830&width=73&height=28" 
+            width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            
+         </div>
+
 
         <div class="meta">
             <div>
